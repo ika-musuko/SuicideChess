@@ -1,5 +1,5 @@
-# Cmpe-133
-Cmpe 133 project repository
+# Suicide-Chess
+Suicide Chess project repository
 
 Chess Engine:
 https://github.com/jhlywa/chess.js

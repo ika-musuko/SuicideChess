@@ -1,0 +1,9 @@
+flaskbase
+__pycache__
+*.pyc
+*.swp
+*.swn
+*.swo
+.git
+*conflicted copy*
+*.db

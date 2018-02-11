@@ -7,7 +7,11 @@ class board extends Component {
         let squares = []
         for(let i = 0; i < 8; i++ ) {
             for (let j = 0; j < 8; j++) {
-                squares.push(<Tile x={j} y={i} key={i+10*j} />)
+                let color = false;
+                if((i + j) % 2 === 0) {
+                    color = true;
+                }
+                squares.push(<Tile x={j} y={i} key={i+10*j} color={color}/>)
             }
         }
         return (

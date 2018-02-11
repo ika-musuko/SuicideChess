@@ -7,17 +7,30 @@ class tile extends Component {
         this.state = {
             x: props.x,
             y: props.y,
+            selected: false,
+            color: props.color,
         }
     }
 
+    toggleSelected = () => {
+        this.setState({
+            selected: !this.state.selected,
+        })
+    }
+
     tileClick = () => {
-        console.log(this.state.x + "," + this.state.y)
+        this.setState({
+            selected: !this.state.selected,
+        })
     }
 
     render () {
-
         return (
-            <button onClick={this.tileClick}></button>
+            this.state.color? (
+                <button className="white-tile" onClick={this.tileClick}></button>
+            ) : (
+                <button className="grey-tile" onClick={this.tileClick}></button>
+            )
         )
     }
 

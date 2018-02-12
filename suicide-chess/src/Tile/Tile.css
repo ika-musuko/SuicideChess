@@ -5,16 +5,18 @@ button {
     float: left;
 }
 
+img {
+    width: 40px;
+    height: 40px;
+    float: left;
+}
+
 .white-tile {
     background-color: #fff;
 }
 
 .grey-tile {
     background-color: rgb(153, 153, 153);
-}
-
-.selected-tile{
-    background-color: lightgreen;
 }
 
 button:active,

@@ -1,3 +1,5 @@
+import { canMoveKnight } from './GameMoves'
+
 let pieces = {
     black_knightA: {x: 2, y:0},
     black_knightB: {x: 5, y:0}
@@ -32,9 +34,13 @@ export function movePiece(move) {
     }
     if(canMove){
         if(move.piece === "Black_KnightA") {
-            pieces.black_knightA = {x: move.x, y: move.y}
+            if(canMoveKnight(move.x, move.y, pieces.black_knightA)){
+                pieces.black_knightA = {x: move.x, y: move.y}
+            }
         } else if (move.piece === "Black_KnightB") {
-            pieces.black_knightB = {x: move.x, y: move.y}
+            if(canMoveKnight(move.x, move.y, pieces.black_knightB)){
+                pieces.black_knightB = {x: move.x, y: move.y}
+            }
         }
         emitChange()
     }

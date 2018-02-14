@@ -16,6 +16,14 @@ class gamescene extends Component {
       black_rookB: { x: 7, y: 0 },
       black_queen: { x: 3, y: 0 },
       black_king: { x: 4, y: 0 },
+      black_pawnA: { x: 0, y: 1, firstMove: true },
+      black_pawnB: { x: 1, y: 1, firstMove: true },
+      black_pawnC: { x: 2, y: 1, firstMove: true },
+      black_pawnD: { x: 3, y: 1, firstMove: true },
+      black_pawnE: { x: 4, y: 1, firstMove: true },
+      black_pawnF: { x: 5, y: 1, firstMove: true },
+      black_pawnG: { x: 6, y: 1, firstMove: true },
+      black_pawnH: { x: 7, y: 1, firstMove: true },
       selectedPiece: null
     }
     observe(this.handleChange.bind(this))

@@ -288,5 +288,20 @@ export function canMoveRook(toX, toY, currentPos, pieces) {
 }
 
 export function canMoveKing(toX, toY, currentPos, pieces) {
-    return true;
+    return true
+}
+
+export function canMoveBlackPawn(toX, toY, currentPos, pieces, firstMove) {
+    let dx = toX - currentPos.x
+    let dy = toY - currentPos.y
+
+    if(dy < 0) {
+        return false
+    } else if (dy === 1) {
+        return true
+    } else if (dy === 2 && firstMove) {
+        return true
+    } else {
+        return false
+    }
 }

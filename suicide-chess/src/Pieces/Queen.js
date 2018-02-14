@@ -8,7 +8,7 @@ class queen extends Component {
             filter: 'opacity(60%)'
         }
 
-        const src = this.props.pieceKey === "Black_Queen" ? require('../assets/black_queen.png') : require('../assets/white_queen.png')
+        const src = this.props.pieceKey === "black_queen" ? require('../assets/black_queen.png') : require('../assets/white_queen.png')
 
         return (
             <img 

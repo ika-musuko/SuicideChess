@@ -8,7 +8,7 @@ class king extends Component {
             filter: 'opacity(60%)'
         }
 
-        const src = this.props.pieceKey === "Black_King" ? require('../assets/black_king.png') : require('../assets/white_king.png')
+        const src = this.props.pieceKey === "black_king" ? require('../assets/black_king.png') : require('../assets/white_king.png')
 
         return (
             <img 

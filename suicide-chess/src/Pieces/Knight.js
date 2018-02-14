@@ -7,7 +7,7 @@ class knight extends Component {
         const selectedStyle = {
             filter: 'opacity(60%)'
         }
-        const src = (this.props.pieceKey === "Black_KnightA" || this.props.pieceKey === "Black_KnightB") ? require('../assets/black_knight.png') : require('../assets/white_knight.png')
+        const src = (this.props.pieceKey === "black_knightA" || this.props.pieceKey === "black_knightB") ? require('../assets/black_knight.png') : require('../assets/white_knight.png')
         return (
             <img 
             className="piece"

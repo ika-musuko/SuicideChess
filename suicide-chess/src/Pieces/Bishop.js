@@ -7,7 +7,7 @@ class bishop extends Component {
         const selectedStyle = {
             filter: 'opacity(60%)'
         }
-        const src = (this.props.pieceKey === "Black_BishopA" || this.props.pieceKey === "Black_BishopB") ? 
+        const src = (this.props.pieceKey === "black_bishopA" || this.props.pieceKey === "black_bishopB") ? 
         require('../assets/black_bishop.png') : require('../assets/white_bishop.png')
         return (
             <img 

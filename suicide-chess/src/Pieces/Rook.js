@@ -7,7 +7,7 @@ class rook extends Component {
         const selectedStyle = {
             filter: 'opacity(60%)'
         }
-        const src = (this.props.pieceKey === "Black_RookA" || this.props.pieceKey === "Black_RookB") ? 
+        const src = (this.props.pieceKey === "black_rookA" || this.props.pieceKey === "black_rookB") ? 
         require('../assets/black_rook.png') : require('../assets/white_rook.png')
         return (
             <img 

@@ -7,7 +7,6 @@ import { pieceObserve } from '../Game'
 class gamescene extends Component {
   constructor(props) {
     super(props)
-    console.log(props)
     this.state = {
       black_knightA: { x: 1, y: 0 },
       black_knightB: { x: 6, y: 0 },

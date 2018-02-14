@@ -6,7 +6,11 @@ let pieces = {
     black_knightB: {x: 6, y:0},
     black_queen: {x: 3, y: 0}
 }
+
 let observer = null
+
+let firstTimeObserve = true
+let firstTimePieceObserve = true
 
 function emitChange() {
     observer(pieces)
@@ -17,7 +21,12 @@ export function observe(o) {
         throw new Error('Multiple observers not implemented')
     }
     observer = o
-    emitChange()
+    if(firstTimeObserve) {
+        firstTimeObserve = false
+        return
+    } else {
+        emitChange()
+    }
 
     return () => {
         observer = null
@@ -59,7 +68,12 @@ function emitPieceChange(piece) {
 
 export function pieceObserve(p) {
     pieceObserver = p
-    emitPieceChange()
+    if(firstTimePieceObserve) {
+        firstTimePieceObserve = false
+        return
+    } else {
+        emitPieceChange()
+    }
 }
 
 export function selectPiece(piece) {

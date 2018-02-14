@@ -136,6 +136,138 @@ export function getPiece(props,x,y) {
         selected= {
             props.selectedPiece === "black_pawnH" ? true : false
         }/>
+    } 
+    
+    //White pieces
+    
+    else if(x === props.state.white_knightA.x && y === props.state.white_knightA.y) {
+        return <Knight 
+        key={"white_knightA"} 
+        pieceKey={"white_knightA"}
+        click={selectPiece.bind(this, "white_knightA")}
+        selected={
+            props.selectedPiece === "white_knightA" ? true : false
+        }/>
+    } else if (x === props.state.white_knightB.x && y === props.state.white_knightB.y){
+        return <Knight 
+        key={"white_knightB"}
+        pieceKey={"white_knightB"} 
+        click={selectPiece.bind(this, "white_knightB")} 
+        selected={
+            props.selectedPiece === "white_knightB" ? true : false
+        }/>
+    } else if (x === props.state.white_queen.x && y === props.state.white_queen.y) {
+        return <Queen
+        key={"white_queen"}
+        pieceKey={"white_queen"}
+        click={selectPiece.bind(this, "white_queen")}
+        selected= {
+            props.selectedPiece === "white_queen" ? true : false
+        }/>
+    } else if (x === props.state.white_king.x && y === props.state.white_king.y) {
+        return <King
+        key={"white_king"}
+        pieceKey={"white_king"}
+        click={selectPiece.bind(this, "white_king")}
+        selected= {
+            props.selectedPiece === "white_king" ? true : false
+        }/>
+    } else if (x === props.state.white_bishopA.x && y === props.state.white_bishopA.y) {
+        return <Bishop
+        key={"white_bishopA"}
+        pieceKey={"white_bishopA"}
+        click={selectPiece.bind(this, "white_bishopA")}
+        selected= {
+            props.selectedPiece === "white_bishopA" ? true : false
+        }/>
+    } else if (x === props.state.white_bishopB.x && y === props.state.white_bishopB.y) {
+        return <Bishop
+        key={"white_bishopB"}
+        pieceKey={"white_bishopB"}
+        click={selectPiece.bind(this, "white_bishopB")}
+        selected= {
+            props.selectedPiece === "white_bishopB" ? true : false
+        }/>
+    } else if (x === props.state.white_rookA.x && y === props.state.white_rookA.y) {
+        return <Rook
+        key={"white_rookA"}
+        pieceKey={"white_rookA"}
+        click={selectPiece.bind(this, "white_rookA")}
+        selected= {
+            props.selectedPiece === "white_rookA" ? true : false
+        }/>
+    } else if (x === props.state.white_rookB.x && y === props.state.white_rookB.y) {
+        return <Rook
+        key={"white_rookB"}
+        pieceKey={"white_rookB"}
+        click={selectPiece.bind(this, "white_rookB")}
+        selected= {
+            props.selectedPiece === "white_rookB" ? true : false
+        }/>
+    } else if (x === props.state.white_pawnA.x && y === props.state.white_pawnA.y) {
+        return <Pawn
+        key={"white_pawnA"}
+        pieceKey={"white_pawnA"}
+        click={selectPiece.bind(this, "white_pawnA")}
+        selected= {
+            props.selectedPiece === "white_pawnA" ? true : false
+        }/>
+    } else if (x === props.state.white_pawnB.x && y === props.state.white_pawnB.y) {
+        return <Pawn
+        key={"white_pawnB"}
+        pieceKey={"white_pawnB"}
+        click={selectPiece.bind(this, "white_pawnB")}
+        selected= {
+            props.selectedPiece === "white_pawnB" ? true : false
+        }/>
+    } else if (x === props.state.white_pawnC.x && y === props.state.white_pawnC.y) {
+        return <Pawn
+        key={"white_pawnC"}
+        pieceKey={"white_pawnC"}
+        click={selectPiece.bind(this, "white_pawnC")}
+        selected= {
+            props.selectedPiece === "white_pawnC" ? true : false
+        }/>
+    } else if (x === props.state.white_pawnD.x && y === props.state.white_pawnD.y) {
+        return <Pawn
+        key={"white_pawnD"}
+        pieceKey={"white_pawnD"}
+        click={selectPiece.bind(this, "white_pawnD")}
+        selected= {
+            props.selectedPiece === "white_pawnD" ? true : false
+        }/>
+    } else if (x === props.state.white_pawnE.x && y === props.state.white_pawnE.y) {
+        return <Pawn
+        key={"white_pawnE"}
+        pieceKey={"white_pawnE"}
+        click={selectPiece.bind(this, "white_pawnE")}
+        selected= {
+            props.selectedPiece === "white_pawnE" ? true : false
+        }/>
+    } else if (x === props.state.white_pawnF.x && y === props.state.white_pawnF.y) {
+        return <Pawn
+        key={"white_pawnF"}
+        pieceKey={"white_pawnF"}
+        click={selectPiece.bind(this, "white_pawnF")}
+        selected= {
+            props.selectedPiece === "white_pawnF" ? true : false
+        }/>
+    } else if (x === props.state.white_pawnG.x && y === props.state.white_pawnG.y) {
+        return <Pawn
+        key={"white_pawnG"}
+        pieceKey={"white_pawnG"}
+        click={selectPiece.bind(this, "white_pawnG")}
+        selected= {
+            props.selectedPiece === "white_pawnG" ? true : false
+        }/>
+    } else if (x === props.state.white_pawnH.x && y === props.state.white_pawnH.y) {
+        return <Pawn
+        key={"white_pawnH"}
+        pieceKey={"white_pawnH"}
+        click={selectPiece.bind(this, "white_pawnH")}
+        selected= {
+            props.selectedPiece === "white_pawnH" ? true : false
+        }/>
     } else {
         return null
     }

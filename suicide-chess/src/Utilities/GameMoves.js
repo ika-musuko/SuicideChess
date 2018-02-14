@@ -294,13 +294,45 @@ export function canMoveKing(toX, toY, currentPos, pieces) {
 export function canMoveBlackPawn(toX, toY, currentPos, pieces, firstMove) {
     let dx = toX - currentPos.x
     let dy = toY - currentPos.y
-
     if(dy < 0) {
         return false
-    } else if (dy === 1) {
+    } else if (dy === 1 && dx === 0) {
         return true
     } else if (dy === 2 && firstMove) {
         return true
+    } else if (dy === 1 && Math.abs(dx) === 1){
+        for(var property in pieces) {
+            if(pieces.hasOwnProperty(property)) {
+                if(pieces[property].x === toX && pieces[property].y === toY && property.substring(0,5) === "white") {
+                    return true
+                }
+            }
+        }
+        return false
+    } else {
+        return false
+    }
+}
+
+export function canMoveWhitePawn(toX, toY, currentPos, pieces, firstMove) {
+    let dx = toX - currentPos.x
+    let dy = toY - currentPos.y
+
+    if(dy > 0) {
+        return false
+    } else if (dy === -1 && dx === 0) {
+        return true
+    } else if (dy === -2 && firstMove) {
+        return true
+    } else if (dy === -1 && Math.abs(dx) === 1) { 
+        for(var property in pieces) {
+            if(pieces.hasOwnProperty(property)) {
+                if(pieces[property].x === toX && pieces[property].y === toY && property.substring(0,5) === "black") {
+                    return true
+                }
+            }
+        }
+        return false
     } else {
         return false
     }

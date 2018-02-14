@@ -7,12 +7,15 @@ class queen extends Component {
         const selectedStyle = {
             filter: 'opacity(60%)'
         }
+
+        const src = this.props.pieceKey === "Black_Queen" ? require('../assets/black_queen.png') : require('../assets/white_queen.png')
+
         return (
             <img 
             className="piece"
             onClick={this.props.click} 
-            src={require('../assets/black_queen.png')} 
-            alt={this.key}
+            src={src} 
+            alt={this.props.pieceKey}
             style={this.props.selected ? selectedStyle : null }/>
         )
     }

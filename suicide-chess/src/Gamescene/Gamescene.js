@@ -10,6 +10,8 @@ class gamescene extends Component {
     this.state = {
       black_knightA: { x: 1, y: 0 },
       black_knightB: { x: 6, y: 0 },
+      black_bishopA: { x: 2, y: 0 },
+      black_bishopB: { x: 5, y: 0 },
       black_queen: {x: 3, y:0 },
       selectedPiece: null
     }

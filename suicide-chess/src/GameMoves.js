@@ -142,3 +142,80 @@ export function canMoveQueen(toX, toY, currentPos, pieces) {
     }
     return true
 }
+
+export function canMoveBishop(toX, toY, currentPos, pieces) {
+
+    let dx = toX - currentPos.x
+    let dy = toY - currentPos.y
+
+    if (Math.abs(dx) === Math.abs(dy)) {
+
+        //Movement in positive x and y
+
+        if(dx > 0 && dy > 0) {
+            var i = 1
+            do {
+                for(var property in pieces) {
+                    if(pieces.hasOwnProperty(property)) {
+                        if(pieces[property].x === currentPos.x + i && pieces[property].y === currentPos.y + i) {
+                            return false;
+                        }
+                    }
+                }
+                i++;
+            } while(i < Math.abs(dy) && i < Math.abs(dx))
+        }
+
+        //Movement in negative x and y
+
+        else if (dx < 0 && dy < 0) {
+            i = 1
+            do {
+                for(property in pieces) {
+                    if(pieces.hasOwnProperty(property)) {
+                        if(pieces[property].x === currentPos.x - i && pieces[property].y === currentPos.y - i) {
+                            return false;
+                        }
+                    }
+                }
+                i++;
+            } while(i < Math.abs(dy) && i < Math.abs(dx))
+        }
+
+        //Movement in negative x and positive y
+
+        else if (dx < 0 && dy > 0) {
+            i = 1
+            do {
+                for(property in pieces) {
+                    if(pieces.hasOwnProperty(property)) {
+                        if(pieces[property].x === currentPos.x - i && pieces[property].y === currentPos.y + i) {
+                            return false;
+                        }
+                    }
+                }
+                i++;
+            } while(i < Math.abs(dy) && i < Math.abs(dx))
+        }
+
+        //Movement in positive x and negative y
+
+        else if (dx > 0 && dy < 0) {
+            i = 1
+            do {
+                for(property in pieces) {
+                    if(pieces.hasOwnProperty(property)) {
+                        if(pieces[property].x === currentPos.x + i && pieces[property].y === currentPos.y - i) {
+                            return false;
+                        }
+                    }
+                }
+                i++;
+            } while(i < Math.abs(dy) && i < Math.abs(dx))
+        }
+
+    } else {
+        return false
+    }
+    return true
+}

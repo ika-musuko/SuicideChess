@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 
 
-class knight extends Component {
+class bishop extends Component {
 
     render() {
         const selectedStyle = {
             filter: 'opacity(60%)'
         }
-        const src = (this.props.pieceKey === "Black_KnightA" || this.props.pieceKey === "Black_KnightB") ? require('../assets/black_knight.png') : require('../assets/white_knight.png')
+        const src = (this.props.pieceKey === "Black_BishopA" || this.props.pieceKey === "Black_BishopB") ? 
+        require('../assets/black_bishop.png') : require('../assets/white_bishop.png')
         return (
             <img 
             className="piece"
@@ -19,4 +20,4 @@ class knight extends Component {
     }
 }
 
-export default knight
+export default bishop

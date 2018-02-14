@@ -12,7 +12,10 @@ class gamescene extends Component {
       black_knightB: { x: 6, y: 0 },
       black_bishopA: { x: 2, y: 0 },
       black_bishopB: { x: 5, y: 0 },
-      black_queen: {x: 3, y:0 },
+      black_rookA: { x: 0, y: 0 },
+      black_rookB: { x: 7, y: 0 },
+      black_queen: { x: 3, y: 0 },
+      black_king: { x: 4, y: 0 },
       selectedPiece: null
     }
     observe(this.handleChange.bind(this))

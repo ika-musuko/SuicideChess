@@ -219,3 +219,70 @@ export function canMoveBishop(toX, toY, currentPos, pieces) {
     }
     return true
 }
+
+export function canMoveRook(toX, toY, currentPos, pieces) {
+
+    let dx = toX - currentPos.x
+    let dy = toY - currentPos.y
+
+    //Movement in x direction
+
+    if(dy === 0) {
+
+        //Negative movement
+
+        if(dx < 0) {
+            for(var property in pieces) {
+                if(pieces.hasOwnProperty(property)) {
+                    if (pieces[property].x > toX && pieces[property].x < currentPos.x && pieces[property].y === currentPos.y) {
+                        return false
+                    }
+                }
+            }
+        }
+        
+        //Positive movement
+        
+        else if (dx > 0) {
+            for(property in pieces) {
+                if(pieces.hasOwnProperty(property)) {
+                    if (pieces[property].x < toX && pieces[property].x > currentPos.x && pieces[property].y === currentPos.y) {
+                        return false
+                    }
+                }
+            }
+        }
+    } 
+    
+    //Movement in y direction    
+
+    else if (dx === 0) {
+
+        //Negative Movement
+
+        if(dy < 0) {
+            for(property in pieces) {
+                if(pieces.hasOwnProperty(property)) {
+                    if(pieces[property].y > toY && pieces[property].y < currentPos.y && pieces[property].x === currentPos.x) {
+                        return false
+                    }
+                }
+            }
+        } 
+        
+        //Positive Movement
+
+        else if (dy > 0) {
+            for(property in pieces) {
+                if(pieces.hasOwnProperty(property)) {
+                    if(pieces[property].y < toY && pieces[property].y > currentPos.y && pieces[property].x === currentPos.x) {
+                        return false
+                    }
+                }
+            }
+        }
+    } else {
+        return false
+    }
+    return true
+}

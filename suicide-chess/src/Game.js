@@ -1,11 +1,14 @@
-import { canMoveKnight, canMoveBishop, canMoveQueen } from './GameMoves'
+import { canMoveKnight, canMoveBishop, canMoveQueen, canMoveRook } from './GameMoves'
 
 let pieces = {
-    black_knightA: {x: 1, y:0},
-    black_knightB: {x: 6, y:0},
-    black_bishopA: {x: 2, y:0},
-    black_bishopB: {x: 5, y:0},
-    black_queen: {x: 3, y: 0}
+    black_knightA: { x: 1, y: 0 },
+    black_knightB: { x: 6, y: 0 },
+    black_bishopA: { x: 2, y: 0 },
+    black_bishopB: { x: 5, y: 0 },
+    black_rookA: { x: 0, y: 0 },
+    black_rookB: { x: 7, y: 0 },
+    black_queen: { x: 3, y: 0 },
+    black_king: { x: 4, y: 0 },
 }
 
 let observer = null
@@ -64,6 +67,14 @@ export function movePiece(move) {
         } else if (move.piece === "Black_BishopB") {
             if(canMoveBishop(move.x, move.y, pieces.black_bishopB, pieces)) {
                 pieces.black_bishopB = {x: move.x, y: move.y}
+            }
+        } else if (move.piece === "Black_RookA") {
+            if(canMoveRook(move.x, move.y, pieces.black_rookA, pieces)) {
+                pieces.black_rookA = {x: move.x, y: move.y}
+            }
+        } else if (move.piece === "Black_RookB") {
+            if(canMoveRook(move.x, move.y, pieces.black_rookB, pieces)) {
+                pieces.black_rookB = {x: move.x, y: move.y}
             }
         }
         emitChange()

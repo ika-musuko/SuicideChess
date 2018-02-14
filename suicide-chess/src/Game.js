@@ -1,8 +1,10 @@
 import { canMoveKnight } from './GameMoves'
+import { canMoveQueen } from './GameMoves'
 
 let pieces = {
-    black_knightA: {x: 2, y:0},
-    black_knightB: {x: 5, y:0}
+    black_knightA: {x: 1, y:0},
+    black_knightB: {x: 6, y:0},
+    black_queen: {x: 3, y: 0}
 }
 let observer = null
 
@@ -40,6 +42,10 @@ export function movePiece(move) {
         } else if (move.piece === "Black_KnightB") {
             if(canMoveKnight(move.x, move.y, pieces.black_knightB)){
                 pieces.black_knightB = {x: move.x, y: move.y}
+            }
+        } else if (move.piece === "Black_Queen") {
+            if (canMoveQueen(move.x, move.y, pieces.black_queen, pieces)) {
+                pieces.black_queen = {x: move.x, y: move.y}
             }
         }
         emitChange()

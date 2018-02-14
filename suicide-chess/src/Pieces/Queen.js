@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 
-class knight extends Component {
+class queen extends Component {
 
     render() {
         const selectedStyle = {
@@ -10,11 +10,11 @@ class knight extends Component {
         return (
             <img 
             onClick={this.props.click} 
-            src={require('../assets/black_knight.png')} 
-            alt={this.key} 
+            src={require('../assets/black_queen.png')} 
+            alt={this.key}
             style={this.props.selected ? selectedStyle : null }/>
         )
     }
 }
 
-export default knight
+export default queen

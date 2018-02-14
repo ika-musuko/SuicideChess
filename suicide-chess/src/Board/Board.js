@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import './Board.css'
 import Tile from '../Tile/Tile'
-import Knight from '../Pieces/Knight'
 import {movePiece} from '../Game'
-import { selectPiece } from '../Game'
+import { getPiece } from '../Utilities/GetPieceForSquare'
 
 class board extends Component {
     handleSquareClick = (move) => {
@@ -25,23 +24,24 @@ class board extends Component {
     }
 
     renderPiece(x, y) {
-        if(x === this.props.state.black_knightA.x && y === this.props.state.black_knightA.y) {
-            return <Knight 
-            key={"Black_KnightA"} 
-            click={selectPiece.bind(this, "Black_KnightA")} 
-            selected={
-                this.props.selectedPiece === "Black_KnightA" ? true : false
-            }/>
-        } else if (x === this.props.state.black_knightB.x && y === this.props.state.black_knightB.y){
-            return <Knight 
-            key={"Black_KnightB"} 
-            click={selectPiece.bind(this, "Black_KnightB")} 
-            selected={
-                this.props.selectedPiece === "Black_KnightB" ? true : false
-            }/>
-        } else {
-            return null
-        }
+        return getPiece(this.props, x, y)
+        // if(x === this.props.state.black_knightA.x && y === this.props.state.black_knightA.y) {
+        //     return <Knight 
+        //     key={"Black_KnightA"} 
+        //     click={selectPiece.bind(this, "Black_KnightA")} 
+        //     selected={
+        //         this.props.selectedPiece === "Black_KnightA" ? true : false
+        //     }/>
+        // } else if (x === this.props.state.black_knightB.x && y === this.props.state.black_knightB.y){
+        //     return <Knight 
+        //     key={"Black_KnightB"} 
+        //     click={selectPiece.bind(this, "Black_KnightB")} 
+        //     selected={
+        //         this.props.selectedPiece === "Black_KnightB" ? true : false
+        //     }/>
+        // } else {
+        //     return null
+        // }
     }
 
     render () {

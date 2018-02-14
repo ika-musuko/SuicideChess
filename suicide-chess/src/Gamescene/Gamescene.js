@@ -9,8 +9,9 @@ class gamescene extends Component {
     super(props)
     console.log(props)
     this.state = {
-      black_knightA: { x: 2, y: 0 },
-      black_knightB: { x: 5, y: 0 },
+      black_knightA: { x: 1, y: 0 },
+      black_knightB: { x: 6, y: 0 },
+      black_queen: {x: 3, y:0 },
       selectedPiece: null
     }
     observe(this.handleChange.bind(this))

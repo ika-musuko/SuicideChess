@@ -12,11 +12,11 @@ img {
 }
 
 .white-tile {
-    background-color: #fff;
+    background-color: rgb(246, 207, 164);
 }
 
 .grey-tile {
-    background-color: rgb(153, 153, 153);
+    background-color: rgb(200, 141, 83);
 }
 
 button:active,

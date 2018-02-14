@@ -11,7 +11,7 @@ class board extends Component {
         }
     }
 
-    renderSquare(i) {
+    renderSquare = (i) => {
         let x = i % 8
         let y = Math.floor(i / 8)
         let color = false
@@ -23,7 +23,7 @@ class board extends Component {
         )
     }
 
-    renderPiece(x, y) {
+    renderPiece = (x, y) => {
         return getPiece(this.props, x, y)
         // if(x === this.props.state.black_knightA.x && y === this.props.state.black_knightA.y) {
         //     return <Knight 

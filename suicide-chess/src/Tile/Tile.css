@@ -5,23 +5,40 @@ button {
     float: left;
 }
 
-img {
+.piece {
     width: 40px;
     height: 40px;
-    float: left;
+    margin: 5px;
 }
 
 .white-tile {
     background-color: rgb(246, 207, 164);
+    width: 50px;
+    height: 50px;
+    border: none;
+    float: left;
 }
 
 .grey-tile {
     background-color: rgb(200, 141, 83);
+    width: 50px;
+    height: 50px;
+    border: none;
+    float: left;
 }
 
-button:active,
-button:focus,
-button.active {
+.white-tile:active,
+.white-tile:focus,
+.white-tile.active {
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.grey-tile:active,
+.grey-tile:focus,
+.grey-tile.active {
   background-image: none;
   outline: 0;
   -webkit-box-shadow: none;

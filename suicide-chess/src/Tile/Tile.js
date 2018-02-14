@@ -6,13 +6,13 @@ class tile extends Component {
     render () {
         return (
             this.props.color? (
-                <button className="white-tile" onClick={this.props.click}>
+                <div className="white-tile" onClick={(this.props.click)}>
                     {this.props.children}
-                </button>
+                </div>
             ) : (
-                <button className="grey-tile" onClick={this.props.click}>
+                <div className="grey-tile" onClick={this.props.click}>
                     {this.props.children}
-                </button>
+                </div>
             )
         )
     }

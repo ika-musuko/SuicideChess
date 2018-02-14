@@ -7,7 +7,7 @@ export function getPiece(props,x,y) {
     if(x === props.state.black_knightA.x && y === props.state.black_knightA.y) {
         return <Knight 
         key={"Black_KnightA"} 
-        click={selectPiece.bind(this, "Black_KnightA")} 
+        click={selectPiece.bind(this, "Black_KnightA")}
         selected={
             props.selectedPiece === "Black_KnightA" ? true : false
         }/>

@@ -9,6 +9,7 @@ class queen extends Component {
         }
         return (
             <img 
+            className="piece"
             onClick={this.props.click} 
             src={require('../assets/black_queen.png')} 
             alt={this.key}

@@ -10,47 +10,135 @@ export function canMoveKnight(toX, toY, currentPos) {
 export function canMoveQueen(toX, toY, currentPos, pieces) {
     let dx = toX - currentPos.x
     let dy = toY - currentPos.y
-    let canMove = true
+
+    //Movement in x direction
+
     if(dy === 0) {
+
+        //Negative movement
+
         if(dx < 0) {
             for(var property in pieces) {
                 if(pieces.hasOwnProperty(property)) {
                     if (pieces[property].x > toX && pieces[property].x < currentPos.x && pieces[property].y === currentPos.y) {
-                        canMove = false
-                    }
-                }
-            }
-        } else if (dx > 0) {
-            for(property in pieces) {
-                if(pieces.hasOwnProperty(property)) {
-                    if (pieces[property].x < toX && pieces[property].x > currentPos.x && pieces[property].y === currentPos.y) {
-                        canMove = false
+                        return false
                     }
                 }
             }
         }
-    } else if (dx === 0) {
+        
+        //Positive movement
+        
+        else if (dx > 0) {
+            for(property in pieces) {
+                if(pieces.hasOwnProperty(property)) {
+                    if (pieces[property].x < toX && pieces[property].x > currentPos.x && pieces[property].y === currentPos.y) {
+                        return false
+                    }
+                }
+            }
+        }
+    } 
+    
+    //Movement in y direction    
+
+    else if (dx === 0) {
+
+        //Negative Movement
+
         if(dy < 0) {
             for(property in pieces) {
                 if(pieces.hasOwnProperty(property)) {
                     if(pieces[property].y > toY && pieces[property].y < currentPos.y && pieces[property].x === currentPos.x) {
-                        canMove = false
+                        return false
                     }
                 }
             }
-        } else if (dy > 0) {
+        } 
+        
+        //Positive Movement
+
+        else if (dy > 0) {
             for(property in pieces) {
                 if(pieces.hasOwnProperty(property)) {
                     if(pieces[property].y < toY && pieces[property].y > currentPos.y && pieces[property].x === currentPos.x) {
-                        canMove = false
+                        return false
                     }
                 }
             }
         }
-    } else if (Math.abs(dx) === Math.abs(dy)) {
-        canMove = true
+    } 
+    
+    //Diagonal movement
+    
+    else if (Math.abs(dx) === Math.abs(dy)) {
+
+        //Movement in positive x and y
+
+        if(dx > 0 && dy > 0) {
+            var i = 1
+            do {
+                for(property in pieces) {
+                    if(pieces.hasOwnProperty(property)) {
+                        if(pieces[property].x === currentPos.x + i && pieces[property].y === currentPos.y + i) {
+                            return false;
+                        }
+                    }
+                }
+                i++;
+            } while(i < Math.abs(dy) && i < Math.abs(dx))
+        }
+
+        //Movement in negative x and y
+
+        else if (dx < 0 && dy < 0) {
+            i = 1
+            do {
+                for(property in pieces) {
+                    if(pieces.hasOwnProperty(property)) {
+                        if(pieces[property].x === currentPos.x - i && pieces[property].y === currentPos.y - i) {
+                            return false;
+                        }
+                    }
+                }
+                i++;
+            } while(i < Math.abs(dy) && i < Math.abs(dx))
+        }
+
+        //Movement in negative x and positive y
+
+        else if (dx < 0 && dy > 0) {
+            i = 1
+            do {
+                for(property in pieces) {
+                    if(pieces.hasOwnProperty(property)) {
+                        if(pieces[property].x === currentPos.x - i && pieces[property].y === currentPos.y + i) {
+                            return false;
+                        }
+                    }
+                }
+                i++;
+            } while(i < Math.abs(dy) && i < Math.abs(dx))
+        }
+
+        //Movement in positive x and negative y
+
+        else if (dx > 0 && dy < 0) {
+            i = 1
+            do {
+                for(property in pieces) {
+                    if(pieces.hasOwnProperty(property)) {
+                        if(pieces[property].x === currentPos.x + i && pieces[property].y === currentPos.y - i) {
+                            return false;
+                        }
+                    }
+                }
+                i++;
+            } while(i < Math.abs(dy) && i < Math.abs(dx))
+        }
+
     } else {
-        canMove = false
+        return false
     }
-    return canMove
+    return true
 }

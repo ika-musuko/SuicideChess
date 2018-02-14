@@ -286,3 +286,7 @@ export function canMoveRook(toX, toY, currentPos, pieces) {
     }
     return true
 }
+
+export function canMoveKing(toX, toY, currentPos, pieces) {
+    return true;
+}

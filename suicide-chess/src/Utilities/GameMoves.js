@@ -154,7 +154,7 @@ export function canMoveBishop(toX, toY, currentPos, pieces) {
 
         if(dx > 0 && dy > 0) {
             var i = 1
-            do {
+            while(i < Math.abs(dy) - 1 && i < Math.abs(dx) - 1) {
                 for(var property in pieces) {
                     if(pieces.hasOwnProperty(property)) {
                         if(pieces[property].x === currentPos.x + i && pieces[property].y === currentPos.y + i) {
@@ -163,14 +163,14 @@ export function canMoveBishop(toX, toY, currentPos, pieces) {
                     }
                 }
                 i++;
-            } while(i < Math.abs(dy) && i < Math.abs(dx))
+            } 
         }
 
         //Movement in negative x and y
 
         else if (dx < 0 && dy < 0) {
             i = 1
-            do {
+            while(i < Math.abs(dy) - 1 && i < Math.abs(dx) - 1) {
                 for(property in pieces) {
                     if(pieces.hasOwnProperty(property)) {
                         if(pieces[property].x === currentPos.x - i && pieces[property].y === currentPos.y - i) {
@@ -179,14 +179,14 @@ export function canMoveBishop(toX, toY, currentPos, pieces) {
                     }
                 }
                 i++;
-            } while(i < Math.abs(dy) && i < Math.abs(dx))
+            }
         }
 
         //Movement in negative x and positive y
 
         else if (dx < 0 && dy > 0) {
             i = 1
-            do {
+            while(i < Math.abs(dy) - 1 && i < Math.abs(dx) - 1) {
                 for(property in pieces) {
                     if(pieces.hasOwnProperty(property)) {
                         if(pieces[property].x === currentPos.x - i && pieces[property].y === currentPos.y + i) {
@@ -195,14 +195,14 @@ export function canMoveBishop(toX, toY, currentPos, pieces) {
                     }
                 }
                 i++;
-            } while(i < Math.abs(dy) && i < Math.abs(dx))
+            } 
         }
 
         //Movement in positive x and negative y
 
         else if (dx > 0 && dy < 0) {
             i = 1
-            do {
+            while(i < Math.abs(dy) - 1 && i < Math.abs(dx) - 1) {
                 for(property in pieces) {
                     if(pieces.hasOwnProperty(property)) {
                         if(pieces[property].x === currentPos.x + i && pieces[property].y === currentPos.y - i) {
@@ -211,7 +211,7 @@ export function canMoveBishop(toX, toY, currentPos, pieces) {
                     }
                 }
                 i++;
-            } while(i < Math.abs(dy) && i < Math.abs(dx))
+            } 
         }
 
     } else {
@@ -323,9 +323,16 @@ export function canMoveWhitePawn(toX, toY, currentPos, pieces, firstMove) {
     } else if (dy === -1 && dx === 0) {
         return true
     } else if (dy === -2 && firstMove) {
+        for(var property in pieces) {
+            if(pieces.hasOwnProperty(property)) {
+                if(pieces[property].x === toX && (pieces[property].y === toY + 1 || pieces[property].y === toY)) {
+                    return false
+                }
+            }
+        }
         return true
     } else if (dy === -1 && Math.abs(dx) === 1) { 
-        for(var property in pieces) {
+        for(property in pieces) {
             if(pieces.hasOwnProperty(property)) {
                 if(pieces[property].x === toX && pieces[property].y === toY && property.substring(0,5) === "black") {
                     return true

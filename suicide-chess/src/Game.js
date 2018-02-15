@@ -65,6 +65,7 @@ export function observe(o) {
 }
 
 export function movePiece(move) {
+    changesMade = false
     let canMove = true
     for(var property in pieces) {
         if(pieces.hasOwnProperty(property)) {
@@ -79,41 +80,89 @@ export function movePiece(move) {
             if(canMoveKnight(move.x, move.y, pieces.black_knightA)){
                 pieces.black_knightA = {x: move.x, y: move.y}
                 changesMade = true;
+                for(property in pieces) {
+                    if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
+                        pieces[property].y = -1
+                        pieces[property].x = -1
+                    }
+                }
             }
         } else if (move.piece === "black_knightB") {
             if(canMoveKnight(move.x, move.y, pieces.black_knightB)){
                 pieces.black_knightB = {x: move.x, y: move.y}
                 changesMade = true;
+                for(property in pieces) {
+                    if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
+                        pieces[property].y = -1
+                        pieces[property].x = -1
+                    }
+                }
             }
         } else if (move.piece === "black_queen") {
             if (canMoveQueen(move.x, move.y, pieces.black_queen, pieces)) {
                 pieces.black_queen = {x: move.x, y: move.y}
                 changesMade = true;
+                for(property in pieces) {
+                    if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
+                        pieces[property].y = -1
+                        pieces[property].x = -1
+                    }
+                }
             }
         } else if (move.piece === "black_king") {
             if(canMoveKing(move.x, move.y, pieces.black_king, pieces)) {
                 pieces.black_king = {x: move.x, y: move.y}
                 changesMade = true;
+                for(property in pieces) {
+                    if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
+                        pieces[property].y = -1
+                        pieces[property].x = -1
+                    }
+                }
             }
         } else if (move.piece === "black_bishopA") {
             if(canMoveBishop(move.x, move.y, pieces.black_bishopA, pieces)) {
                 pieces.black_bishopA = {x: move.x, y: move.y}
                 changesMade = true;
+                for(property in pieces) {
+                    if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
+                        pieces[property].y = -1
+                        pieces[property].x = -1
+                    }
+                }
             }
         } else if (move.piece === "black_bishopB") {
             if(canMoveBishop(move.x, move.y, pieces.black_bishopB, pieces)) {
                 pieces.black_bishopB = {x: move.x, y: move.y}
                 changesMade = true;
+                for(property in pieces) {
+                    if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
+                        pieces[property].y = -1
+                        pieces[property].x = -1
+                    }
+                }
             }
         } else if (move.piece === "black_rookA") {
             if(canMoveRook(move.x, move.y, pieces.black_rookA, pieces)) {
                 pieces.black_rookA = {x: move.x, y: move.y}
                 changesMade = true;
+                for(property in pieces) {
+                    if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
+                        pieces[property].y = -1
+                        pieces[property].x = -1
+                    }
+                }
             }
         } else if (move.piece === "black_rookB") {
             if(canMoveRook(move.x, move.y, pieces.black_rookB, pieces)) {
                 pieces.black_rookB = {x: move.x, y: move.y}
                 changesMade = true;
+                for(property in pieces) {
+                    if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
+                        pieces[property].y = -1
+                        pieces[property].x = -1
+                    }
+                }
             }
         } else if (move.piece.substring(0,10) === "black_pawn") {
             if(canMoveBlackPawn(move.x, move.y, pieces[move.piece], pieces, pieces[move.piece].firstMove)) {
@@ -131,6 +180,110 @@ export function movePiece(move) {
         } else if (move.piece.substring(0,10) === "white_pawn") {
             if(canMoveWhitePawn(move.x, move.y, pieces[move.piece], pieces, pieces[move.piece].firstMove)) {
                 pieces[move.piece] = {x: move.x, y: move.y, firstMove: false}
+                changesMade = true;
+                for(property in pieces) {
+                    if(pieces.hasOwnProperty(property)) {
+                        if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
+                            pieces[property].x = -1
+                            pieces[property].y = -1
+                        }
+                    }
+                }
+            }
+        } else if(move.piece === "white_knightA") {
+            if(canMoveKnight(move.x, move.y, pieces.white_knightA)){
+                pieces.white_knightA = {x: move.x, y: move.y}
+                changesMade = true;
+                for(property in pieces) {
+                    if(pieces.hasOwnProperty(property)) {
+                        if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
+                            pieces[property].x = -1
+                            pieces[property].y = -1
+                        }
+                    }
+                }
+            }
+        } else if (move.piece === "white_knightB") {
+            if(canMoveKnight(move.x, move.y, pieces.white_knightB)){
+                pieces.white_knightB = {x: move.x, y: move.y}
+                changesMade = true;
+                for(property in pieces) {
+                    if(pieces.hasOwnProperty(property)) {
+                        if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
+                            pieces[property].x = -1
+                            pieces[property].y = -1
+                        }
+                    }
+                }
+            }
+        } else if (move.piece === "white_queen") {
+            if (canMoveQueen(move.x, move.y, pieces.white_queen, pieces)) {
+                pieces.white_queen = {x: move.x, y: move.y}
+                changesMade = true;
+                for(property in pieces) {
+                    if(pieces.hasOwnProperty(property)) {
+                        if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
+                            pieces[property].x = -1
+                            pieces[property].y = -1
+                        }
+                    }
+                }
+            }
+        } else if (move.piece === "white_king") {
+            if(canMoveKing(move.x, move.y, pieces.white_king, pieces)) {
+                pieces.white_king = {x: move.x, y: move.y}
+                changesMade = true;
+                for(property in pieces) {
+                    if(pieces.hasOwnProperty(property)) {
+                        if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
+                            pieces[property].x = -1
+                            pieces[property].y = -1
+                        }
+                    }
+                }
+            }
+        } else if (move.piece === "white_bishopA") {
+            if(canMoveBishop(move.x, move.y, pieces.white_bishopA, pieces)) {
+                pieces.white_bishopA = {x: move.x, y: move.y}
+                changesMade = true;
+                for(property in pieces) {
+                    if(pieces.hasOwnProperty(property)) {
+                        if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
+                            pieces[property].x = -1
+                            pieces[property].y = -1
+                        }
+                    }
+                }
+            }
+        } else if (move.piece === "white_bishopB") {
+            if(canMoveBishop(move.x, move.y, pieces.white_bishopB, pieces)) {
+                pieces.white_bishopB = {x: move.x, y: move.y}
+                changesMade = true;
+                for(property in pieces) {
+                    if(pieces.hasOwnProperty(property)) {
+                        if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
+                            pieces[property].x = -1
+                            pieces[property].y = -1
+                        }
+                    }
+                }
+            }
+        } else if (move.piece === "white_rookA") {
+            if(canMoveRook(move.x, move.y, pieces.white_rookA, pieces)) {
+                pieces.white_rookA = {x: move.x, y: move.y}
+                changesMade = true;
+                for(property in pieces) {
+                    if(pieces.hasOwnProperty(property)) {
+                        if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
+                            pieces[property].x = -1
+                            pieces[property].y = -1
+                        }
+                    }
+                }
+            }
+        } else if (move.piece === "white_rookB") {
+            if(canMoveRook(move.x, move.y, pieces.white_rookB, pieces)) {
+                pieces.white_rookB = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {
                     if(pieces.hasOwnProperty(property)) {

@@ -46,9 +46,8 @@ class gamescene extends Component {
 
       whiteTurn: true,
 
-      whiteInCheck: false,
-
-      blackInCheck: false,
+      whiteWin: false,
+      blackWin: false,
 
       selectedPiece: null
     }
@@ -57,16 +56,39 @@ class gamescene extends Component {
   }
 
   handlePieceMove (pieces, changesMade) {
-    
-    if (this.state) {
+    let blackWin = true
+    let whiteWin = true
+    for(var property in pieces) {
+      if(pieces.hasOwnProperty(property)) {
+        if(pieces[property].x !== -1) {
+          if(property.substring(0,5) === "black") {
+            blackWin = false
+          } else {
+            whiteWin = false
+          }
+        }
+      }
+    }
+
+    if(blackWin || whiteWin) {
       this.setState({
-          ...pieces,
-          selectedPiece: null,
-          whiteTurn: changesMade ? !this.state.whiteTurn : this.state.whiteTurn,
+        whiteWin: whiteWin, 
+        blackWin: blackWin,
+      })
+    }
+
+    if(this.state && changesMade) {
+      this.setState({
+        ...pieces,
+        selectedPiece: null,
+        whiteTurn: changesMade ? !this.state.whiteTurn : this.state.whiteTurn,
+      })
+    } else {
+      this.setState({
+        selectedPiece: null,
       })
     }
   }
-
   handlePieceSelect (piece) {
     if(piece !== null && this.state.whiteTurn && piece.substring(0,5) === "white") {
       this.setState({
@@ -83,9 +105,8 @@ class gamescene extends Component {
   render() {
     return (
       <div className="Gamescene"> 
-        <h2>{this.state.whiteTurn ? "White's Turn" : "Black's Turn"}</h2>
+        <h2>{this.state.blackWin ? "Black won!" : this.state.whiteWin ? "White won!" : this.state.whiteTurn ? "White's Turn" : "Black's Turn"}</h2>
         <Board state={this.state} selectedPiece={this.state.selectedPiece}/>
-        <h2>{this.state.whiteInCheck ? "White is in check!" : this.state.blackInCheck ? "Black is in check!" : ""}</h2>
       </div>
     );
   }

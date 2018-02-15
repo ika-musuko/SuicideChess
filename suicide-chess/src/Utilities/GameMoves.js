@@ -77,8 +77,8 @@ export function canMoveQueen(toX, toY, currentPos, pieces) {
 
         if(dx > 0 && dy > 0) {
             var i = 1
-            do {
-                for(property in pieces) {
+            while(i < Math.abs(dy) - 1 && i < Math.abs(dx) - 1) {
+                for(var property in pieces) {
                     if(pieces.hasOwnProperty(property)) {
                         if(pieces[property].x === currentPos.x + i && pieces[property].y === currentPos.y + i) {
                             return false;
@@ -86,14 +86,14 @@ export function canMoveQueen(toX, toY, currentPos, pieces) {
                     }
                 }
                 i++;
-            } while(i < Math.abs(dy) && i < Math.abs(dx))
+            } 
         }
 
         //Movement in negative x and y
 
         else if (dx < 0 && dy < 0) {
             i = 1
-            do {
+            while(i < Math.abs(dy) - 1 && i < Math.abs(dx) - 1) {
                 for(property in pieces) {
                     if(pieces.hasOwnProperty(property)) {
                         if(pieces[property].x === currentPos.x - i && pieces[property].y === currentPos.y - i) {
@@ -102,14 +102,14 @@ export function canMoveQueen(toX, toY, currentPos, pieces) {
                     }
                 }
                 i++;
-            } while(i < Math.abs(dy) && i < Math.abs(dx))
+            }
         }
 
         //Movement in negative x and positive y
 
         else if (dx < 0 && dy > 0) {
             i = 1
-            do {
+            while(i < Math.abs(dy) - 1 && i < Math.abs(dx) - 1) {
                 for(property in pieces) {
                     if(pieces.hasOwnProperty(property)) {
                         if(pieces[property].x === currentPos.x - i && pieces[property].y === currentPos.y + i) {
@@ -118,14 +118,14 @@ export function canMoveQueen(toX, toY, currentPos, pieces) {
                     }
                 }
                 i++;
-            } while(i < Math.abs(dy) && i < Math.abs(dx))
+            } 
         }
 
         //Movement in positive x and negative y
 
         else if (dx > 0 && dy < 0) {
             i = 1
-            do {
+            while(i < Math.abs(dy) - 1 && i < Math.abs(dx) - 1) {
                 for(property in pieces) {
                     if(pieces.hasOwnProperty(property)) {
                         if(pieces[property].x === currentPos.x + i && pieces[property].y === currentPos.y - i) {
@@ -134,7 +134,7 @@ export function canMoveQueen(toX, toY, currentPos, pieces) {
                     }
                 }
                 i++;
-            } while(i < Math.abs(dy) && i < Math.abs(dx))
+            } 
         }
 
     } else {
@@ -213,7 +213,6 @@ export function canMoveBishop(toX, toY, currentPos, pieces) {
                 i++;
             } 
         }
-
     } else {
         return false
     }

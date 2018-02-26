@@ -3,6 +3,7 @@ import Board from '../Board/Board'
 import './Gamescene.css'
 import { observe } from '../Game'
 import { pieceObserve } from '../Game'
+import { canMoveWhitePawn } from '../Utilities/GameMoves'
 
 class gamescene extends Component {
   constructor(props) {
@@ -25,8 +26,6 @@ class gamescene extends Component {
       black_pawnG: { x: 6, y: 1, firstMove: true },
       black_pawnH: { x: 7, y: 1, firstMove: true },
 
-
-
       white_knightA: { x: 1, y: 7 },
       white_knightB: { x: 6, y: 7 },
       white_bishopA: { x: 2, y: 7 },
@@ -43,6 +42,7 @@ class gamescene extends Component {
       white_pawnF: { x: 5, y: 6, firstMove: true },
       white_pawnG: { x: 6, y: 6, firstMove: true },
       white_pawnH: { x: 7, y: 6, firstMove: true },
+      validTiles: [],
 
       whiteTurn: true,
 
@@ -79,6 +79,7 @@ class gamescene extends Component {
 
     if(this.state && changesMade) {
       this.setState({
+        validTiles: [],
         ...pieces,
         selectedPiece: null,
         whiteTurn: changesMade ? !this.state.whiteTurn : this.state.whiteTurn,
@@ -90,8 +91,17 @@ class gamescene extends Component {
     }
   }
   handlePieceSelect (piece) {
+    let validTiles = []
     if(piece !== null && this.state.whiteTurn && piece.substring(0,5) === "white") {
+      for(var x = 0; x < 8; x++) {
+        for(var y = 0; y < 8; y++) {
+          if(canMoveWhitePawn(x,y,this.state[piece], this.state, this.state[piece].firstMove)) {
+            validTiles.push({ x: x, y: y})
+          }
+        }
+      }
       this.setState({
+        validTiles: validTiles,
         selectedPiece: piece
       })
     } else if (piece !== null && !this.state.whiteTurn && piece.substring(0,5) === "black") {
@@ -104,9 +114,9 @@ class gamescene extends Component {
 
   render() {
     return (
-      <div className="Gamescene"> 
+      <div className="Gamescene">
         <h2>{this.state.blackWin ? "Black won!" : this.state.whiteWin ? "White won!" : this.state.whiteTurn ? "White's Turn" : "Black's Turn"}</h2>
-        <Board state={this.state} selectedPiece={this.state.selectedPiece}/>
+        <Board state={this.state} selectedPiece={this.state.selectedPiece} validTiles={this.state.validTiles}/>
       </div>
     );
   }

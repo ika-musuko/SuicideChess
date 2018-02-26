@@ -11,6 +11,15 @@ button {
     margin: 5px;
 }
 
+.circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: green;
+    opacity: 60%;
+    position: absolute;
+}
+
 .white-tile {
     background-color: rgb(246, 207, 164);
     width: 50px;

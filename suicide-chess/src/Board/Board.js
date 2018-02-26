@@ -18,15 +18,28 @@ class board extends Component {
         if ((x + y) % 2 === 0){
             color = true
         }
+        var greenTile = false
+        for(var i = 0; i < this.props.validTiles.length; i++) {
+            if(this.props.validTiles[i].x === x && this.props.validTiles[i].y === y) {
+                greenTile = true
+            }
+        }
         return (
             <Tile 
                 x={x} 
                 y={y} 
                 key={8*y + x} 
-                color={color} 
+                color={color}
                 click={this.handleSquareClick.bind(this, {piece: this.props.selectedPiece, x: x, y: y})}
             >
-                {this.renderPiece(x,y)}
+                <div>
+                    {greenTile ?
+                        <div className="circle"></div>
+                        :
+                        null
+                    }
+                    {this.renderPiece(x,y)}
+                </div>
             </Tile>
         )
     }

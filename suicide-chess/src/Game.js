@@ -41,9 +41,12 @@ let observer = null
 let firstTimeObserve = true
 let firstTimePieceObserve = true
 
+let whiteTurn = true
+
 let changesMade = false
 
 function emitChange() {
+    whiteTurn = !whiteTurn
     observer(pieces, changesMade)
 }
 

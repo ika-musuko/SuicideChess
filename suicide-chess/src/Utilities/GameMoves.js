@@ -78,7 +78,7 @@ export function canMoveQueen(toX, toY, currentPos, pieces) {
         if(dx > 0 && dy > 0) {
             var i = 1
             while(i < Math.abs(dy) - 1 && i < Math.abs(dx) - 1) {
-                for(var property in pieces) {
+                for(property in pieces) {
                     if(pieces.hasOwnProperty(property)) {
                         if(pieces[property].x === currentPos.x + i && pieces[property].y === currentPos.y + i) {
                             return false;
@@ -298,6 +298,13 @@ export function canMoveBlackPawn(toX, toY, currentPos, pieces, firstMove) {
     } else if (dy === 1 && dx === 0) {
         return true
     } else if (dy === 2 && firstMove) {
+        for(var property in pieces) {
+            if(pieces.hasOwnProperty(property)) {
+                if(pieces[property].x === toX && (pieces[property].y === toY - 1 || pieces[property].y === toY)) {
+                    return false
+                }
+            }
+        }
         return true
     } else if (dy === 1 && Math.abs(dx) === 1){
         for(var property in pieces) {
@@ -317,13 +324,14 @@ export function canMoveWhitePawn(toX, toY, currentPos, pieces, firstMove) {
     let dx = toX - currentPos.x
     let dy = toY - currentPos.y
 
+
     if(dy > 0) {
         return false
     } else if (dy === -1 && dx === 0) {
         return true
-    } else if (dy === -2 && firstMove) {
+    } else if (dy === -2 && dx === 0 && firstMove) {
         for(var property in pieces) {
-            if(pieces.hasOwnProperty(property)) {
+            if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
                 if(pieces[property].x === toX && (pieces[property].y === toY + 1 || pieces[property].y === toY)) {
                     return false
                 }
@@ -332,7 +340,7 @@ export function canMoveWhitePawn(toX, toY, currentPos, pieces, firstMove) {
         return true
     } else if (dy === -1 && Math.abs(dx) === 1) { 
         for(property in pieces) {
-            if(pieces.hasOwnProperty(property)) {
+            if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
                 if(pieces[property].x === toX && pieces[property].y === toY && property.substring(0,5) === "black") {
                     return true
                 }

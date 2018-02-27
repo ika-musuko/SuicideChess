@@ -80,7 +80,7 @@ export function movePiece(move) {
     }
     if(canMove){
         if(move.piece === "black_knightA") {
-            if(canMoveKnight(move.x, move.y, pieces.black_knightA)){
+            if(canMoveKnight(move.piece, move.x, move.y, pieces.black_knightA)){
                 pieces.black_knightA = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {
@@ -91,7 +91,7 @@ export function movePiece(move) {
                 }
             }
         } else if (move.piece === "black_knightB") {
-            if(canMoveKnight(move.x, move.y, pieces.black_knightB)){
+            if(canMoveKnight(move.piece,  move.x, move.y, pieces.black_knightB)){
                 pieces.black_knightB = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {
@@ -181,7 +181,7 @@ export function movePiece(move) {
                 }
             }
         } else if (move.piece.substring(0,10) === "white_pawn") {
-            if(canMoveWhitePawn(move.x, move.y, pieces[move.piece], pieces, pieces[move.piece].firstMove)) {
+            if(canMoveWhitePawn(move.piece, move.x, move.y, pieces[move.piece], pieces, pieces[move.piece].firstMove)) {
                 pieces[move.piece] = {x: move.x, y: move.y, firstMove: false}
                 changesMade = true;
                 for(property in pieces) {
@@ -194,7 +194,7 @@ export function movePiece(move) {
                 }
             }
         } else if(move.piece === "white_knightA") {
-            if(canMoveKnight(move.x, move.y, pieces.white_knightA)){
+            if(canMoveKnight(move.piece, move.x, move.y, pieces.white_knightA)){
                 pieces.white_knightA = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {
@@ -207,7 +207,7 @@ export function movePiece(move) {
                 }
             }
         } else if (move.piece === "white_knightB") {
-            if(canMoveKnight(move.x, move.y, pieces.white_knightB)){
+            if(canMoveKnight(move.piece,move.x, move.y, pieces.white_knightB)){
                 pieces.white_knightB = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {

@@ -1,6 +1,15 @@
-export function canMoveKnight(toX, toY, currentPos) {
+export function canMoveKnight(piece, toX, toY, currentPos, pieces) {
     let dx = toX - currentPos.x
     let dy = toY - currentPos.y
+    console.log(currentPos)
+
+    for(var property in pieces) {
+        if(pieces.hasOwnProperty(property)) {
+            if (piece.substring(0,5) === property.substring(0,5) && pieces[property].x === toX && pieces[property].y === toY) {
+                return false
+            }
+        }
+    }
 
     return (
         (Math.abs(dx) === 2 && Math.abs(dy) === 1) || (Math.abs(dx) === 1 && Math.abs(dy) === 2)
@@ -293,13 +302,21 @@ export function canMoveKing(toX, toY, currentPos, pieces) {
 export function canMoveBlackPawn(toX, toY, currentPos, pieces, firstMove) {
     let dx = toX - currentPos.x
     let dy = toY - currentPos.y
+    
     if(dy < 0) {
         return false
     } else if (dy === 1 && dx === 0) {
-        return true
-    } else if (dy === 2 && firstMove) {
         for(var property in pieces) {
-            if(pieces.hasOwnProperty(property)) {
+            if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                if(pieces[property].x === toX && pieces[property].y === toY) {
+                    return false
+                }
+            }
+        }
+        return true
+    } else if (dy === 2 && dx === 0 && firstMove) {
+        for(var property in pieces) {
+            if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
                 if(pieces[property].x === toX && (pieces[property].y === toY - 1 || pieces[property].y === toY)) {
                     return false
                 }
@@ -308,7 +325,7 @@ export function canMoveBlackPawn(toX, toY, currentPos, pieces, firstMove) {
         return true
     } else if (dy === 1 && Math.abs(dx) === 1){
         for(var property in pieces) {
-            if(pieces.hasOwnProperty(property)) {
+            if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
                 if(pieces[property].x === toX && pieces[property].y === toY && property.substring(0,5) === "white") {
                     return true
                 }
@@ -328,6 +345,13 @@ export function canMoveWhitePawn(toX, toY, currentPos, pieces, firstMove) {
     if(dy > 0) {
         return false
     } else if (dy === -1 && dx === 0) {
+        for(var property in pieces) {
+            if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                if(pieces[property].x === toX && pieces[property].y === toY) {
+                    return false
+                }
+            }
+        }
         return true
     } else if (dy === -2 && dx === 0 && firstMove) {
         for(var property in pieces) {

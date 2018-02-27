@@ -3,7 +3,8 @@ import Board from '../Board/Board'
 import './Gamescene.css'
 import { observe } from '../Game'
 import { pieceObserve } from '../Game'
-import { canMoveWhitePawn } from '../Utilities/GameMoves'
+import { canMoveWhitePawn, canMoveBlackPawn } from '../Utilities/GameMoves'
+import { getValidMoves } from '../Utilities/GetValidMoves'
 
 class gamescene extends Component {
   constructor(props) {
@@ -91,25 +92,18 @@ class gamescene extends Component {
     }
   }
   handlePieceSelect (piece) {
-    let validTiles = []
+    let validTiles = getValidMoves(this.state, piece)
     if(piece !== null && this.state.whiteTurn && piece.substring(0,5) === "white") {
-      for(var x = 0; x < 8; x++) {
-        for(var y = 0; y < 8; y++) {
-          if(canMoveWhitePawn(x,y,this.state[piece], this.state, this.state[piece].firstMove)) {
-            validTiles.push({ x: x, y: y})
-          }
-        }
-      }
       this.setState({
         validTiles: validTiles,
         selectedPiece: piece
       })
     } else if (piece !== null && !this.state.whiteTurn && piece.substring(0,5) === "black") {
       this.setState({
+        validTiles: validTiles,
         selectedPiece: piece
       })
     }
-   
   }
 
   render() {

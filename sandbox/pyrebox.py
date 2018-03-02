@@ -18,6 +18,7 @@ config = {
 
 firebase = pyrebase.initialize_app(config)
 
+
 # authentication
 ID = "hi@nice.com"
 PW = "hinice"
@@ -27,7 +28,8 @@ user = auth.sign_in_with_email_and_password(ID, PW)
 
 # database operations
 db = firebase.database()
-data = {"name" : "epicrandom", "age" : 2342521, "graduated" : True } # adding a single entry
+
+data = {"name" : "epicrandom", "age" : 2342521, "graduated" : True, "born": datetime.datetime.today().isoformat() } # adding a single entry
 db.push(data, user['idToken'])
 
 """
@@ -44,12 +46,13 @@ flaskbase
 """
 
 # updating a database entry with a specified name
-db.child("golgi").set({"name" : "sherwyn", "age" : 21, "graduated" : False }, user['idToken'])
+db.child("golgi").set({"name" : "sherwyn", "age" : 21, "graduated" : False, "born" : datetime.datetime(1996, 7, 19).isoformat() }, user['idToken'])
 
 # getting a database entry
 user_data = db.child("golgi").get(user['idToken'])
 print(user_data.key())
 print(user_data.val())
+print(user_data.val()["born"])
 
 # deletion
 #db.remove("-L6ZurrWoCrFBmJa_zAg")

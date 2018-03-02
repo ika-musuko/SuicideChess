@@ -1,8 +1,10 @@
 from flask import Flask
-from firebase import firebase as fb
+import pyrebase
+import firebase_config
 
 app = Flask(__name__)
 app.config.from_pyfile('../config.py')
-firebase = fb.FirebaseApplication('https://flaskbase.firebaseio.com', None)
+
+firebase = pyrebase.initialize_app(firebase_config.firebase_config)
 
 from app import routes, forms

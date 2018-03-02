@@ -1,6 +1,7 @@
 # firebase/pyrebase sandbox
 # adapted from https://kinformation.wjg.jp/blog/20170920-01
 import pyrebase
+import datetime
 
 # initialization
 PRJ_ID = "flaskbase"
@@ -26,7 +27,7 @@ user = auth.sign_in_with_email_and_password(ID, PW)
 
 # database operations
 db = firebase.database()
-data = {"name" : "sherwyn", "age" : 21, "graduated" : False } # adding a single entry
+data = {"name" : "epicrandom", "age" : 2342521, "graduated" : True } # adding a single entry
 db.push(data, user['idToken'])
 
 """
@@ -42,10 +43,13 @@ flaskbase
     \_ "graduated": false
 """
 
-# updating a database entry
-db.child("golgi").set(data, user['idToken'])
+# updating a database entry with a specified name
+db.child("golgi").set({"name" : "sherwyn", "age" : 21, "graduated" : False }, user['idToken'])
 
 # getting a database entry
 user_data = db.child("golgi").get(user['idToken'])
 print(user_data.key())
 print(user_data.val())
+
+# deletion
+#db.remove("-L6ZurrWoCrFBmJa_zAg")

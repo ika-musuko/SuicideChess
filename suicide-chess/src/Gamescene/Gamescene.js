@@ -3,7 +3,6 @@ import Board from '../Board/Board'
 import './Gamescene.css'
 import { observe } from '../Game'
 import { pieceObserve } from '../Game'
-import { canMoveWhitePawn, canMoveBlackPawn } from '../Utilities/GameMoves'
 import { getValidMoves } from '../Utilities/GetValidMoves'
 
 class gamescene extends Component {
@@ -88,6 +87,7 @@ class gamescene extends Component {
     } else {
       this.setState({
         selectedPiece: null,
+        validTiles: []
       })
     }
   }

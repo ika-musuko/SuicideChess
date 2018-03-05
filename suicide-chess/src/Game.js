@@ -102,7 +102,7 @@ export function movePiece(move) {
                 }
             }
         } else if (move.piece === "black_queen") {
-            if (canMoveQueen(move.x, move.y, pieces.black_queen, pieces)) {
+            if (canMoveQueen(move.x, move.y, pieces.black_queen, pieces, move.piece)) {
                 pieces.black_queen = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {
@@ -113,7 +113,7 @@ export function movePiece(move) {
                 }
             }
         } else if (move.piece === "black_king") {
-            if(canMoveKing(move.x, move.y, pieces.black_king, pieces)) {
+            if(canMoveKing(move.x, move.y, pieces.black_king, pieces, move.piece)) {
                 pieces.black_king = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {
@@ -124,7 +124,7 @@ export function movePiece(move) {
                 }
             }
         } else if (move.piece === "black_bishopA") {
-            if(canMoveBishop(move.x, move.y, pieces.black_bishopA, pieces)) {
+            if(canMoveBishop(move.x, move.y, pieces.black_bishopA, pieces, move.piece)) {
                 pieces.black_bishopA = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {
@@ -135,7 +135,7 @@ export function movePiece(move) {
                 }
             }
         } else if (move.piece === "black_bishopB") {
-            if(canMoveBishop(move.x, move.y, pieces.black_bishopB, pieces)) {
+            if(canMoveBishop(move.x, move.y, pieces.black_bishopB, pieces, move.piece)) {
                 pieces.black_bishopB = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {
@@ -146,7 +146,7 @@ export function movePiece(move) {
                 }
             }
         } else if (move.piece === "black_rookA") {
-            if(canMoveRook(move.x, move.y, pieces.black_rookA, pieces)) {
+            if(canMoveRook(move.x, move.y, pieces.black_rookA, pieces, move.piece)) {
                 pieces.black_rookA = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {
@@ -157,7 +157,7 @@ export function movePiece(move) {
                 }
             }
         } else if (move.piece === "black_rookB") {
-            if(canMoveRook(move.x, move.y, pieces.black_rookB, pieces)) {
+            if(canMoveRook(move.x, move.y, pieces.black_rookB, pieces, move.piece)) {
                 pieces.black_rookB = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {
@@ -181,7 +181,7 @@ export function movePiece(move) {
                 }
             }
         } else if (move.piece.substring(0,10) === "white_pawn") {
-            if(canMoveWhitePawn(move.piece, move.x, move.y, pieces[move.piece], pieces, pieces[move.piece].firstMove)) {
+            if(canMoveWhitePawn(move.x, move.y, pieces[move.piece], pieces, pieces[move.piece].firstMove)) {
                 pieces[move.piece] = {x: move.x, y: move.y, firstMove: false}
                 changesMade = true;
                 for(property in pieces) {
@@ -220,7 +220,7 @@ export function movePiece(move) {
                 }
             }
         } else if (move.piece === "white_queen") {
-            if (canMoveQueen(move.x, move.y, pieces.white_queen, pieces)) {
+            if (canMoveQueen(move.x, move.y, pieces.white_queen, pieces, move.piece)) {
                 pieces.white_queen = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {
@@ -233,7 +233,7 @@ export function movePiece(move) {
                 }
             }
         } else if (move.piece === "white_king") {
-            if(canMoveKing(move.x, move.y, pieces.white_king, pieces)) {
+            if(canMoveKing(move.x, move.y, pieces.white_king, pieces, move.piece)) {
                 pieces.white_king = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {
@@ -246,7 +246,7 @@ export function movePiece(move) {
                 }
             }
         } else if (move.piece === "white_bishopA") {
-            if(canMoveBishop(move.x, move.y, pieces.white_bishopA, pieces)) {
+            if(canMoveBishop(move.x, move.y, pieces.white_bishopA, pieces, move.piece)) {
                 pieces.white_bishopA = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {
@@ -259,7 +259,7 @@ export function movePiece(move) {
                 }
             }
         } else if (move.piece === "white_bishopB") {
-            if(canMoveBishop(move.x, move.y, pieces.white_bishopB, pieces)) {
+            if(canMoveBishop(move.x, move.y, pieces.white_bishopB, pieces, move.piece)) {
                 pieces.white_bishopB = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {
@@ -272,7 +272,7 @@ export function movePiece(move) {
                 }
             }
         } else if (move.piece === "white_rookA") {
-            if(canMoveRook(move.x, move.y, pieces.white_rookA, pieces)) {
+            if(canMoveRook(move.x, move.y, pieces.white_rookA, pieces, move.piece)) {
                 pieces.white_rookA = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {
@@ -285,7 +285,7 @@ export function movePiece(move) {
                 }
             }
         } else if (move.piece === "white_rookB") {
-            if(canMoveRook(move.x, move.y, pieces.white_rookB, pieces)) {
+            if(canMoveRook(move.x, move.y, pieces.white_rookB, pieces, move.piece)) {
                 pieces.white_rookB = {x: move.x, y: move.y}
                 changesMade = true;
                 for(property in pieces) {

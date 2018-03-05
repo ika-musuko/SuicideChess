@@ -16,7 +16,9 @@ button {
     height: 10px;
     border-radius: 5px;
     background-color: green;
-    opacity: 60%;
+    opacity: 50%;
+    margin-left: 20px;
+    margin-top: 20px;
     position: absolute;
 }
 

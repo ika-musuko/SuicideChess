@@ -19,8 +19,8 @@ class board extends Component {
             color = true
         }
         var greenTile = false
-        for(var i = 0; i < this.props.validTiles.length; i++) {
-            if(this.props.validTiles[i].x === x && this.props.validTiles[i].y === y) {
+        for(var v = 0; v < this.props.validTiles.length; v++) {
+            if(this.props.validTiles[v].x === x && this.props.validTiles[v].y === y) {
                 greenTile = true
             }
         }

@@ -1,0 +1,10 @@
+<html>
+<form action="" method="post" class="fireform">
+    <p>wow</p>
+    {{ form.uname.name }}{{ form.uname(size=20) }}
+    {{ form.age.name }}{{ form.age(size=20) }}
+    {{ form.graduated.name }}{{ form.graduated(size=20) }}
+    {{ form.submit() }}
+    {{ form.csrf_token }} <!-- DONT FORGET THIS!!!!! -->
+</form>
+</html>

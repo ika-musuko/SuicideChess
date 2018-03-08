@@ -1,0 +1,9 @@
+<html>
+    <form action="" method="post" class="signupform">
+        email{{ form.email() }}<br/>
+        password{{ form.password() }}<br/>
+        confirm password{{ form.confirm_password() }}<br/>
+        {{ form.submit() }}<br/>
+        {{ form.csrf_token }}
+    </form>
+</html>

@@ -1,0 +1,10 @@
+__pycache__
+*.pyc
+*.swp
+*.swn
+*.swo
+.git
+*conflicted copy*
+*.db
+*venv_*
+firebase_auth*

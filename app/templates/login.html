@@ -1,0 +1,8 @@
+<html>
+    <form action="" method="post" class="loginform">
+        email{{ form.email() }}<br/>
+        password{{ form.password() }}<br/>
+        {{ form.submit() }}<br/>
+        {{ form.csrf_token }}
+    </form>
+</html>

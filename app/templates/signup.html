@@ -1,8 +1,10 @@
 <html>
     <form action="" method="post" class="signupform">
+        user ID{{ form.uid() }}<br/>
         email{{ form.email() }}<br/>
         password{{ form.password() }}<br/>
         confirm password{{ form.confirm_password() }}<br/>
+        remember me{{ form.remember() }}<br/>
         {{ form.submit() }}<br/>
         {{ form.csrf_token }}
     </form>

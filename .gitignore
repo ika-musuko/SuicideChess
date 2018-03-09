@@ -8,3 +8,4 @@ __pycache__
 *.db
 *venv_*
 firebase_auth*
+pyrebase_config.py

@@ -34,6 +34,9 @@ let pieces = {
     white_pawnF: { x: 5, y: 6, firstMove: true },
     white_pawnG: { x: 6, y: 6, firstMove: true },
     white_pawnH: { x: 7, y: 6, firstMove: true },
+
+    validWhiteMoves: [],
+    validBlackMoves: [],
 }
 
 let observer = null
@@ -291,14 +294,14 @@ export function movePiece(move) {
                 for(property in pieces) {
                     if(pieces.hasOwnProperty(property)) {
                         if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
-                            pieces[property].x = -1
-                            pieces[property].y = -1
+                            pieces[property].x = -1;
+                            pieces[property].y = -1;
                         }
                     }
                 }
             }
         }
-        emitChange()
+        emitChange();
     }
 }
 

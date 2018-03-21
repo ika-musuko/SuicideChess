@@ -34,7 +34,7 @@ export function canMoveQueen(toX, toY, currentPos, pieces, piece) {
         //Negative movement
 
         if(dx < 0) {
-            for(var property in pieces) {
+            for(property in pieces) {
                 if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
                     if (pieces[property].x > toX && pieces[property].x < currentPos.x && pieces[property].y === currentPos.y) {
                         return false
@@ -179,7 +179,7 @@ export function canMoveBishop(toX, toY, currentPos, pieces, piece) {
         if(dx > 0 && dy > 0) {
             var i = 1
             while(i < Math.abs(dy) && i < Math.abs(dx)) {
-                for(var property in pieces) {
+                for(property in pieces) {
                     if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
                         if(pieces[property].x === currentPos.x + i && pieces[property].y === currentPos.y + i && property !== piece) {
                             return false;

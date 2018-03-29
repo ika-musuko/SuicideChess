@@ -1,6 +1,11 @@
+'''
+config.py
+configuration file for flask
+'''
+
 import os
 
-class Config():
-    SECRET_KEY = os.environ.get("SECRET-KEY") or "twirtqow293tq20hgq"
-    WTF_CSRF_ENABLED = True
+### WTForms config ###
+SECRET_KEY = os.environ.get("SECRET-KEY") or "twirtqow293tq20hgq"
+WTF_CSRF_ENABLED = True
     

@@ -1,0 +1,47 @@
+<html>
+    <head>
+        {% if title %}
+        <title>{{ title }}</title>
+        {% else %}
+        <title>flaskbase</title>
+        {% endif %}
+    </head>
+    
+    <body>
+        <div class='flash'>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        </div>
+        
+        <div class='userinfo'>
+            {% if current_user.is_authenticated %}
+            <h3>current user: {{ current_user.id }}</h3>
+            {% else %}
+            <h3>not logged in</h3>
+            {% endif %}
+        </div>
+        
+        <div class='menubar'>
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('log_out') }}">log out</a>
+            {% else %}
+            <a href="{{ url_for('log_in') }}">log in</a>
+            {% endif %}
+            <a href="{{ url_for('sign_up') }}">sign up</a>
+            <a href="{{ url_for('play_random') }}">2 player random</a>
+            <a href="{{ url_for('play_friend') }}">2 player friend</a>   
+        </div>
+        <div class='content'>
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>
+
+

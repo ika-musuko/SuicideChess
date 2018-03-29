@@ -1,4 +1,5 @@
-<html>
+{% extends "base.html" %}
+{% block content %}
     <form action="" method="post" class="signupform">
         user ID{{ form.uid() }}<br/>
         email{{ form.email() }}<br/>
@@ -8,4 +9,4 @@
         {{ form.submit() }}<br/>
         {{ form.csrf_token }}
     </form>
-</html>
+{% endblock %}

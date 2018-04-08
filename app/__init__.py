@@ -8,10 +8,8 @@ from flask import Flask
 from flask_login import LoginManager
 
 # firebase imports
-import firebase_admin  # firebase admin SDK (for doing general firebase operations) 
-import pyrebase # for using firebase as a user
+import pyrebase_ext # for using firebase as a user
 from app import pyrebase_config
-from firebase_admin import credentials
 
 # error logging imports
 import logging
@@ -24,20 +22,10 @@ FIREBASE_APP_NAME = "flaskbase"
 
 app = Flask(__name__)
 app.config.from_pyfile("../config.py")
-lm = LoginManager(app)
-
-### FIREBASE ADMIN ###
-# initialize the admin using initialize_firebase_admin.py
-print("init firebase-admin")
-if FIREBASE_APP_NAME not in firebase_admin._apps:
-    print("initializing a new app")
-    cred = credentials.Certificate("firebase_auth.json")
-    firebase_admin.initialize_app(cred, name=FIREBASE_APP_NAME)
-print("getting app")
-fb_admin = firebase_admin.get_app(name=FIREBASE_APP_NAME)
+lm = LoginManager()
 
 ### PYREBASE ###
-pyre_firebase = pyrebase.initialize_app(pyrebase_config.config) # see https://github.com/thisbejim/Pyrebase for details of pyrebase_config
+pyre_firebase = pyrebase_ext.initialize_app(pyrebase_config.config) # see https://github.com/thisbejim/Pyrebase for details of pyrebase_config
 pyre_auth = pyre_firebase.auth()
 pyre_db = pyre_firebase.database()
 
@@ -53,4 +41,4 @@ app.logger.addHandler(file_handler) # add it to the app's list of loggers
 app.logger.setLevel(logging.INFO)
 app.logger.info('flaskbase startup')
 
-from app import routes, user
+from app import routes

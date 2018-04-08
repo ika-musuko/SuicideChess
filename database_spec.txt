@@ -1,0 +1,10 @@
+user
+    display_name: str
+    email: str    # primary key
+    id: int
+    email_notifications: bool
+    wins: int
+    losses: int
+    draws: int
+    game_histories: list
+    rank: int

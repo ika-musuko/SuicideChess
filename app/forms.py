@@ -9,5 +9,5 @@ class LoginForm(FlaskForm):
     submit = SubmitField()
 
 class SignupForm(LoginForm):
-    uid = StringField("user ID")
+    display_name = StringField("display name")
     confirm_password = PasswordField("confirm password", [InputRequired("Please confirm your password.")])

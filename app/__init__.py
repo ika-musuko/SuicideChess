@@ -8,8 +8,7 @@ from flask import Flask
 from flask_login import LoginManager
 
 # firebase imports
-import pyrebase_ext # for using firebase as a user
-from app import pyrebase_config
+from app import pyrebase_config, pyrebase_ext
 
 # error logging imports
 import logging

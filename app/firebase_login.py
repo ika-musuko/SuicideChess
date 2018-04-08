@@ -14,7 +14,7 @@ class LoginUserError(Exception):
 
 @lm.user_loader
 def user_loader(id):
-    user = pyre_db.child("users").child(id).val()
+    user = pyre_db.child("users").child(id).get().val()
     if user is None:
         return None
     return FirebaseUser(id=id)
@@ -42,6 +42,10 @@ class FirebaseUser(UserMixin):
 
     def get_id(self):
         return self.id
+
+    @property
+    def displayName(self):
+        return self.get_property("displayName")
 
     # requires pyrebase_ext
     def delete(self):

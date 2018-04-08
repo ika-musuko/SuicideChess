@@ -1,10 +1,14 @@
-import os
 import unittest
+import pdb
+import requests
+import json
 
 from flask_login import login_user, current_user, logout_user
 
 from app import app, pyre_auth, pyre_db, lm
+from app.utils import get_firebase_error_message
 from app.firebase_login import FirebaseUser, sign_in_firebase_user, create_firebase_user
+from app.utils import get_firebase_error_message
 
 class TestCase(unittest.TestCase):
 
@@ -14,7 +18,7 @@ class TestCase(unittest.TestCase):
 
         self.cuser = FirebaseUser(0)
 
-    def test_user_database(self):
+    def user_database(self):
         print("creating a new user...")
         self.cuser = create_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool", displayName="drake")
         print(self.cuser.auth_data)
@@ -39,7 +43,7 @@ class TestCase(unittest.TestCase):
 
         print("all done with the user! deleting user...")
 
-    def test_flask_login_integration(self):
+    def flask_login_integration(self):
         print("creating a new user...")
         self.cuser = create_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool", displayName="drake")
         print("logging in the new user")
@@ -52,8 +56,27 @@ class TestCase(unittest.TestCase):
 
         print("all done! tearing down")
 
+    def wrong_password(self):
+        self.cuser = create_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool", displayName="drake")
+        print(self.cuser.auth_data)
+        try:
+            self.cuser = sign_in_firebase_user("ytgoluigi2196@gmail.com", "wrongpassword")
+        except requests.exceptions.HTTPError as e:
+            print("HERE IS THE ERROR")
+            print(type(e))
+            print(get_firebase_error_message(e))
+
+    def test_invalid_email(self):
+        try:
+            self.cuser = create_firebase_user("aaaaaaa", "aaa", displayName="asdfaaaaaa")
+        except requests.exceptions.HTTPError as e:
+            print(get_firebase_error_message(e))
+
     def tearDown(self):
-        self.cuser.delete()
+        try:
+            self.cuser.delete()
+        except:
+            pass
 
 if __name__ == '__main__':
     unittest.main()

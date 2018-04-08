@@ -1,1 +1,2 @@
-start making the play modes
+1. email verification
+2. play modes

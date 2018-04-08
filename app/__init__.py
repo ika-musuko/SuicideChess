@@ -22,7 +22,10 @@ FIREBASE_APP_NAME = "flaskbase"
 
 app = Flask(__name__)
 app.config.from_pyfile("../config.py")
+
+# login manager
 lm = LoginManager()
+lm.init_app(app)
 
 ### PYREBASE ###
 pyre_firebase = pyrebase_ext.initialize_app(pyrebase_config.config) # see https://github.com/thisbejim/Pyrebase for details of pyrebase_config
@@ -41,4 +44,4 @@ app.logger.addHandler(file_handler) # add it to the app's list of loggers
 app.logger.setLevel(logging.INFO)
 app.logger.info('flaskbase startup')
 
-from app import routes
+from app import routes, firebase_login

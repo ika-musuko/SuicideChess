@@ -1,2 +1,1 @@
-1. user data
-2. play modes
+1. implement play modes into website

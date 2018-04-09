@@ -1,4 +1,4 @@
-user
+users
     display_name: str
     email: str    # primary key
     id: int
@@ -8,3 +8,15 @@ user
     draws: int
     game_histories: list
     rank: int
+
+games
+    random
+    friend
+
+game
+    id: int
+    players: list
+    current_player: 0
+    variant: str # ("blitz", "casual")
+    status: str # ("waiting", "inprogress")
+    game_data: dict

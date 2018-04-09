@@ -101,6 +101,7 @@ def sign_up() -> str:
             , "emailNotifications" : True
             , "gameHistories" : []
             , "losses" : 0
+            , "rank" : 0
             , "wins" : 0
         }
 
@@ -165,6 +166,7 @@ def resend_email_verification():
 
 
 ### GAME ROOMS ###
+
 @app.route('/play_random')
 @login_required
 @email_verified

@@ -52,4 +52,4 @@ app.logger.addHandler(file_handler) # add it to the app's list of loggers
 app.logger.setLevel(logging.INFO)
 app.logger.info('flaskbase startup')
 
-from app import routes, firebase_login
+from app import routes, firebase_login, games

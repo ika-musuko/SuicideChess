@@ -139,7 +139,7 @@ def log_in() -> str:
         except requests.exceptions.HTTPError as e:
             error_response = get_firebase_error_message(e)
             flash("Log In Error: %s" % error_map(error_response))
-            return redirect(url_for(log_in))
+            return redirect(url_for("log_in"))
 
     return render_template('login.html', form=loginform)
 

@@ -3,6 +3,7 @@ firebase_login.py
 '''
 
 from app import pyre_db, pyre_auth, lm
+from firebase_admin import auth as fb_auth
 from flask_login import AnonymousUserMixin, UserMixin, logout_user
 import requests
 import pdb
@@ -12,6 +13,7 @@ import pdb
 def sign_in_firebase_user(email: str, password: str):
     # get the auth data
     pyre_auth.sign_in_with_email_and_password(email, password)
+    refresh_current_user()
     return FirebaseUser()
 
 # create_user_with_email_and_password(email, password)
@@ -32,13 +34,29 @@ def sign_out_firebase_user():
 # delete_user_account
 def delete_current_firebase_user(response_token=None):
     auth_token = pyre_auth.current_user or response_token
-    if auth_token:
-        pyre_db.child("users").child(auth_token["localId"]).remove(auth_token['idToken'])
-        pyre_auth.delete_user_account(auth_token['idToken'])
+    try:
+        if auth_token:
+            pyre_db.child("users").child(auth_token["localId"]).remove(auth_token['idToken'])
+            pyre_auth.delete_user_account(auth_token['idToken'])
+    except requests.exceptions.HTTPError:
+        refresh_current_user()
+        pdb.set_trace()
+        pyre_db.child("users").child(pyre_auth.current_user["localId"]).remove(pyre_auth.current_user['idToken'])
+        pyre_auth.delete_user_account(pyre_auth.current_user['idToken'])
 
 # refresh current user
 def refresh_current_user():
-    pyre_auth.current_user = pyre_auth.refresh(pyre_auth.current_user['refreshToken'])
+    pyre_auth.refresh_current_user(pyre_auth.current_user["refreshToken"])
+
+### user auth actions
+class current_user_auth:
+    @staticmethod
+    def get_property(property: str):
+        return pyre_auth.get_user_property(pyre_auth.current_user['idToken'], property)
+
+    @staticmethod
+    def send_email_verification():
+        return pyre_auth.send_email_verification(pyre_auth.current_user['idToken'])
 
 ### user data from database
 class current_user_db:
@@ -46,26 +64,31 @@ class current_user_db:
     def get_property(property: str):
         return pyre_db.child("users").child(pyre_auth.current_user['localId']).child(property).get().val()
 
+
+### flask_login support
 @lm.user_loader
 def user_loader(dummy):
-    print("user loader current user: ", pyre_auth.current_user)
-    if pyre_auth.current_user is None:
+    return user_loader_helper()
+
+def user_loader_helper():
+    if not pyre_auth.current_user:
         return None
     try:
+        parsed_jwt = fb_auth.verify_id_token(pyre_auth.current_user['idToken'])
         return FirebaseUser()
-    except requests.exceptions.HTTPError:
+    except ValueError:
         refresh_current_user()
         return FirebaseUser()
 
 class FirebaseUser(UserMixin):
     def get_auth_property(self, property: str):
-        return pyre_auth.get_user_property(pyre_auth.current_user['idToken'], property)
+        return current_user_auth.get_property(property)
 
     def get_db_property(self, property: str):
-        return pyre_db.child("users").child(pyre_auth.current_user['localId']).child(property).get().val()
+        return current_user_db.get_property(property)
 
     def send_email_verification(self):
-        return pyre_auth.send_email_verification(pyre_auth.current_user['idToken'])
+        return current_user_auth.send_email_verification()
 
     # life hack LIFE HACK....L I F E H A C K
     def get_id(self):

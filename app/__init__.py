@@ -9,6 +9,7 @@ from flask_login import LoginManager
 
 # firebase imports
 from app import pyrebase_config, pyrebase_ext
+import firebase_admin
 
 # error logging imports
 import logging
@@ -23,6 +24,16 @@ app = Flask(__name__)
 app.config.from_pyfile("../config.py")
 lm = LoginManager()
 lm.init_app(app)
+
+### FIREBASE ADMIN ###
+# initialize the admin using initialize_firebase_admin.py
+print("init firebase-admin")
+if FIREBASE_APP_NAME not in firebase_admin._apps:
+    print("initializing a new app")
+    cred = firebase_admin.credentials.Certificate("firebase_auth.json")
+    firebase_admin.initialize_app(cred, name=FIREBASE_APP_NAME)
+print("getting app")
+fb_admin = firebase_admin.get_app(name=FIREBASE_APP_NAME)
 
 ### PYREBASE ###
 pyre_firebase = pyrebase_ext.initialize_app(pyrebase_config.config) # see https://github.com/thisbejim/Pyrebase for details of pyrebase_config

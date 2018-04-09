@@ -144,6 +144,16 @@ class Auth:
         }
         return user
 
+    ###
+    def refresh_current_user(self, refresh_token):
+        response_payload = self.refresh(refresh_token)
+        self.current_user = {
+            "localId" : response_payload["userId"],
+            "idToken" : response_payload["idToken"],
+            "refreshToken" : response_payload["refreshToken"]
+        }
+        return self.current_user
+
     def get_account_info(self, id_token):
         request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/getAccountInfo?key={0}".format(self.api_key)
         headers = {"content-type": "application/json; charset=UTF-8"}
@@ -155,7 +165,7 @@ class Auth:
     def get_user_data(self, id_token):
         return self.get_account_info(id_token)
 
-    # get a property from account info
+    ## get a property from account info
     def get_user_property(self, id_token, property):
         account_request = self.get_account_info(id_token)
         return account_request["users"][0][property]
@@ -168,7 +178,7 @@ class Auth:
         raise_detailed_error(request_object)
         return request_object.json()
      
-    ###       
+    ##
     def confirm_email_verification(self, oob_code):
         request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/setAccountInfo?key={0}".format(self.api_key)
         headers = {"content-type": "application/json; charset=UTF-8"}

@@ -9,6 +9,8 @@ from flask_login import LoginManager
 
 # firebase imports
 from app import pyrebase_config, pyrebase_ext
+from app.games import RoomManager
+from app.new_game_data import NEW_GAME_DATA
 import firebase_admin
 
 # error logging imports
@@ -24,6 +26,8 @@ app = Flask(__name__)
 app.config.from_pyfile("../config.py")
 lm = LoginManager()
 lm.init_app(app)
+
+rm = RoomManager(new_game_data=NEW_GAME_DATA)
 
 ### FIREBASE ADMIN ###
 # initialize the admin using initialize_firebase_admin.py

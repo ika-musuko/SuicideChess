@@ -47,7 +47,7 @@ def email_verified(f):
 @app.route('/')
 @app.route('/index')
 def index() -> str:
-    return render_template("index.html")
+    return render_template("index.html", current_user_auth=current_user_auth, pyre_auth=pyre_auth, current_user_db=current_user_db)
 
 
 ### ERROR HANDLING ###
@@ -115,9 +115,9 @@ def sign_up() -> str:
         except requests.exceptions.HTTPError as e:
             error_response = get_firebase_error_message(e)
             flash("Sign Up Error: %s" % error_map(error_response))
-            return render_template('signup.html', form=signupform)
+            return redirect(url_for("sign_up"))
 
-    return render_template('signup.html', form=signupform)
+    return render_template('signup.html', form=signupform, current_user_auth=current_user_auth, pyre_auth=pyre_auth, current_user_db=current_user_db)
 
 
 @app.route('/log_in', methods=GETPOST)
@@ -130,24 +130,24 @@ def log_in() -> str:
             sign_in_firebase_user(loginform.email.data, loginform.password.data)
 
             # flash back to the home page
-            flash('welcome %s! you have logged in successfully' % pyre_auth.get_user_property("displayName"))
+            flash('welcome %s! you have logged in successfully' % current_user_db.get_property("displayName"))
             return redirect(url_for('index'))
 
 
         except requests.exceptions.HTTPError as e:
             error_response = get_firebase_error_message(e)
             flash("Log In Error: %s" % error_map(error_response))
-            return render_template('login.html', form=loginform)
+            return redirect(url_for(log_in))
 
-    return render_template('login.html', form=loginform)
+    return render_template('login.html', form=loginform, current_user_auth=current_user_auth, pyre_auth=pyre_auth, current_user_db=current_user_db)
 
 
 @app.route('/resend_email_verification', methods=GETPOST)
 @login_required
 def resend_email_verification():
-    pyre_auth.send_email_verification(pyre_auth.current_user)
+    current_user_auth.send_email_verification()
     flash("email verification resent!")
-    return url_for("index")
+    return redirect(url_for("index"))
 
 ### GAME ROOMS ###
 @app.route('/play_random')

@@ -20,9 +20,15 @@
             {% endwith %}
         </div>
 
+        {% if debug %}
+        <div class="debug">
+            current user authenticated: {{ current_user.is_authenticated }}
+        </div>
+        {% endif %}
+
         <div class='userinfo'>
-            {% if pyre_auth.current_user %}
-            <h3>current user: {{ current_user_db.get_property("displayName") }}</h3>
+            {% if current_user.is_authenticated %}
+            <h3>current user: {{ current_user.get_db_property("displayName") }}</h3>
             {% else %}
             <h3>not logged in</h3>
             {% endif %}
@@ -30,8 +36,8 @@
 
         <div class='menubar'>
             <a href="{{ url_for('index') }}">home</a>
-            {% if pyre_auth.current_user %}
-                {% if current_user_auth.get_property("emailVerified") %}
+            {% if current_user.is_authenticated %}
+                {% if current_user.get_auth_property("emailVerified") %}
                 <a href="{{ url_for('play_random') }}">2 player random</a>
                 <a href="{{ url_for('play_friend') }}">2 player friend</a>
                 {% else %}
@@ -45,7 +51,8 @@
             {% endif %}
         </div>
         <div class='content'>
-            {% block content %}{% endblock %}
+            {% block content %}
+            {% endblock %}
         </div>
     </body>
 </html>

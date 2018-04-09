@@ -1,15 +1,16 @@
-from app import app, pyre_auth, pyre_db
+from app import app, pyre_auth
 from .forms import LoginForm, SignupForm
 from .firebase_login import sign_in_firebase_user\
                         , create_firebase_user\
                         , delete_current_firebase_user\
-                        , current_user_db\
-                        , current_user_auth
+                        , sign_out_firebase_user
 
 from .utils import get_firebase_error_message
 from .error_maps import error_map
 
 from flask import render_template, flash, redirect, url_for
+from flask_login import login_required, login_user, current_user
+
 
 import requests
 from functools import wraps
@@ -17,37 +18,36 @@ from functools import wraps
 GETPOST = ['GET', 'POST']
 
 
-### decorators ###
-def login_required(f):
-    @wraps(f)
-    def decorated_view(*args, **kwargs):
-        if not pyre_auth.current_user:
-            return "you must be logged in to view this content", 401
-        return f(*args, **kwargs)
-    return decorated_view
+### context processors ###
+@app.context_processor
+def inject_debug():
+    return dict(debug=app.debug)
 
+# decorators
 def logout_required(f):
     @wraps(f)
     def decorated_view(*args, **kwargs):
-        if pyre_auth.current_user:
+        if current_user.is_authenticated:
             flash("you are already logged in")
             return redirect(url_for('index'))
         return f(*args, **kwargs)
     return decorated_view
 
+
 def email_verified(f):
     @wraps(f)
     def decorated_view(*args, **kwargs):
-        if not (pyre_auth.current_user or current_user_auth.get_property("emailVerified")):
+        if not (current_user.is_authenticated or current_user.get_auth_property("emailVerified")):
             return "you must verify your email to view this content", 401
         return f(*args, **kwargs)
     return decorated_view
+
 
 ### HOME PAGE ###
 @app.route('/')
 @app.route('/index')
 def index() -> str:
-    return render_template("index.html", current_user_auth=current_user_auth, pyre_auth=pyre_auth, current_user_db=current_user_db)
+    return render_template("index.html")
 
 
 ### ERROR HANDLING ###
@@ -65,7 +65,7 @@ def internal_error(error):
 @app.route('/log_out')
 @login_required
 def log_out() -> str:
-    logout_user()
+    sign_out_firebase_user()
     return redirect(url_for('index'))
 
 
@@ -75,6 +75,7 @@ def delete_account() -> str:
     delete_current_firebase_user()
     flash("your account has been deleted.")
     return redirect(url_for('index'))
+
 
 @app.route('/sign_up', methods=GETPOST)
 @logout_required
@@ -102,10 +103,11 @@ def sign_up() -> str:
                 , **user_data
             )
 
-            pyre_auth.sign_in_with_email_and_password(signupform.email.data, signupform.password.data)
+            user = sign_in_firebase_user(signupform.email.data, signupform.password.data)
+            login_user(user)
 
             # send an email verification
-            pyre_auth.send_email_verification(pyre_auth.current_user)
+            current_user.send_email_verification()
 
             # flash back to the home page
             flash("Thank you for registering! Please go to your email and verify your account.")
@@ -117,7 +119,7 @@ def sign_up() -> str:
             flash("Sign Up Error: %s" % error_map(error_response))
             return redirect(url_for("sign_up"))
 
-    return render_template('signup.html', form=signupform, current_user_auth=current_user_auth, pyre_auth=pyre_auth, current_user_db=current_user_db)
+    return render_template('signup.html', form=signupform)
 
 
 @app.route('/log_in', methods=GETPOST)
@@ -127,10 +129,10 @@ def log_in() -> str:
     if loginform.validate_on_submit():
         # get the user
         try:
-            sign_in_firebase_user(loginform.email.data, loginform.password.data)
-
+            user = sign_in_firebase_user(loginform.email.data, loginform.password.data)
+            login_user(user)
             # flash back to the home page
-            flash('welcome %s! you have logged in successfully' % current_user_db.get_property("displayName"))
+            flash('welcome %s! you have logged in successfully' % current_user.get_db_property("displayName"))
             return redirect(url_for('index'))
 
 
@@ -139,15 +141,20 @@ def log_in() -> str:
             flash("Log In Error: %s" % error_map(error_response))
             return redirect(url_for(log_in))
 
-    return render_template('login.html', form=loginform, current_user_auth=current_user_auth, pyre_auth=pyre_auth, current_user_db=current_user_db)
+    return render_template('login.html', form=loginform)
 
 
 @app.route('/resend_email_verification', methods=GETPOST)
 @login_required
 def resend_email_verification():
-    current_user_auth.send_email_verification()
+    if current_user.get_auth_property("emailVerified"):
+        flash("you have already verified your email!")
+        return redirect(url_for("index"))
+
+    current_user.send_email_verification()
     flash("email verification resent!")
     return redirect(url_for("index"))
+
 
 ### GAME ROOMS ###
 @app.route('/play_random')

@@ -39,7 +39,6 @@ def delete_current_firebase_user(response_token=None):
             pyre_auth.delete_user_account(auth_token['idToken'])
     except requests.exceptions.HTTPError:
         refresh_current_user()
-        pdb.set_trace()
         pyre_db.child("users").child(pyre_auth.current_user["localId"]).remove(pyre_auth.current_user['idToken'])
         pyre_auth.delete_user_account(pyre_auth.current_user['idToken'])
 

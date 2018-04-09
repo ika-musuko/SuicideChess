@@ -33,7 +33,7 @@ class TestCase(unittest.TestCase):
         sign_in_firebase_user(email, password)
 
 
-    def account_creation(self):
+    def test_account_creation(self):
         self._create_and_sign_in_user("ytgoluigi2196@gmail.com", "drakeiscool", "drake")
 
         print("logging in user...")
@@ -46,7 +46,7 @@ class TestCase(unittest.TestCase):
         print("\t(from auth) email verified: ", current_user_auth.get_property("emailVerified"))
         print("\t(from db) display name: ", current_user_db.get_property("displayName"))
 
-    def email_verification(self):
+    def test_email_verification(self):
         self._create_and_sign_in_user("ytgoluigi2196@gmail.com", "drakeiscool", "drake")
 
         print("send verification email")

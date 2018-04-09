@@ -1,4 +1,4 @@
-from app import app, pyre_auth
+from app import app
 from .forms import LoginForm, SignupForm
 from .firebase_login import sign_in_firebase_user\
                         , create_firebase_user\

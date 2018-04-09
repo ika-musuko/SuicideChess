@@ -27,7 +27,6 @@ app.config.from_pyfile("../config.py")
 lm = LoginManager()
 lm.init_app(app)
 
-rm = RoomManager(new_game_data=NEW_GAME_DATA)
 
 ### FIREBASE ADMIN ###
 # initialize the admin using initialize_firebase_admin.py
@@ -43,6 +42,9 @@ fb_admin = firebase_admin.get_app(name=FIREBASE_APP_NAME)
 pyre_firebase = pyrebase_ext.initialize_app(pyrebase_config.config) # see https://github.com/thisbejim/Pyrebase for details of pyrebase_config
 pyre_auth = pyre_firebase.auth()
 pyre_db = pyre_firebase.database()
+
+### ROOM MANAGER ###
+rm = RoomManager(db=pyre_db, game_branch="messagespam", new_game_data=NEW_GAME_DATA)
 
 ### ERROR LOGS ###
 # make a rotating file handler to log errors to disk (future: email logging support?)

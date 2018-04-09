@@ -541,6 +541,7 @@ class PyreResponse:
             # return primitive or simple query results
             return self.pyres
 
+
     def key(self):
         return self.query_key
 

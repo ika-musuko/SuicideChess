@@ -14,7 +14,7 @@ from app.firebase_login import sign_in_firebase_user\
 
 from flask_login import login_user, logout_user, current_user
 
-class TestCase(unittest.TestCase):
+class LoginTestCase(unittest.TestCase):
 
     def setUp(self):
         app.config['TESTING'] = True

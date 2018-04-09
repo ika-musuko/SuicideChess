@@ -3,7 +3,7 @@ import pdb
 from string import ascii_letters
 
 from app import app, pyre_db
-from app.games import RoomManager, RoomDoesNotExist, RoomIsInProgress, RoomIsNotFriend
+from app.rooms import RoomManager, RoomDoesNotExist, RoomIsInProgress, RoomIsNotFriend
 from app.new_game_data import NEW_GAME_DATA
 
 class RoomTestCase(unittest.TestCase):
@@ -13,7 +13,7 @@ class RoomTestCase(unittest.TestCase):
         self.rm_test = RoomManager(pyre_db,"testing", NEW_GAME_DATA)
 
     def test_join_random_game(self):
-        for i, c in enumerate(ascii_letters):
+        for i, c in enumerate("asdfghjk"):
             id, room = self.rm_test.join_random_game(display_name=c, variant="test")
             if i % 2 == 0:
                 assert(room["status"] == "waiting")

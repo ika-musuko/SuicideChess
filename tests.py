@@ -3,96 +3,60 @@ import pdb
 import requests
 import json
 
-from flask_login import login_user, current_user, logout_user
 
-from app import app, pyre_auth, pyre_db, lm
-from app.utils import get_firebase_error_message
-from app.firebase_login import FirebaseUser, sign_in_firebase_user, create_firebase_user
-from app.utils import get_firebase_error_message
+from app import app, pyre_auth, pyre_db
+from app.firebase_login import sign_in_firebase_user\
+                            , create_firebase_user\
+                            , delete_current_firebase_user\
+                            , current_user_auth\
+                            , current_user_db
 
 class TestCase(unittest.TestCase):
 
     def setUp(self):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = True
+        self.response_token = None
 
-        self.cuser = None
+    def _create_user(self, email, password, displayName):
+        print("creating a user...")
+        self.response_token = create_firebase_user(email, password, displayName=displayName)
+        print("user created successfully!")
 
-    def test_user_database(self):
-        print("creating a new user...")
-        self.cuser = create_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool", displayName="drake")
-        print(self.cuser.auth_data)
-        print("creation successful!")
+    def _create_and_sign_in_user(self, email, password, displayName):
+        self._create_user(email, password, displayName)
+        self.response_token = None
+        print("logging in user...")
+        sign_in_firebase_user(email, password)
 
-        print("signing in the new user...")
-        self.cuser = sign_in_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool")
-        print(self.cuser.auth_data)
-        print("sign in successful!")
 
-        print("sending an email verification to the user...")
-        self.cuser.send_email_verification()
-        print("check the email!")
+    def test_account_creation(self):
+        self._create_and_sign_in_user("ytgoluigi2196@gmail.com", "drakeiscool", "drake")
 
-        print("getting the data from the user")
-        print(self.cuser.get_user_data())
-        print("finished getting user data..,!")
+        print("logging in user...")
+        sign_in_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool")
+        assert(pyre_auth.current_user is not None)
+        print("user logged in successfully!")
 
-        print("get a property...")
-        print(self.cuser.get_property("displayName"))
-        print("got a property!")
+        print("user info")
+        print("\t(from auth) email address: ", current_user_auth.get_property("email"))
+        print("\t(from auth) email verified: ", current_user_auth.get_property("emailVerified"))
+        print("\t(from db) display name: ", current_user_db.get_property("displayName"))
 
-        print("all done with the user! deleting user...")
+    def test_email_verification(self):
+        self._create_and_sign_in_user("ytgoluigi2196@gmail.com", "drakeiscool", "drake")
 
-    def test_flask_login_integration(self):
-        print("creating a new user...")
-        self.cuser = create_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool", displayName="drake")
-        print("logging in the new user")
-        with app.test_request_context():
-            login_user(self.cuser, remember=True)
-            print("current user data: ")
-            print(current_user.get_user_data())
-            print("getting a property which requires auth data... (true or false doesn't matter)")
-            print(current_user.email_verified)
-            print("logging out user")
-            logout_user()
-
-            print("now testing sign in")
-            self.cuser = sign_in_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool")
-            login_user(self.cuser, remember=True)
-            print("current user data: ")
-            print(current_user.get_user_data())
-            print("getting a property which requires auth data... (true or false doesn't matter)")
-            print(current_user.email_verified)
-            print("logging out user")
-            logout_user()
-
-        print("all done! tearing down")
-
-    def test_wrong_password(self):
-        self.cuser = create_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool", displayName="drake")
-        print(self.cuser.auth_data)
-        try:
-            self.cuser = sign_in_firebase_user("ytgoluigi2196@gmail.com", "wrongpassword")
-        except requests.exceptions.HTTPError as e:
-            print("HERE IS THE ERROR")
-            print(type(e))
-            print(get_firebase_error_message(e))
-
-    def test_invalid_email(self):
-        try:
-            self.cuser = create_firebase_user("aaaaaaa", "aaa", displayName="asdfaaaaaa")
-        except requests.exceptions.HTTPError as e:
-            print(get_firebase_error_message(e))
-
-    def test_get_email_verified(self):
-        self.cuser = create_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool", displayName="drake")
-        print(self.cuser.email_verified)
+        print("send verification email")
+        current_user_auth.send_email_verification()
+        print("email sent!")
+        print("email verified: ", current_user_auth.get_property("emailVerified"))
+        input("Please go to the email address and verify the email and then press any key to continue")
+        print("email verified: ", current_user_auth.get_property("emailVerified"))
+        assert(current_user_auth.get_property("emailVerified"))
 
     def tearDown(self):
-        try:
-            self.cuser.delete()
-        except:
-            pass
+        print("tearing down...")
+        delete_current_firebase_user(self.response_token)
 
 if __name__ == '__main__':
     unittest.main()

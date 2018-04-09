@@ -156,7 +156,7 @@ class Auth:
         return self.get_account_info(id_token)
 
     # get a property from account info
-    def get_user_data_property(self, id_token, property):
+    def get_user_property(self, id_token, property):
         account_request = self.get_account_info(id_token)
         return account_request["users"][0][property]
 
@@ -208,6 +208,7 @@ class Auth:
         data = json.dumps({"idToken": id_token})
         request_object = requests.post(request_ref, headers=headers, data=data)
         raise_detailed_error(request_object)
+        self.current_user = None
         return request_object.json()
 
 class Database:

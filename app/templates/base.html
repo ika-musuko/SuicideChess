@@ -21,8 +21,8 @@
         </div>
 
         <div class='userinfo'>
-            {% if current_user.is_authenticated %}
-            <h3>current user: {{ current_user.displayName }}</h3>
+            {% if pyre_auth.current_user %}
+            <h3>current user: {{ current_user_db.get_property("displayName") }}</h3>
             {% else %}
             <h3>not logged in</h3>
             {% endif %}
@@ -30,8 +30,8 @@
 
         <div class='menubar'>
             <a href="{{ url_for('index') }}">home</a>
-            {% if current_user.is_authenticated %}
-                {% if current_user.email_verified %}
+            {% if pyre_auth.current_user %}
+                {% if current_user_auth.get_property("emailVerified") %}
                 <a href="{{ url_for('play_random') }}">2 player random</a>
                 <a href="{{ url_for('play_friend') }}">2 player friend</a>
                 {% else %}

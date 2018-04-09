@@ -1,83 +1,45 @@
 '''
 firebase_login.py
-library for connecting flask-login with firebase's authentication and db system
 '''
 
-from flask_login import UserMixin
-from app import lm, pyre_db, pyre_auth
-
+from app import pyre_db, pyre_auth
 import pdb
 
-
-class LoginUserError(Exception):
-    def __str__(self):
-        return "could not login the user (LoginUserError)"
-
-@lm.user_loader
-def user_loader(id):
-    user = pyre_db.child("users").child(id)
-    if user.get().val() is None:
-        return None
-    auth_data = pyre_auth.create_custom_token(id)
-    return FirebaseUser(id=id, auth_data=auth_data)
-
-
-class FirebaseUser(UserMixin):
-    def __init__(self, id, auth_data=None):
-        self.id = id
-        self.auth_data = auth_data
-
-    def get_user(self):
-        return pyre_db.child("users").child(self.id).get().val()
-
-    def get_user_data(self):
-        return pyre_db.child("users").child(self.id).get().val()
-
-    def get_property(self, property: str):
-        return pyre_db.child("users").child(self.id).child(property).get().val()
-
-    def send_email_verification(self):
-        pyre_auth.send_email_verification(self.auth_data['idToken'])
-
-    @property
-    def email_verified(self):
-        return pyre_auth.get_user_data_property(self.auth_data['idToken'], "emailVerified")
-
-    def get_auth_info(self):
-        return pyre_auth.get_account_info(self.auth_data['idToken'])
-
-    def get_id(self):
-        return self.id
-
-    @property
-    def displayName(self):
-        return self.get_property("displayName")
-
-    # requires pyrebase_ext
-    def delete(self):
-        pyre_db.child("users").child(self.id).remove(self.auth_data['idToken'])
-        pyre_auth.delete_user_account(self.auth_data['idToken'])
-
-
-# pyrebase wrappers
-
+### pyrebase wrappers
 # sign_in_with_email_and_password(email, password)
 def sign_in_firebase_user(email: str, password: str):
     # get the auth data
-    auth_data = pyre_auth.sign_in_with_email_and_password(email, password)
-    user_with_email = pyre_db.child("users").order_by_child("email").equal_to(email).limit_to_first(1).get()
-    user_id = next(iter(user_with_email.val())) # get the top key
-
-    # return the associated user
-    return FirebaseUser(user_id, auth_data)
-
+    pyre_auth.sign_in_with_email_and_password(email, password)
 
 # create_user_with_email_and_password(email, password)
 def create_firebase_user(email: str, password: str, **user_data):
-    # get the auth data
-    auth_data = pyre_auth.create_user_with_email_and_password(email, password)
+    # create a new authentication account
+    response_token = pyre_auth.create_user_with_email_and_password(email, password)
 
     # add the new user data to the database
     user_data["email"] = email
-    pyre_db.child("users").child(auth_data["localId"]).set(user_data, auth_data['idToken'])
-    return FirebaseUser(auth_data["localId"], auth_data)
+    pyre_db.child("users").child(response_token["localId"]).set(user_data, response_token['idToken'])
+    return response_token
+
+# delete_user_account
+def delete_current_firebase_user(response_token=None):
+    auth_token = pyre_auth.current_user or response_token
+    if auth_token:
+        pyre_db.child("users").child(auth_token["localId"]).remove(auth_token['idToken'])
+        pyre_auth.delete_user_account(auth_token['idToken'])
+
+### user auth actions
+class current_user_auth:
+    @staticmethod
+    def get_property(property: str):
+        return pyre_auth.get_user_property(pyre_auth.current_user['idToken'], property)
+
+    @staticmethod
+    def send_email_verification():
+        return pyre_auth.send_email_verification(pyre_auth.current_user['idToken'])
+
+### user data from database
+class current_user_db:
+    @staticmethod
+    def get_property(property: str):
+        return pyre_db.child("users").child(pyre_auth.current_user['localId']).child(property).get().val()

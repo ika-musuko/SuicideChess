@@ -5,7 +5,6 @@ initialization of the app
 
 # main flask imports
 from flask import Flask
-from flask_login import LoginManager
 
 # firebase imports
 from app import pyrebase_config, pyrebase_ext
@@ -21,10 +20,6 @@ FIREBASE_APP_NAME = "flaskbase"
 
 app = Flask(__name__)
 app.config.from_pyfile("../config.py")
-
-# login manager
-lm = LoginManager()
-lm.init_app(app)
 
 ### PYREBASE ###
 pyre_firebase = pyrebase_ext.initialize_app(pyrebase_config.config) # see https://github.com/thisbejim/Pyrebase for details of pyrebase_config

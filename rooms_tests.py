@@ -38,11 +38,9 @@ class RoomTestCase(unittest.TestCase):
 
     def test_join_friend_game_in_progress(self):
         with self.assertRaises(RoomIsInProgress):
-            id, _ = self.rm_test.new_room(players=["coolman", "epicman"]
-                                  , mode="friend"
-                                  , variant="test"
-                                  , status="inprogress")
-            self.rm_test.join_friend_game(display_name="joinman", game_id=id)
+            id, _ = self.rm_test.create_friend_game(display_name="helo", variant="test")
+            friend_id, _ = self.rm_test.join_friend_game(display_name="bye", game_id=id)
+            self.rm_test.join_friend_game(display_name="Barge Simpson", game_id=id)
 
     def test_join_friend_game_not_friend(self):
         with self.assertRaises(RoomIsNotFriend):

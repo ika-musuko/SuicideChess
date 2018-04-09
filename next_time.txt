@@ -1,2 +1,2 @@
-1. email verification
+1. login persistence
 2. play modes

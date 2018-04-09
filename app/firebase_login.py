@@ -2,7 +2,7 @@
 firebase_login.py
 '''
 
-from app import pyre_db, pyre_auth, lm
+from app import pyre_db, pyre_auth, lm, fb_admin
 from firebase_admin import auth as fb_auth
 from flask_login import AnonymousUserMixin, UserMixin, logout_user
 import requests
@@ -72,7 +72,7 @@ def user_loader_helper():
     if not pyre_auth.current_user:
         return None
     try:
-        parsed_jwt = fb_auth.verify_id_token(pyre_auth.current_user['idToken'])
+        parsed_jwt = fb_auth.verify_id_token(pyre_auth.current_user['idToken'], app=fb_admin)
         return FirebaseUser()
     except ValueError:
         refresh_current_user()

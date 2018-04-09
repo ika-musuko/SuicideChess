@@ -17,12 +17,11 @@ def sign_in_firebase_user(email: str, password: str):
     return FirebaseUser()
 
 # create_user_with_email_and_password(email, password)
-def create_firebase_user(email: str, password: str, **user_data):
+def create_firebase_user(e_mail: str, password: str, **user_data):
     # create a new authentication account
-    response_token = pyre_auth.create_user_with_email_and_password(email, password)
+    response_token = pyre_auth.create_user_with_email_and_password(e_mail, password)
 
     # add the new user data to the database
-    user_data["email"] = email
     pyre_db.child("users").child(response_token["localId"]).set(user_data, response_token['idToken'])
     return response_token
 

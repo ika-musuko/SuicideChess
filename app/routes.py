@@ -94,7 +94,15 @@ def sign_up() -> str:
         # else make a new user with the provided input from the form
 
         # put all the user data into this dict
-        user_data = {"displayName" : signupform.display_name.data}
+        user_data = {
+              "displayName" : signupform.display_name.data
+            , "draws" : 0
+            , "email" : signupform.email.data
+            , "emailNotifications" : True
+            , "gameHistories" : []
+            , "losses" : 0
+            , "wins" : 0
+        }
 
         try:
             create_firebase_user(
@@ -104,7 +112,7 @@ def sign_up() -> str:
             )
 
             user = sign_in_firebase_user(signupform.email.data, signupform.password.data)
-            login_user(user)
+            login_user(user, remember=signupform.remember.data)
 
             # send an email verification
             current_user.send_email_verification()
@@ -130,7 +138,7 @@ def log_in() -> str:
         # get the user
         try:
             user = sign_in_firebase_user(loginform.email.data, loginform.password.data)
-            login_user(user)
+            login_user(user, remember=loginform.remember.data)
             # flash back to the home page
             flash('welcome %s! you have logged in successfully' % current_user.get_db_property("displayName"))
             return redirect(url_for('index'))

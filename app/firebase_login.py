@@ -8,16 +8,18 @@ from app import lm, pyre_db, pyre_auth
 
 import pdb
 
+
 class LoginUserError(Exception):
     def __str__(self):
         return "could not login the user (LoginUserError)"
 
 @lm.user_loader
 def user_loader(id):
-    user = pyre_db.child("users").child(id).get().val()
-    if user is None:
+    user = pyre_db.child("users").child(id)
+    if user.get().val() is None:
         return None
-    return FirebaseUser(id=id)
+    auth_data = pyre_auth.create_custom_token(id)
+    return FirebaseUser(id=id, auth_data=auth_data)
 
 
 class FirebaseUser(UserMixin):
@@ -36,6 +38,10 @@ class FirebaseUser(UserMixin):
 
     def send_email_verification(self):
         pyre_auth.send_email_verification(self.auth_data['idToken'])
+
+    @property
+    def email_verified(self):
+        return pyre_auth.get_user_data_property(self.auth_data['idToken'], "emailVerified")
 
     def get_auth_info(self):
         return pyre_auth.get_account_info(self.auth_data['idToken'])
@@ -71,13 +77,7 @@ def create_firebase_user(email: str, password: str, **user_data):
     # get the auth data
     auth_data = pyre_auth.create_user_with_email_and_password(email, password)
 
-    # get total users and use as id
-    current_total_users = pyre_db.child("TOTAL_USERS").get().val()
-    current_total_users += 1
-    print(current_total_users, type(current_total_users))
-    pyre_db.child("TOTAL_USERS").set(current_total_users)
-
     # add the new user data to the database
     user_data["email"] = email
-    pyre_db.child("users").child(current_total_users).set(user_data, auth_data['idToken'])
-    return FirebaseUser(current_total_users, auth_data)
+    pyre_db.child("users").child(auth_data["localId"]).set(user_data, auth_data['idToken'])
+    return FirebaseUser(auth_data["localId"], auth_data)

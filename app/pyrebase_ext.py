@@ -110,6 +110,25 @@ class Auth:
         raise_detailed_error(request_object)
         return request_object.json()
 
+    # change a user's email
+    def change_email(self, id_token, new_email):
+        request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/setAccountInfo?key={0}".format(self.api_key)
+        headers = {"content-type:" : "application/json; charset=UTF-8"}
+        data = json.dumps({"idToken" : id_token, "email" : new_email, "returnSecureToken" : True})
+        request_object = requests.post(request_ref, headers=headers, data=data)
+        raise_detailed_error(request_object)
+        return request_object.json()
+
+    # change a user's password
+    def change_password(self, id_token, new_password):
+        request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/setAccountInfo?key={0}".format(self.api_key)
+        headers = {"content-type:" : "application/json; charset=UTF-8"}
+        data = json.dumps({"idToken" : id_token, "password" : new_password, "returnSecureToken" : True})
+        request_object = requests.post(request_ref, headers=headers, data=data)
+        raise_detailed_error(request_object)
+        return request_object.json()
+
+
     def refresh(self, refresh_token):
         request_ref = "https://securetoken.googleapis.com/v1/token?key={0}".format(self.api_key)
         headers = {"content-type": "application/json; charset=UTF-8"}
@@ -133,6 +152,14 @@ class Auth:
         raise_detailed_error(request_object)
         return request_object.json()
 
+    def get_user_data(self, id_token):
+        return self.get_account_info(id_token)
+
+    # get a property from account info
+    def get_user_data_property(self, id_token, property):
+        account_request = self.get_account_info(id_token)
+        return account_request["users"][0][property]
+
     def send_email_verification(self, id_token):
         request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/getOobConfirmationCode?key={0}".format(self.api_key)
         headers = {"content-type": "application/json; charset=UTF-8"}
@@ -149,7 +176,7 @@ class Auth:
         request_object = requests.post(request_ref, headers=headers, data=data)
         raise_detailed_error(request_object)
         return request_object.json()
-        
+
     def send_password_reset_email(self, email):
         request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/getOobConfirmationCode?key={0}".format(self.api_key)
         headers = {"content-type": "application/json; charset=UTF-8"}

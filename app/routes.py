@@ -38,6 +38,14 @@ def log_out() -> str:
     return redirect(url_for('index'))
 
 
+@app.route('/delete_account')
+@login_required
+def delete_account() -> str:
+    current_user.delete()
+    logout_user()
+    flash("your account has been deleted.")
+    return redirect(url_for('index'))
+
 @app.route('/sign_up', methods=GETPOST)
 def sign_up() -> str:
 
@@ -52,7 +60,8 @@ def sign_up() -> str:
             return redirect(url_for('sign_up'))
 
         # else make a new user with the provided input from the form
-        # create the user
+
+        # put all the user data into this dict
         user_data = {"displayName" : signupform.display_name.data}
 
         try:

@@ -16,9 +16,9 @@ class TestCase(unittest.TestCase):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = True
 
-        self.cuser = FirebaseUser(0)
+        self.cuser = None
 
-    def user_database(self):
+    def test_user_database(self):
         print("creating a new user...")
         self.cuser = create_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool", displayName="drake")
         print(self.cuser.auth_data)
@@ -43,7 +43,7 @@ class TestCase(unittest.TestCase):
 
         print("all done with the user! deleting user...")
 
-    def flask_login_integration(self):
+    def test_flask_login_integration(self):
         print("creating a new user...")
         self.cuser = create_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool", displayName="drake")
         print("logging in the new user")
@@ -51,12 +51,24 @@ class TestCase(unittest.TestCase):
             login_user(self.cuser, remember=True)
             print("current user data: ")
             print(current_user.get_user_data())
+            print("getting a property which requires auth data... (true or false doesn't matter)")
+            print(current_user.email_verified)
+            print("logging out user")
+            logout_user()
+
+            print("now testing sign in")
+            self.cuser = sign_in_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool")
+            login_user(self.cuser, remember=True)
+            print("current user data: ")
+            print(current_user.get_user_data())
+            print("getting a property which requires auth data... (true or false doesn't matter)")
+            print(current_user.email_verified)
             print("logging out user")
             logout_user()
 
         print("all done! tearing down")
 
-    def wrong_password(self):
+    def test_wrong_password(self):
         self.cuser = create_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool", displayName="drake")
         print(self.cuser.auth_data)
         try:
@@ -71,6 +83,10 @@ class TestCase(unittest.TestCase):
             self.cuser = create_firebase_user("aaaaaaa", "aaa", displayName="asdfaaaaaa")
         except requests.exceptions.HTTPError as e:
             print(get_firebase_error_message(e))
+
+    def test_get_email_verified(self):
+        self.cuser = create_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool", displayName="drake")
+        print(self.cuser.email_verified)
 
     def tearDown(self):
         try:

@@ -13,7 +13,7 @@ users
 room
     id: int
     players: list
-    variant: str # ("blitz", "casual")
+    variant: str # ("blitz", "classic")
     status: str # ("waiting", "inprogress", "finished")
     mode: str # ("random", "friend")
     gameData: dict

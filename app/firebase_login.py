@@ -94,6 +94,7 @@ class FirebaseUser(UserMixin):
         return current_user_auth.send_email_verification()
 
     # life hack LIFE HACK....L I F E H A C K
+    # don't use this function for getting a user's id, use the get_user_id one
     def get_id(self):
         return True
 

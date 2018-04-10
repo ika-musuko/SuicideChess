@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "users" : {
+      ".indexOn" : ["email", "displayName", "gameHistories", "currentGames", "wins", "losses", "draws", "rank"]
+    },
+    "testing" : {
+       ".indexOn" : ["gameId", "players" , "currentPlayer", "variant", "status", "gameData", "mode"]
+    },
+    "messagespam" : {
+       ".indexOn" : ["gameId", "players" , "currentPlayer", "variant", "status", "gameData", "mode"]
+    },
+
+
+    ".read": true,
+    ".write": true
+  }
+}

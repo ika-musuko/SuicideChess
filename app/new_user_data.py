@@ -5,8 +5,8 @@ def new_user_data(display_name: str, e_mail: str):
         , "draws" : 0
         , "email" : e_mail
         , "emailNotifications" : True
-        , "currentGames" : []
-        , "gameHistories" : []
+        , "currentGames" : []  # store the game IDs to the games the user is currently in here
+        , "gameHistories" : [] # store the full game data of any past games for a player in here
         , "losses" : 0
         , "rank" : 0
         , "wins" : 0

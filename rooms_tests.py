@@ -1,10 +1,9 @@
 import unittest
-import pdb
-from string import ascii_letters
 
 from app import app, pyre_db
-from app.rooms import RoomManager, RoomDoesNotExist, RoomIsInProgress, RoomIsNotFriend
 from app.new_game_data import NEW_GAME_DATA
+from app.rooms import RoomManager, RoomDoesNotExist, RoomIsInProgress, RoomIsNotFriend
+
 
 class RoomTestCase(unittest.TestCase):
 

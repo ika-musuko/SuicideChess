@@ -4,7 +4,6 @@ migrate.py
 tools for updating items from a database
 '''
 
-from app import pyre_db
 
 def add_property(database: str, property_name: str, default_value):
     """

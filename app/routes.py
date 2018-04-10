@@ -7,6 +7,7 @@ from .firebase_login import sign_in_firebase_user\
 
 from .utils import get_firebase_error_message
 from .error_maps import error_map
+from .new_user_data import new_user_data
 
 from flask import render_template, flash, redirect, url_for
 from flask_login import login_required, login_user, current_user
@@ -94,16 +95,7 @@ def sign_up() -> str:
         # else make a new user with the provided input from the form
 
         # put all the user data into this dict
-        user_data = {
-              "displayName" : signupform.display_name.data
-            , "draws" : 0
-            , "email" : signupform.email.data
-            , "emailNotifications" : True
-            , "gameHistories" : []
-            , "losses" : 0
-            , "rank" : 0
-            , "wins" : 0
-        }
+        user_data = new_user_data(display_name=signupform.display_name.data, e_mail=signupform.email.data)
 
         try:
             create_firebase_user(

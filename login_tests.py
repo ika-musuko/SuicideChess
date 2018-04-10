@@ -1,18 +1,15 @@
 import unittest
-import pdb
-import requests
-import json
 
+from flask_login import login_user, current_user
 
-from app import app, pyre_auth, pyre_db, lm
-from app.firebase_login import sign_in_firebase_user\
-                            , create_firebase_user\
-                            , delete_current_firebase_user\
-                            , current_user_auth\
-                            , current_user_db\
-                            , user_loader_helper
+from app import app, pyre_auth
+from app.firebase_login import sign_in_firebase_user \
+    , create_firebase_user \
+    , delete_current_firebase_user \
+    , current_user_auth \
+    , current_user_db \
+    , user_loader_helper
 
-from flask_login import login_user, logout_user, current_user
 
 class LoginTestCase(unittest.TestCase):
 

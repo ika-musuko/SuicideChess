@@ -2,8 +2,8 @@ import unittest
 
 from flask_login import login_user, current_user
 
-from app import app, pyre_auth
-from app.firebase_login import sign_in_firebase_user \
+from project import app, pyre_auth
+from project.users.firebase_login import sign_in_firebase_user \
     , create_firebase_user \
     , delete_current_firebase_user \
     , current_user_auth \
@@ -39,8 +39,8 @@ class LoginTestCase(unittest.TestCase):
         print("user logged in successfully!")
 
         print("user info")
-        print("\t(from auth) email address: ", current_user_auth.get_property("email"))
-        print("\t(from auth) email verified: ", current_user_auth.get_property("emailVerified"))
+        print("\t(from users) email address: ", current_user_auth.get_property("email"))
+        print("\t(from users) email verified: ", current_user_auth.get_property("emailVerified"))
         print("\t(from db) display name: ", current_user_db.get_property("displayName"))
 
     def test_email_verification(self):
@@ -56,7 +56,7 @@ class LoginTestCase(unittest.TestCase):
     def test_flask_login_integration(self):
         self._create_and_sign_in_user("ytgoluigi2196@gmail.com", "drakeiscool", "drake")
 
-        print("signing in the user into firebase auth...")
+        print("signing in the user into firebase users...")
         with app.test_request_context():
             user = sign_in_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool")
             print("logging the user into flask...")

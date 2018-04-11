@@ -4,6 +4,11 @@ from flask import flash, url_for
 from flask_login import current_user
 from werkzeug.utils import redirect
 
+from project import app
+
+@app.context_processor
+def inject_debug():
+    return dict(debug=app.debug)
 
 def logout_required(f):
     @wraps(f)
@@ -22,3 +27,4 @@ def email_verified(f):
             return "you must verify your email to view this content", 401
         return f(*args, **kwargs)
     return decorated_view
+

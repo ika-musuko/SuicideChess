@@ -11,7 +11,7 @@ from project.auth.firebase_auth_errors import get_firebase_error_message, error_
 from project.auth.firebase_login import sign_out_firebase_user, delete_current_firebase_user, create_firebase_user, \
     sign_in_firebase_user
 from project.views.home_views import GETPOST
-from project.views.view_decorators import logout_required
+from project.views.view_utils import logout_required
 
 
 @app.route('/log_out')

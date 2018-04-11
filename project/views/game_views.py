@@ -1,7 +1,7 @@
 from flask_login import login_required
 
 from project import app
-from project.views.view_decorators import email_verified
+from project.views.view_utils import email_verified
 
 
 @app.route('/play_random')

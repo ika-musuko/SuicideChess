@@ -12,7 +12,7 @@ from project import pyre_db, pyre_auth, lm, fb_admin
 ### pyrebase wrappers
 # sign_in_with_email_and_password(email, password)
 def sign_in_firebase_user(email: str, password: str):
-    # get the users data
+    # get the auth data
     pyre_auth.sign_in_with_email_and_password(email, password)
     refresh_current_user()
     return FirebaseUser()
@@ -23,7 +23,7 @@ def create_firebase_user(e_mail: str, password: str, **user_data):
     response_token = pyre_auth.create_user_with_email_and_password(e_mail, password)
 
     # add the new user data to the database
-    pyre_db.child("users").child(response_token["localId"]).set(user_data, response_token['idToken'])
+    pyre_db.child("auth").child(response_token["localId"]).set(user_data, response_token['idToken'])
     return response_token
 
 # sign out user (also handles logout_user) DON'T USE logout_user by itself!!
@@ -36,18 +36,18 @@ def delete_current_firebase_user(response_token=None):
     auth_token = pyre_auth.current_user or response_token
     try:
         if auth_token:
-            pyre_db.child("users").child(auth_token["localId"]).remove(auth_token['idToken'])
+            pyre_db.child("auth").child(auth_token["localId"]).remove(auth_token['idToken'])
             pyre_auth.delete_user_account(auth_token['idToken'])
     except requests.exceptions.HTTPError:
         refresh_current_user()
-        pyre_db.child("users").child(pyre_auth.current_user["localId"]).remove(pyre_auth.current_user['idToken'])
+        pyre_db.child("auth").child(pyre_auth.current_user["localId"]).remove(pyre_auth.current_user['idToken'])
         pyre_auth.delete_user_account(pyre_auth.current_user['idToken'])
 
 # refresh current user
 def refresh_current_user():
     pyre_auth.refresh_current_user(pyre_auth.current_user["refreshToken"])
 
-### user users actions
+### user auth actions
 class current_user_auth:
     @staticmethod
     def get_property(property: str):
@@ -61,7 +61,7 @@ class current_user_auth:
 class current_user_db:
     @staticmethod
     def get_property(property: str):
-        return pyre_db.child("users").child(pyre_auth.current_user['localId']).child(property).get().val()
+        return pyre_db.child("auth").child(pyre_auth.current_user['localId']).child(property).get().val()
 
 
 ### flask_login support

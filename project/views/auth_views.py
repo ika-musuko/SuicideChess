@@ -1,67 +1,19 @@
-from project import app
-from project.forms.forms import LoginForm, SignupForm, verify_signup_form
-from project.users.firebase_login import sign_in_firebase_user\
-                        , create_firebase_user\
-                        , delete_current_firebase_user\
-                        , sign_out_firebase_user
-
-from project.users.firebase_auth_errors import error_map, get_firebase_error_message
-from project.models.new_user_data import new_user_data
-
-from flask import render_template, flash, redirect, url_for, Markup
-from flask_login import login_required, login_user, current_user
-
-
 import requests
-from functools import wraps
+from flask import url_for, flash, render_template
+from flask_login import login_required, login_user, current_user
+from markupsafe import Markup
+from werkzeug.utils import redirect
 
-GETPOST = ['GET', 'POST']
-
-
-### context processors ###
-@app.context_processor
-def inject_debug():
-    return dict(debug=app.debug)
-
-# decorators
-def logout_required(f):
-    @wraps(f)
-    def decorated_view(*args, **kwargs):
-        if current_user.is_authenticated:
-            flash("you are already logged in")
-            return redirect(url_for('index'))
-        return f(*args, **kwargs)
-    return decorated_view
+from project import app
+from project.forms.forms import SignupForm, verify_signup_form, LoginForm
+from project.models.new_user_data import new_user_data
+from project.auth.firebase_auth_errors import get_firebase_error_message, error_map
+from project.auth.firebase_login import sign_out_firebase_user, delete_current_firebase_user, create_firebase_user, \
+    sign_in_firebase_user
+from project.views.home_views import GETPOST
+from project.views.view_decorators import logout_required
 
 
-def email_verified(f):
-    @wraps(f)
-    def decorated_view(*args, **kwargs):
-        if not (current_user.is_authenticated or current_user.get_auth_property("emailVerified")):
-            return "you must verify your email to view this content", 401
-        return f(*args, **kwargs)
-    return decorated_view
-
-
-### HOME PAGE ###
-@app.route('/')
-@app.route('/index')
-def index() -> str:
-    return render_template("index.html")
-
-
-### ERROR HANDLING ###
-@app.errorhandler(404)
-def not_found_error(error):
-    return "page not found 404 error: %s" % error, 404
-
-
-@app.errorhandler(500)
-def internal_error(error):
-    return "internal server 500 error: %s" % error, 500
-
-
-### USER CREATION AND AUTHENTICATION ###
 @app.route('/log_out')
 @login_required
 def log_out() -> str:
@@ -76,12 +28,15 @@ def delete_account() -> str:
     flash("your account has been deleted.")
     return redirect(url_for('index'))
 
+
 def bulletize_messages(messages: list):
     bulleted_messages = ["<li>%s</li>" % m for m in messages]
     return "<ul>%s</ul>" % '\n'.join(bulleted_messages)
 
+
 def title_and_messages(title: str, messages: list):
     return Markup("<h2>%s</h2><br/>%s" % (title, bulletize_messages(messages)))
+
 
 @app.route('/sign_up', methods=GETPOST)
 @logout_required
@@ -161,19 +116,3 @@ def resend_email_verification():
     current_user.send_email_verification()
     flash("email verification resent!")
     return redirect(url_for("index"))
-
-
-### GAME ROOMS ###
-
-@app.route('/play_random')
-@login_required
-@email_verified
-def play_random() -> str:
-    return 'play random'
-
-
-@app.route('/play_friend')
-@login_required
-@email_verified
-def play_friend() -> str:
-    return 'play friend'

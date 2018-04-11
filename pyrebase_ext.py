@@ -39,9 +39,9 @@ class Firebase:
         self.requests = requests.Session()
         if config.get("serviceAccount"):
             scopes = [
-                'https://www.googleapis.com/users/firebase.database',
-                'https://www.googleapis.com/users/userinfo.email',
-                "https://www.googleapis.com/users/cloud-platform"
+                'https://www.googleapis.com/auth/firebase.database',
+                'https://www.googleapis.com/auth/userinfo.email',
+                "https://www.googleapis.com/auth/cloud-platform"
             ]
             service_account_type = type(config["serviceAccount"])
             if service_account_type is str:
@@ -168,7 +168,7 @@ class Auth:
     ## get a property from account info
     def get_user_property(self, id_token, property):
         account_request = self.get_account_info(id_token)
-        return account_request["users"][0][property]
+        return account_request["auth"][0][property]
 
     def send_email_verification(self, id_token):
         request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/getOobConfirmationCode?key={0}".format(self.api_key)
@@ -289,7 +289,7 @@ class Database:
     def build_request_url(self, token):
         parameters = {}
         if token:
-            parameters['users'] = token
+            parameters['auth'] = token
         for param in list(self.build_query):
             if type(self.build_query[param]) is str:
                 parameters[param] = quote('"' + self.build_query[param] + '"')
@@ -380,7 +380,7 @@ class Database:
 
     def check_token(self, database_url, path, token):
         if token:
-            return '{0}{1}.json?users={2}'.format(database_url, path, token)
+            return '{0}{1}.json?auth={2}'.format(database_url, path, token)
         else:
             return '{0}{1}.json'.format(database_url, path)
 

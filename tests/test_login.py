@@ -54,6 +54,7 @@ class LoginTestCase(unittest.TestCase):
         print("email verified: ", current_user_auth.get_property("emailVerified"))
 
     def test_flask_login_integration(self):
+    
         self._create_and_sign_in_user("ytgoluigi2196@gmail.com", "drakeiscool", "drake")
 
         print("signing in the user into firebase auth...")

@@ -10,7 +10,7 @@ from flask_login import LoginManager
 
 
 # firebase imports
-from project import pyrebase_config
+from config import pyrebase_config
 import pyrebase_ext
 from project.rooms.rooms import RoomManager
 from project.models.new_game_data import NEW_GAME_DATA
@@ -26,7 +26,7 @@ import os
 FIREBASE_APP_NAME = "flaskbase"
 
 app = Flask(__name__)
-app.config.from_pyfile("../config.py")
+app.config.from_pyfile("../config/config.py")
 lm = LoginManager()
 lm.init_app(app)
 
@@ -34,7 +34,7 @@ lm.init_app(app)
 ### FIREBASE ADMIN ###
 # initialize the admin using initialize_firebase_admin.py
 if FIREBASE_APP_NAME not in firebase_admin._apps:
-    cred = firebase_admin.credentials.Certificate("firebase_auth.json")
+    cred = firebase_admin.credentials.Certificate("config/firebase_auth.json")
     firebase_admin.initialize_app(cred, name=FIREBASE_APP_NAME)
 fb_admin = firebase_admin.get_app(name=FIREBASE_APP_NAME)
 

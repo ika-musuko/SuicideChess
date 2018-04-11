@@ -1,8 +1,9 @@
 import unittest
+import pdb
 
 from project import app, pyre_db
 from project.models.new_game_data import NEW_GAME_DATA
-from project.rooms import RoomManager, RoomDoesNotExist, RoomIsInProgress, RoomIsNotFriend
+from project.rooms.rooms import RoomManager, RoomDoesNotExist, RoomIsInProgress, RoomIsNotFriend
 
 class RoomTestCase(unittest.TestCase):
 
@@ -23,7 +24,7 @@ class RoomTestCase(unittest.TestCase):
 
         # have players "a", "s", "d".... join random games
         for i, player in enumerate("asdfghjk"):
-
+            pdb.set_trace()
             # player joins a random game
             id, room = self.rm_test.join_random_game(user_id=player, variant="tests")
 

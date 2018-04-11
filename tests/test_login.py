@@ -66,7 +66,6 @@ class LoginTestCase(unittest.TestCase):
             print("invalidating the user token... (this is like if the authentication token expires, for example)")
             pyre_auth.current_user['idToken'] = "fail"
             print("reloading the user...")
-            #user_loader(current_user.get_id())
             user_loader_helper()
             assert(pyre_auth.current_user['idToken'] != "fail")
             assert(current_user.is_authenticated)

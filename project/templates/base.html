@@ -38,8 +38,8 @@
             <a href="{{ url_for('index') }}">home</a>
             {% if current_user.is_authenticated %}
                 {% if current_user.get_auth_property("emailVerified") %}
-                <a href="{{ url_for('play_random') }}">2 player random</a>
-                <a href="{{ url_for('play_friend') }}">2 player friend</a>
+                <a href="{{ url_for('play_blitz') }}">blitz</a>
+                <a href="{{ url_for('play_classic') }}">classic</a>
                 {% else %}
                 <a href="{{ url_for('resend_email_verification') }}">resend email verification</a>
                 {% endif %}

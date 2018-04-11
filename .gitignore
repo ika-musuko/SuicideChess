@@ -7,5 +7,6 @@ __pycache__
 *conflicted copy*
 *.db
 *venv_*
-firebase_auth*
+firebase_auth.json
 pyrebase_config.py
+now-win.exe

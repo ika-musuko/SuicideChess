@@ -168,7 +168,7 @@ class Auth:
     ## get a property from account info
     def get_user_property(self, id_token, property):
         account_request = self.get_account_info(id_token)
-        return account_request["auth"][0][property]
+        return account_request["users"][0][property]
 
     def send_email_verification(self, id_token):
         request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/getOobConfirmationCode?key={0}".format(self.api_key)

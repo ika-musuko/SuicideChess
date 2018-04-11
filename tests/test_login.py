@@ -1,4 +1,5 @@
 import unittest
+import pdb
 
 from flask_login import login_user, current_user
 
@@ -32,7 +33,6 @@ class LoginTestCase(unittest.TestCase):
 
     def test_account_creation(self):
         self._create_and_sign_in_user("ytgoluigi2196@gmail.com", "drakeiscool", "drake")
-
         print("logging in user...")
         sign_in_firebase_user("ytgoluigi2196@gmail.com", "drakeiscool")
         assert(pyre_auth.current_user is not None)

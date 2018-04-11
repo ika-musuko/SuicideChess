@@ -4,15 +4,15 @@ from project import app
 from project.views.view_utils import email_verified
 
 
-@app.route('/play_random')
+@app.route('/play_blitz')
 @login_required
 @email_verified
-def play_random() -> str:
-    return 'play random'
+def play_blitz() -> str:
+    return 'blitz'
 
 
-@app.route('/play_friend')
+@app.route('/play_classic')
 @login_required
 @email_verified
-def play_friend() -> str:
-    return 'play friend'
+def play_classic() -> str:
+    return 'classic'

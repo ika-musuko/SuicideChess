@@ -53,7 +53,7 @@ class LoginTestCase(unittest.TestCase):
         input("Please go to the email address and verify the email and then press any key to continue")
         print("email verified: ", current_user_auth.get_property("emailVerified"))
 
-    def test_flask_login_integration(self):
+    def test_login_persistence(self):
     
         self._create_and_sign_in_user("ytgoluigi2196@gmail.com", "drakeiscool", "drake")
 

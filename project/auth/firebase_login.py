@@ -70,15 +70,19 @@ def user_loader(dummy):
     return user_loader_helper()
 
 def user_loader_helper():
+    # make sure the current user actually exists
     if not pyre_auth.current_user:
         return None
 
+    # make sure the user exists inside the database
     if not current_user_db.get_property("displayName"):
         return None
 
+    # verify that the user's access token is valid
     try:
         parsed_jwt = fb_auth.verify_id_token(pyre_auth.current_user['idToken'], app=fb_admin)
         return FirebaseUser()
+    # if it's invalid, refresh the token
     except ValueError:
         refresh_current_user()
         return FirebaseUser()

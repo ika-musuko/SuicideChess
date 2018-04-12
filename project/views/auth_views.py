@@ -1,7 +1,6 @@
 import requests
 from flask import url_for, flash, render_template
 from flask_login import login_required, login_user, current_user
-from markupsafe import Markup
 from werkzeug.utils import redirect
 
 from project import app
@@ -11,7 +10,7 @@ from project.auth.firebase_auth_errors import get_firebase_error_message, error_
 from project.auth.firebase_login import sign_out_firebase_user, delete_current_firebase_user, create_firebase_user, \
     sign_in_firebase_user
 from project.views.home_views import GETPOST
-from project.views.view_utils import logout_required
+from project.views.view_utils import logout_required, title_and_messages
 
 
 @app.route('/log_out')
@@ -27,15 +26,6 @@ def delete_account() -> str:
     delete_current_firebase_user()
     flash("your account has been deleted.")
     return redirect(url_for('index'))
-
-
-def bulletize_messages(messages: list):
-    bulleted_messages = ["<li>%s</li>" % m for m in messages]
-    return "<ul>%s</ul>" % '\n'.join(bulleted_messages)
-
-
-def title_and_messages(title: str, messages: list):
-    return Markup("<h2>%s</h2><br/>%s" % (title, bulletize_messages(messages)))
 
 
 @app.route('/sign_up', methods=GETPOST)

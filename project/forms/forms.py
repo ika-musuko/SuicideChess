@@ -1,3 +1,9 @@
+'''
+forms.py
+
+all the forms throughout the project. maybe if we have too many forms, we can split this into multiple files.
+'''
+
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, BooleanField, PasswordField
 from wtforms.validators import InputRequired, Email

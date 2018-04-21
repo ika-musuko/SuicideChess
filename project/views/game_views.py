@@ -1,3 +1,10 @@
+'''
+game_views.py
+
+    routes for the game
+
+'''
+
 from flask_login import login_required
 
 from project import app

@@ -1,3 +1,10 @@
+'''
+auth_views.py
+
+    all of the routes related to user authorization and credentials
+
+'''
+
 import requests
 from flask import url_for, flash, render_template
 from flask_login import login_required, login_user, current_user

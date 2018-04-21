@@ -1,5 +1,10 @@
 '''
 firebase_login.py
+
+handling the firebase authentication module.
+deals with sending and receiving data from the firebase authentication module and also login persistence
+
+SORRY HALF OF THIS CODE IS JUST HACKS LOL
 '''
 
 import requests

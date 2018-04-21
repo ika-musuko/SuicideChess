@@ -1,3 +1,9 @@
+'''
+firebase_auth_errors.py
+
+functions for handling firebase authentication error responses
+'''
+
 import json, requests
 
 ERROR_MAP = {
@@ -15,8 +21,18 @@ ERROR_MAP = {
 
 
 def error_map(response: str):
+    '''
+    get a real error message from a firebase error response
+    :param response: firebase error response
+    :return: the associated error message
+    '''
     return ERROR_MAP[response] if response in ERROR_MAP else response
 
 
 def get_firebase_error_message(e: requests.exceptions.HTTPError):
+    '''
+    get the firebase error response
+    :param e: the firebase HTTPError
+    :return: the error response
+    '''
     return json.loads(e.args[1])["error"]["message"]

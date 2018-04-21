@@ -3,14 +3,14 @@ import pdb
 
 from project import app, pyre_db
 from project.models.new_game_data import NEW_GAME_DATA
-from project.rooms.rooms import RoomManager, RoomDoesNotExist, RoomIsInProgress, RoomIsNotFriend
+from project.rooms.rooms import RoomAllocator, RoomDoesNotExist, RoomIsInProgress, RoomIsNotFriend
 
 class RoomTestCase(unittest.TestCase):
 
     def setUp(self):
         app.config['TESTING'] = True
         # create games under the testing branch
-        self.rm_test = RoomManager(pyre_db,"testing", NEW_GAME_DATA)
+        self.rm_test = RoomAllocator(pyre_db, "testing", NEW_GAME_DATA)
 
     def test_join_random_game(self):
         '''

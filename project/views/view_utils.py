@@ -1,3 +1,10 @@
+'''
+view_utils.py
+
+    functions to help with views, to be used across the view pages
+
+'''
+
 from functools import wraps
 
 from flask import flash, url_for
@@ -7,10 +14,12 @@ from werkzeug.utils import redirect
 
 from project import app
 
+# be able to show debug info in a page template
 @app.context_processor
 def inject_debug():
     return dict(debug=app.debug)
 
+# use a @logout_required decorator to require a user to be logged out to view
 def logout_required(f):
     @wraps(f)
     def decorated_view(*args, **kwargs):
@@ -20,7 +29,7 @@ def logout_required(f):
         return f(*args, **kwargs)
     return decorated_view
 
-
+# use a @email_verified decorator to require a user to have their email verified to view
 def email_verified(f):
     @wraps(f)
     def decorated_view(*args, **kwargs):
@@ -30,10 +39,11 @@ def email_verified(f):
     return decorated_view
 
 
+# output a list of messages into a buileted list
 def bulletize_messages(messages: list):
     bulleted_messages = ["<li>%s</li>" % m for m in messages]
     return "<ul>%s</ul>" % '\n'.join(bulleted_messages)
 
-
+# output a title and bulleted messages
 def title_and_messages(title: str, messages: list):
     return Markup("<h2>%s</h2><br/>%s" % (title, bulletize_messages(messages)))

@@ -1,3 +1,10 @@
+'''
+home_views.py
+
+    routes for the home page
+
+'''
+
 from project import app
 
 from flask import render_template

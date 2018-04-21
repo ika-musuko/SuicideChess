@@ -1,3 +1,9 @@
+'''
+new_user_data.py
+
+    the data structure for a new user.
+'''
+
 def new_user_data(display_name: str, e_mail: str):
 
     return {

@@ -237,7 +237,7 @@ class Database:
 
         self.path = ""
         self.build_query = {}
-        self.lapyre_dbst_push_time = 0
+        self.last_push_time = 0
         self.last_rand_chars = []
 
     def order_by_key(self):

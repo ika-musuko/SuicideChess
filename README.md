@@ -1,5 +1,10 @@
 # Suicide-Chess
 Suicide Chess project repository
 
-Chess Engine:
-https://github.com/jhlywa/chess.js
+Cmpe 133 project.
+
+Team Members:
+Joleena Marshall
+Junia Iken
+Sherwyn Golgi
+Eric Scaramuzzo

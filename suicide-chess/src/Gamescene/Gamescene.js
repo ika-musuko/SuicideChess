@@ -96,9 +96,6 @@ class gamescene extends Component {
       if(this.state && changesMade) {
         var gameData = pieces;
         gameData['whiteTurn'] = changesMade ? !this.state.whiteTurn : this.state.whiteTurn;
-        var postData = {
-          gameData: gameData,
-        }
         var updates = {};
         updates['/games/' + this.state.gameID + '/gameData/'] = gameData;
         firebase.database().ref().update(updates);
@@ -223,7 +220,7 @@ class gamescene extends Component {
           <p> Username: {this.state.username}  Opponent: {this.state.otherUser}</p>
            :
           <form>
-            Username: <input type="text" name="FirstName" value={this.state.username} onChange= {this.handleFormChange}/>
+            Username: <input type="text" value={this.state.username} onChange= {this.handleFormChange}/>
             <button type="button" onClick={this.handleSelectButton}>Submit</button>
           </form>
         }

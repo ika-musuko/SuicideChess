@@ -68,6 +68,9 @@ class current_user_db:
     def get_property(property: str):
         return pyre_db.child("users").child(pyre_auth.current_user['localId']).child(property).get().val()
 
+    @staticmethod
+    def set_property(property: str, value):
+        pyre_db.child("users").child(pyre_auth.current_user['localId']).child(property).set(value)
 
 ### flask_login support
 @lm.user_loader
@@ -99,11 +102,18 @@ class FirebaseUser(UserMixin):
     def get_db_property(self, property: str):
         return current_user_db.get_property(property)
 
+    def set_db_property(self, property: str, value):
+        current_user_db.set_property(property, value)
+
     def send_email_verification(self):
         return current_user_auth.send_email_verification()
 
+    @property
+    def id(self):
+        return pyre_auth.current_user['localId']
+
     # life hack LIFE HACK....L I F E H A C K
-    # don't use this function for getting a user's id, use the get_user_id one
+    # don't use this function for getting a user's id, use the id one
     def get_id(self):
         return True
 

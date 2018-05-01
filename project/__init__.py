@@ -46,7 +46,7 @@ pyre_auth = pyre_firebase.auth()
 pyre_db = pyre_firebase.database()
 
 ### ROOM MANAGER ###
-rm = RoomAllocator(db=pyre_db, game_branch="messagespam", new_game_data=NEW_GAME_DATA)
+rm = RoomAllocator(db=pyre_db, game_branch="suicide_chess", new_game_data=NEW_GAME_DATA)
 
 ### ERROR LOGS ###
 # make a rotating file handler to log errors to disk (future: email logging support?)

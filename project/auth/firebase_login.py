@@ -96,7 +96,7 @@ class FirebaseUser(UserMixin):
     def get_auth_property(self, property: str):
         return current_user_auth.get_property(property)
 
-    def get_db_property(self, property: str):
+    def get_db_property(self, property: str):    #gets database property -joleena
         return current_user_db.get_property(property)
 
     def send_email_verification(self):

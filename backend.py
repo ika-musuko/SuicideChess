@@ -6,3 +6,6 @@
 # for example, in this case there is no "project.py" but there is a folder called "project". inside you will find
 #       an "__init__.py" file so go there
 from project import app
+
+if __name__ == "__main__":
+    app.run(debug=True)

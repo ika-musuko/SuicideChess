@@ -25,7 +25,7 @@ def verify_signup_form(signupform: SignupForm):
     conditions = {
           "Make sure the password and confirm password fields are the same." : password == confirm_password
         , "Your password must be at least 8 characters." : len(password) > 7
-        , "Do not use one of the worst %s passwords." % TOTAL_WORST_PASSWORDS : password in WORST_PASSWORDS
+        , "Do not use one of the worst %s passwords." % TOTAL_WORST_PASSWORDS : password not in WORST_PASSWORDS
     }
     # return a list of false conditions
     return [message for message in conditions if not conditions[message]]

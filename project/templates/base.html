@@ -28,7 +28,7 @@
 
         <div class='userinfo'>
             {% if current_user.is_authenticated %}
-            <h3>current user: {{ current_user.get_db_property("displayName") }}</h3>
+            <h3>current user: {{ current_user.get_db_property("displayName") }}</h3> {# ADDED BY JOLEENA: gets display name #}
             {% else %}
             <h3>not logged in</h3>
             {% endif %}

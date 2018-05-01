@@ -1,0 +1,24 @@
+Expected - Version 1.0
+------------------------
+- [x] Create an account for the site
+- [x] Verify themselves via email
+- [x] Login to and logout from the site
+- [  ] Play the Classic variant of Suicide Chess with a random person
+- [  ] Play the Classic variant of Suicide Chess with a friend via links
+
+Desired - Version 2.0
+-----------------------
+- [  ] View and edit their own Profile Settings
+- [  ] Receive email notifications for when the opponent moves
+- [  ] View other player’s profiles
+- [  ] Forfeit from a game
+
+Optional (Ambitious) - Version 3.0
+-----------------------
+- [  ] Google Sign-In
+- [  ] User ranking based on their game performance
+- [  ] Limit their opponent of a friend game to a specific user
+- [  ] Play Blitz games
+- [  ] Anonymous users would be able to play and join blitz games
+- [  ] Write profile bios
+- [  ] Receive browser notifications upon opponent move

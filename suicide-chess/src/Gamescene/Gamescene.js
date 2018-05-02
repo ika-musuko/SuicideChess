@@ -4,6 +4,7 @@ import './Gamescene.css'
 import { observe } from '../Game'
 import { pieceObserve } from '../Game'
 import { getValidMoves } from '../Utilities/GetValidMoves'
+import { getRequiredMoves } from '../Utilities/GetRequiredMoves'
 
 class gamescene extends Component {
   constructor(props) {
@@ -43,6 +44,7 @@ class gamescene extends Component {
       white_pawnG: { x: 6, y: 6, firstMove: true },
       white_pawnH: { x: 7, y: 6, firstMove: true },
       validTiles: [],
+      requiredMoves: [],
 
       whiteTurn: true,
 
@@ -72,12 +74,18 @@ class gamescene extends Component {
 
     if(blackWin || whiteWin) {
       this.setState({
-        whiteWin: whiteWin, 
+        whiteWin: whiteWin,
         blackWin: blackWin,
       })
     }
 
     if(this.state && changesMade) {
+      let requiredMoves = [];
+      if(this.state.whiteTurn) {
+        requiredMoves = getRequiredMoves(pieces, false);
+      } else {
+        requiredMoves = getRequiredMoves(pieces, true);
+      }
       this.setState({
         validTiles: [],
         ...pieces,

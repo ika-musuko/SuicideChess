@@ -27,15 +27,15 @@ export function getRequiredMoves(pieces, whiteTurnNext) {
       }
     }
   } else {
-    for(var property in pieces) {
+    for(property in pieces) {
       if(pieces.hasOwnProperty(property) && property.substring(0,6) === 'black_' && pieces[property].x !== -1) {
         pieces['whiteTurn'] = false;
         let moves = getValidMoves(pieces, property);
         let validPieceMoves = [];
-        for(var moveKey in moves) {
+        for(moveKey in moves) {
           if(moves.hasOwnProperty(moveKey)) {
             let move = moves[moveKey];
-            for(var pieceKey in pieces) {
+            for(pieceKey in pieces) {
               if(pieces.hasOwnProperty(pieceKey) && pieceKey.substring(0,6) === 'white_' && pieces[property].x !== -1) {
                 let piece = pieces[pieceKey];
                 if(move.x === piece.x && move.y === piece.y) {

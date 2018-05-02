@@ -34,12 +34,11 @@ let pieces = {
     white_pawnF: { x: 5, y: 6, firstMove: true },
     white_pawnG: { x: 6, y: 6, firstMove: true },
     white_pawnH: { x: 7, y: 6, firstMove: true },
-
-    validWhiteMoves: [],
-    validBlackMoves: [],
 }
 
 let observer = null
+
+let requiredMoves = []
 
 let firstTimeObserve = true
 let firstTimePieceObserve = true
@@ -51,6 +50,10 @@ let changesMade = false
 function emitChange() {
     whiteTurn = !whiteTurn
     observer(pieces, changesMade)
+}
+
+export function setRequiredMoves(moves) {
+  requiredMoves = moves;
 }
 
 export function observe(o) {
@@ -72,7 +75,20 @@ export function observe(o) {
 
 export function movePiece(move) {
     changesMade = false
-    let canMove = true
+    let canMove = false
+    if(Object.keys(requiredMoves).length > 0) {
+      for(var piece in requiredMoves) {
+        if(move.piece === piece) {
+          for(var requiredMove in requiredMoves[piece]){
+            if(move.x === requiredMoves[piece][requiredMove].x && move.y === requiredMoves[piece][requiredMove].y) {
+              canMove = true;
+            }
+          }
+        }
+      }
+    } else {
+      canMove = true;
+    }
     for(var property in pieces) {
         if(pieces.hasOwnProperty(property)) {
             if(pieces[property].x === move.x && pieces[property].y === move.y && property.substring(0,5) === move.piece.substring(0,5)) {

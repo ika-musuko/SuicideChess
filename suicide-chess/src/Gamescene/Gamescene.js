@@ -5,6 +5,7 @@ import { observe } from '../Game'
 import { pieceObserve } from '../Game'
 import { getValidMoves } from '../Utilities/GetValidMoves'
 import { getRequiredMoves } from '../Utilities/GetRequiredMoves'
+import { setRequiredMoves } from '../Game'
 
 class gamescene extends Component {
   constructor(props) {
@@ -86,10 +87,12 @@ class gamescene extends Component {
       } else {
         requiredMoves = getRequiredMoves(pieces, true);
       }
+      setRequiredMoves(requiredMoves);
       this.setState({
         validTiles: [],
         ...pieces,
         selectedPiece: null,
+        requiredMoves: requiredMoves,
         whiteTurn: changesMade ? !this.state.whiteTurn : this.state.whiteTurn,
       })
     } else {
@@ -101,6 +104,16 @@ class gamescene extends Component {
   }
   handlePieceSelect (piece) {
     let validTiles = getValidMoves(this.state, piece)
+    if(Object.keys(this.state.requiredMoves).length > 0) {
+      validTiles = [];
+      if(Object.keys(this.state.requiredMoves).includes(piece)) {
+        for(var move in this.state.requiredMoves[piece]) {
+          validTiles.push(this.state.requiredMoves[piece][move]);
+        }
+      } else {
+        validTiles = [];
+      }
+    }
     if(piece !== null && this.state.whiteTurn && piece.substring(0,5) === "white") {
       this.setState({
         validTiles: validTiles,

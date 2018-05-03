@@ -187,8 +187,6 @@ class gamescene extends Component {
           var gameListener = firebase.database().ref('/games/' + gameID + '/gameData/');
           gameListener.on('child_changed', function(snapshot) {
             if(snapshot.key.substring(0,6) === 'white_' || snapshot.key.substring(0,6) === 'black_'){
-              console.log(snapshot.key);
-              console.log(snapshot.val());
               var data = snapshot.val();
               data['piece'] = snapshot.key;
               movePiece(data);
@@ -213,8 +211,6 @@ class gamescene extends Component {
               var gameListener = firebase.database().ref('/games/' + property + '/gameData/');
               gameListener.on('child_changed', function(snapshot) {
                 if(snapshot.key.substring(0,6) === 'white_' || snapshot.key.substring(0,6) === 'black_'){
-                  console.log(snapshot.key);
-                  console.log(snapshot.val());
                   var data = snapshot.val();
                   data['piece'] = snapshot.key;
                   movePiece(data);

@@ -6,6 +6,8 @@ import { pieceObserve } from '../Game'
 import { getValidMoves } from '../Utilities/GetValidMoves'
 import { movePiece } from '../Game'
 import firebase from '../firebase'
+import { getRequiredMoves } from '../Utilities/GetRequiredMoves'
+import { setRequiredMoves } from '../Game'
 
 class gamescene extends Component {
   constructor(props) {
@@ -45,6 +47,7 @@ class gamescene extends Component {
       white_pawnG: { x: 6, y: 6, firstMove: true },
       white_pawnH: { x: 7, y: 6, firstMove: true },
       validTiles: [],
+      requiredMoves: [],
 
       whiteTurn: true,
 
@@ -94,6 +97,13 @@ class gamescene extends Component {
       }
 
       if(this.state && changesMade) {
+        let requiredMoves = [];
+        if(this.state.whiteTurn) {
+          requiredMoves = getRequiredMoves(pieces, false);
+        } else {
+          requiredMoves = getRequiredMoves(pieces, true);
+        }
+        setRequiredMoves(requiredMoves);
         var gameData = pieces;
         gameData['whiteTurn'] = changesMade ? !this.state.whiteTurn : this.state.whiteTurn;
         var updates = {};
@@ -103,6 +113,7 @@ class gamescene extends Component {
           validTiles: [],
           ...pieces,
           selectedPiece: null,
+          requiredMoves: requiredMoves,
           whiteTurn: changesMade ? !this.state.whiteTurn : this.state.whiteTurn,
         });
       } else {
@@ -118,6 +129,16 @@ class gamescene extends Component {
     if(this.state.submitted) {
       if((this.state.isWhite && this.state.whiteTurn) || (!this.state.isWhite && !this.state.whiteTurn)) {
         let validTiles = getValidMoves(this.state, piece)
+        if(Object.keys(this.state.requiredMoves).length > 0) {
+          validTiles = [];
+          if(Object.keys(this.state.requiredMoves).includes(piece)) {
+            for(var move in this.state.requiredMoves[piece]) {
+              validTiles.push(this.state.requiredMoves[piece][move]);
+            }
+          } else {
+            validTiles = [];
+          }
+        }
         if(piece !== null && this.state.isWhite && this.state.whiteTurn && piece.substring(0,5) === "white") {
           this.setState({
             validTiles: validTiles,

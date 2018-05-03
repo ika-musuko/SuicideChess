@@ -525,21 +525,27 @@ class PyreResponse:
         self.query_key = query_key
 
     def val(self):
-        if isinstance(self.pyres, list):
-            # unpack pyres into OrderedDict
-            pyre_list = []
-            # if firebase response was a list
-            if isinstance(self.pyres[0].key(), int):
+        # convert the firebase query into a python-compatible type
+        try:
+            if isinstance(self.pyres, list):
+                # unpack pyres into OrderedDict
+                pyre_list = []
+                # if firebase response was a list
+                if isinstance(self.pyres[0].key(), int):
+                    for pyre in self.pyres:
+                        pyre_list.append(pyre.val())
+                    return pyre_list
+                # if firebase response was a dict with keys
                 for pyre in self.pyres:
-                    pyre_list.append(pyre.val())
-                return pyre_list
-            # if firebase response was a dict with keys
-            for pyre in self.pyres:
-                pyre_list.append((pyre.key(), pyre.val()))
-            return OrderedDict(pyre_list)
-        else:
-            # return primitive or simple query results
-            return self.pyres
+                    pyre_list.append((pyre.key(), pyre.val()))
+                return OrderedDict(pyre_list)
+            else:
+                # return primitive or simple query results
+                return self.pyres
+
+        # if there are no matches, return none
+        except IndexError:
+            return None
 
 
     def key(self):

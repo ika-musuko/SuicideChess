@@ -25,11 +25,21 @@ class RoomTestCase(unittest.TestCase):
 
         '''
 
+        # create a friend room
+        self.rm_test.create_friend_game(
+              user_id="the friend"
+            , variant="tests"
+        )
+
         # have players "a", "s", "d".... join random games
         for i, player in enumerate("asdfghjk"):
             #pdb.set_trace()
             # player joins a random game
             room_id, room = self.rm_test.join_random_game(user_id=player, variant="tests")
+
+
+            # ensure this is a random room
+            assert(room["mode"] == "random")
 
             # if the 'index' of the player list is even, then that means the player made a new game and it is "waiting"
             if i % 2 == 0:

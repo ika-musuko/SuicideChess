@@ -5,7 +5,7 @@ objects and functions for managing rooms.
 
 '''
 
-
+import pdb
 from project.models.new_room_data import new_room_data, new_friend_room_data
 import pyrebase_ext
 
@@ -115,33 +115,50 @@ class RoomAllocator:
         :param variant: which variant to play
         :return: the room ID and the room itself in a tuple
         '''
+        # firebase only lets you filter on one condition epic fail
+        '''
         db_query = self.db.child(self.game_branch)\
             .order_by_child("mode").equal_to("random")\
             .order_by_child("status").equal_to("waiting")\
             .limit_to_first(2).get()
-        branch, open_rooms = db_query.key(), db_query.val()
-
-        # get the top room from the open rooms
-        if open_rooms:
-            open_room_key = next(iter(open_rooms))
-            open_room = open_rooms[open_room_key]
-
-        # if there are no open rooms, make a new room
-        if not open_rooms or user_id in open_room["players"]:
+        '''
+        def create_new_random_game():
             return self.new_room(
-                  players=[user_id]
+                players=[user_id]
                 , mode="random"
                 , variant=variant
                 , status="waiting"
             )
+
+        # get all the random games
+        db_query = self.db.child(self.game_branch)\
+            .order_by_child("mode").equal_to("random")\
+            .get()
+        #pdb.set_trace()
+        branch, random_rooms = db_query.key(), db_query.val()
+        if not random_rooms:
+            return create_new_random_game()
+
+        # get the first random waiting game (open room)
+        for room_name in random_rooms:
+            if random_rooms[room_name]["status"] == "waiting":
+                open_room_name, open_room = room_name, random_rooms[room_name]
+                break
+        else:
+            return create_new_random_game()
+
+        # if the player himself is in the room, create a new random game
+        # players can't play themselves!
+        if user_id in open_room["players"]:
+            return create_new_random_game()
 
 
         # change the status of the room
         open_room["players"].append(user_id)
         open_room["status"] = "inprogress"
         self.db.child(self.game_branch)\
-            .child(open_room_key).set(open_room)
-        return open_room_key, open_room
+            .child(open_room_name).set(open_room)
+        return open_room_name, open_room
 
 
     # FRIEND mode

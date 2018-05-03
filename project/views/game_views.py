@@ -74,6 +74,8 @@ def new_game(variant: str, mode: str):
             , variant=variant
         )
 
+        print(requested_room["mode"])
+
         add_to_current_games(room_id)
 
         # go to the page with the new id

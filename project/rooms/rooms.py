@@ -33,7 +33,7 @@ class RoomIsNotFriend(Exception):
     '''
     pass
 
-class RoomAllocator:
+class RoomManager:
     """
     room allocator. responsible for allocating users to rooms and managing room states.
 
@@ -134,7 +134,7 @@ class RoomAllocator:
         db_query = self.db.child(self.game_branch)\
             .order_by_child("mode").equal_to("random")\
             .get()
-        #pdb.set_trace()
+
         branch, random_rooms = db_query.key(), db_query.val()
         if not random_rooms:
             return create_new_random_game()
@@ -155,11 +155,33 @@ class RoomAllocator:
 
         # change the status of the room
         open_room["players"].append(user_id)
-        open_room["status"] = "inprogress"
         self.db.child(self.game_branch)\
             .child(open_room_name).set(open_room)
-        return open_room_name, open_room
 
+        return self.set_room_status(open_room_name, "inprogress")
+
+
+
+    def set_room_status(self, room_id: str, status: str):
+        _, room = self.get_room(room_id)
+        self.set_room_attribute(
+              room_id=room_id
+            , attribute="status"
+            , value=status
+        )
+
+        #pdb.set_trace()
+        if status == "inprogress":
+            self.set_room_attribute(
+                  room_id=room_id
+                , attribute="rematchReady"
+                , value={player: False for player in room["players"]}
+            )
+            #print("IN PROGRESS!!!!!!!!!!!!!")
+            #pdb.set_trace()
+
+        _, room = self.get_room(room_id)
+        return room_id, room
 
     # FRIEND mode
     def create_friend_game(self
@@ -206,10 +228,10 @@ class RoomAllocator:
             raise UserAlreadyInRoom
 
         requested_room["players"].append(user_id)
-        requested_room["status"] = "inprogress"
         self.db.child(self.game_branch)\
             .child(room_id).set(requested_room)
-        return room_id, requested_room
+        return self.set_room_status(room_id, "inprogress")
+
 
     def get_room(self, room_id: str) -> (str, dict):
         '''
@@ -230,10 +252,16 @@ class RoomAllocator:
         # return the room data
         return requested_room_id, requested_room
 
-        # the room ID was not in the current user's room list so throw an exception
 
 
-    def finish_room(self, room_id: str):
+    def set_room_attribute(self, room_id: str, attribute: str, value):
+        # check if the room exists (this should throw a RoomDoesNotExist exception if it doesn't exist)
+        self.get_room(room_id)
+
+        # set the attribute
+        self.db.child(self.game_branch).child(room_id).child(attribute).set(value)
+
+    def clean_up_room(self, room_id: str):
         '''
         delete the room from the room list
         !!! CALL THIS AFTER THE GAME STATISTICS HAVE BEEN RECORDED !!!
@@ -243,3 +271,29 @@ class RoomAllocator:
         db_query = self.db.child(self.game_branch)\
             .child(room_id).get()
         db_query.remove()
+
+    def reset_room(self, room_id: str):
+        # get the room
+        _, room = self.get_room(room_id)
+
+        # set the room data to
+        room_data = new_friend_room_data(
+              players=room["players"]
+            , mode=room["mode"]
+            , variant=room["variant"]
+            , status=room["status"]
+            , new_game_data=self.new_game_data
+        ) if room["mode"] == "friend" else new_room_data(
+              players=room["players"]
+            , mode=room["mode"]
+            , variant=room["variant"]
+            , status=room["status"]
+            , new_game_data=self.new_game_data
+        )
+
+        # update database
+        self.db.child(self.game_branch) \
+            .child(room_id).set(room_data)
+
+        # set the room status to in progress
+        return self.set_room_status(room_id, "inprogress")

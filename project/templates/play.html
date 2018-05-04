@@ -4,4 +4,20 @@
 <p>
     {{ room }}
 </p>
+
+{% if room["status"] == "finished" %}
+    {# has the current user clicked rematch yet #}
+    {% if room["rematch_ready"][current_user.id] %} {# YES THEY HAVE #}
+        <h3>waiting for the opponent to rematch...</h3>
+    {% else %}
+        <a href="{{ url_for('rematch', room_id=room_id) }}">REMATCH</a>
+    {% endif %}
+    <a href="{{ url_for('exit_game', room_id=room_id) }}">EXIT</a>
+{% elif room["status" == "inprogress" %}
+    {# NOTE: DO NOT USE /test_finish IN THE TEMPLATE! THIS IS ONLY FOR TESTING. ERIC WILL DEAL WITH IT IN THE REACT APP #}
+    <a href="{{ url_for('test_finish', room_id=room_id)) }}">finish game</a>
+{% else %} {# room is waiting #}
+    <h3>waiting for opponent......</h3>
+{% endif %}
+
 {% endblock %}

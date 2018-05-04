@@ -12,7 +12,7 @@ from flask_login import LoginManager
 # firebase imports
 from config import pyrebase_config
 import pyrebase_ext
-from project.rooms.rooms import RoomAllocator
+from project.rooms.rooms import RoomManager
 from project.models.new_game_data import NEW_GAME_DATA
 import firebase_admin
 
@@ -46,7 +46,7 @@ pyre_auth = pyre_firebase.auth()
 pyre_db = pyre_firebase.database()
 
 ### ROOM MANAGER ###
-room_allocator = RoomAllocator(db=pyre_db, game_branch="SuicideChess", new_game_data=NEW_GAME_DATA)
+room_manager = RoomManager(db=pyre_db, game_branch="SuicideChess", new_game_data=NEW_GAME_DATA)
 
 ### ERROR LOGS ###
 # make a rotating file handler to log errors to disk (future: email logging support?)

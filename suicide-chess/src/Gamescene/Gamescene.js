@@ -57,6 +57,9 @@ class gamescene extends Component {
 
       databaseRef: firebase.database().ref('games'),
 
+      rematchRoute: '/rematch/' + gameID,
+      exitGameRoute:'/exit_game/' + gameID,
+
       submitted: false,
 
       isWhite: false,

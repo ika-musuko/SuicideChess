@@ -109,42 +109,23 @@ def rematch(room_id: str):
     :param room_id:
     :return:
     '''
+    # try to rematch the room
+    try:
+        room_manager.rematch(room_id, current_user.id)
 
-    # get the room data from the room allocator
-    room = room_manager.get_room(room_id)
-
-    # blow out to index if the room doesn't exist
-    if not room:
-        flash("This room does not exist, cannot rematch.")
-        return redirect(url_for('index'))
-
-    # make sure the current user is in the room he's trying to rematch
-    if current_user.id not in room["players"]:
-        flash("You are not in this room so you cannot rematch this game.")
-        return redirect(url_for("index"))
-
-    # if the room is in progress, notify the player they cannot rematch until the game finishes
-    if room["status"] != "finished":
-        flash("You cannot rematch a game that is not finished yet.")
+        # go back to the room
         return redirect(url_for("play", room_id=room_id))
 
-    # actually try to rematch the game
-    room["rematchReady"][current_user.id] = True
-    room_manager.set_room_attribute(
-          room_id=room_id
-        , attribute="rematchReady"
-        , value=room["rematchReady"]
-    )
-    # refresh the local room variable
-    room = room_manager.get_room(room_id)
+    except rooms.RoomDoesNotExist:
+        flash("This room does not exist. Cannot rematch")
+        return redirect(url_for("index"))
+    except rooms.RoomIsNotYours:
+        flash("This room is not yours. You cannot rematch it.")
+        return redirect(url_for("index"))
+    except rooms.RoomIsInProgress:
+        flash("This room is still in progress")
+        return redirect(url_for("play", room_id=room_id))
 
-    # if all of the players are ready
-    if all(v for k, v in room["rematchReady"]):
-        # reset the room
-        room_manager.reset_room(room_id)
-
-
-    return redirect(url_for("play", room_id=room_id))
 
 
 @app.route("/exit_game/<room_id>")

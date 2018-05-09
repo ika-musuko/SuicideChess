@@ -4,7 +4,7 @@ import os
 
 from project import app, pyre_db
 from project.models.new_game_data import NEW_GAME_DATA
-from project.rooms.rooms import RoomManager, RoomDoesNotExist, RoomIsInProgress, RoomIsNotFriend
+from project.rooms.rooms import RoomManager, RoomDoesNotExist, RoomIsInProgress, RoomIsNotFriend, RoomIsNotYours
 
 class RoomTestCase(unittest.TestCase):
 
@@ -12,6 +12,8 @@ class RoomTestCase(unittest.TestCase):
         app.config['TESTING'] = True
         # create games under the testing branch
         self.rm_test = RoomManager(pyre_db, "testing", NEW_GAME_DATA)
+        self.player1 = "a"
+        self.player2 = "g"
 
     def test_join_random_game(self):
         '''
@@ -33,7 +35,6 @@ class RoomTestCase(unittest.TestCase):
 
         # have players "a", "s", "d".... join random games
         for i, player in enumerate("asdfghjk"):
-            print(player)
             #pdb.set_trace()
             # player joins a random game
             room_id, room = self.rm_test.join_random_game(user_id=player, variant="tests")
@@ -140,6 +141,98 @@ class RoomTestCase(unittest.TestCase):
         with self.assertRaises(RoomIsNotFriend):
             id, _ = self.rm_test.join_random_game(user_id="wowexcellentman", variant="tests")
             self.rm_test.join_friend_game(user_id="snooper", room_id=id)
+
+    def _create_new_game(self):
+        # have two random users join games
+        self.rm_test.join_random_game(user_id=self.player1, variant="tests")
+        room_id, room = self.rm_test.join_random_game(user_id=self.player1, variant="tests")
+        return room_id, room
+
+    def test_rematch(self):
+        '''
+        case:
+            rematch a room only under the prespecified conditions
+        :return:
+        '''
+        room_id, room = self._create_new_game()
+
+        # finish the game
+        self.rm_test.set_room_status(room_id, "finished")
+
+        # have one player rematch the room
+        rematched_room_id, rematched_room = self.rm_test.rematch(room_id=room_id, current_user_id=self.player1)
+
+        # make sure they are in the same room
+        assert(rematched_room_id == room_id)
+
+        # make sure only one player is ready and the other is not
+        assert(rematched_room["rematchReady"][self.player1])
+        assert(not rematched_room["rematchReady"][self.player2])
+
+        # assert that the game is still "finished"
+        assert(rematched_room["status"] == "finished")
+
+        # have the other player rematch the room
+        rematched_room_id, rematched_room = self.rm_test.rematch(room_id=room_id, current_user_id=self.player2)
+
+        # make sure they are in the same room
+        assert(rematched_room_id == room_id)
+
+        # make sure room is reset
+        assert(rematched_room["status"] == "inprogress")
+        # make sure both players are in room
+        assert(self.player1 in rematched_room["players"] and self.player2 in rematched_room["players"])
+        # make sure both players' rematchReady state is set to False
+        assert(not rematched_room["rematchReady"][self.player1] and not rematched_room["rematchReady"][self.player2])
+
+        # try to rematch room without finishing it (should return RoomIsInProgress exception)
+        with self.assertRaises(RoomIsInProgress):
+            self.rm_test.rematch(room_id=room_id, current_user_id=self.player1)
+
+
+    def test_rematch_nonexistent(self):
+        '''
+        case:
+            nonexistent rooms should not be able to rematch
+        :return:
+        '''
+        # try to rematch a nonexistent room
+        with self.assertRaises(RoomDoesNotExist):
+            self.rm_test.rematch(room_id="NONEXISTENT", current_user_id=self.player1)
+
+    def test_rematch_room_in_progress(self):
+        '''
+        case:
+            ensure that only finished games can be rematched
+
+        :return:
+        '''
+        # create a new game
+        room_id, room = self._create_new_game()
+
+        # try to rematch room without finishing it (should return RoomIsInProgress exception)
+        with self.assertRaises(RoomIsInProgress):
+            self.rm_test.rematch(room_id=room_id, current_user_id=self.player1)
+
+
+    def test_rematch_non_player(self):
+        '''
+        case:
+            ensure that only players in the game can rematch a game
+
+        :return:
+        '''
+        # create a new game
+        room_id, room = self._create_new_game()
+
+        # finish the game
+        self.rm_test.set_room_status(room_id, "finished")
+
+        # have a non-player try to rematch the room
+        with self.assertRaises(RoomIsNotYours):
+            self.rm_test.rematch(room_id=room_id, current_user_id="Barge Simpson")
+
+
 
     def tearDown(self):
         pyre_db.child("testing").remove()

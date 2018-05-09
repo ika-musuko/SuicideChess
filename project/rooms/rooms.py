@@ -9,25 +9,43 @@ import pdb
 from project.models.new_room_data import new_room_data, new_friend_room_data
 import pyrebase_ext
 
-class UserAlreadyInRoom(Exception):
+class UseSetRoomStatus(Exception):
+    '''
+    exception to raise if you try to set the room status using set_room_attribute
+    '''
+    pass
+
+class RoomException(Exception):
+    '''
+    base class for all room exceptions
+    '''
+    pass
+
+class RoomIsNotYours(RoomException):
+    '''
+    raise this exception when a user is trying to manipulate a room he is not allowed to
+    '''
+    pass
+
+class UserAlreadyInRoom(RoomException):
     '''
     raise this exception if a user is already in a room
     '''
     pass
 
-class RoomDoesNotExist(Exception):
+class RoomDoesNotExist(RoomException):
     '''
     raise this exception when a room does not exist
     '''
     pass
 
-class RoomIsInProgress(Exception):
+class RoomIsInProgress(RoomException):
     '''
     raise this exception when a room is in progress
     '''
     pass
 
-class RoomIsNotFriend(Exception):
+class RoomIsNotFriend(RoomException):
     '''
     raise this exception when someone is trying to join a non-friend room using the join friend room interface
     '''
@@ -142,7 +160,7 @@ class RoomManager:
         # get the first random waiting game (open room)
         for room_name in random_rooms:
             if random_rooms[room_name]["status"] == "waiting":
-                open_room_name, open_room = room_name, random_rooms[room_name]
+                open_room_id, open_room = room_name, random_rooms[room_name]
                 break
         else:
             return create_new_random_game()
@@ -155,16 +173,23 @@ class RoomManager:
 
         # change the status of the room
         open_room["players"].append(user_id)
-        self.db.child(self.game_branch)\
-            .child(open_room_name).set(open_room)
-
-        return self.set_room_status(open_room_name, "inprogress")
+        return self.set_room(open_room_id, open_room)
 
 
+    def set_room(self, room_id: str, room: dict) -> (str, dict):
+        # check if the room exists
+        self.get_room(room_id)
 
-    def set_room_status(self, room_id: str, status: str):
+        # set the room
+        self.db.child(self.game_branch) \
+            .child(room_id).set(room)
+
+        # set the room status
+        return self.set_room_status(room_id, room["status"])
+
+    def set_room_status(self, room_id: str, status: str) -> (str, dict):
         _, room = self.get_room(room_id)
-        self.set_room_attribute(
+        self._set_room_attribute(
               room_id=room_id
             , attribute="status"
             , value=status
@@ -172,7 +197,7 @@ class RoomManager:
 
         #pdb.set_trace()
         if status == "inprogress":
-            self.set_room_attribute(
+            self._set_room_attribute(
                   room_id=room_id
                 , attribute="rematchReady"
                 , value={player: False for player in room["players"]}
@@ -228,9 +253,7 @@ class RoomManager:
             raise UserAlreadyInRoom
 
         requested_room["players"].append(user_id)
-        self.db.child(self.game_branch)\
-            .child(room_id).set(requested_room)
-        return self.set_room_status(room_id, "inprogress")
+        return self.set_room(room_id, requested_room)
 
 
     def get_room(self, room_id: str) -> (str, dict):
@@ -255,6 +278,13 @@ class RoomManager:
 
 
     def set_room_attribute(self, room_id: str, attribute: str, value):
+        # don't use this to set room["status"]
+        if attribute == "status":
+            raise UseSetRoomStatus
+
+        self._set_room_attribute(room_id, attribute, value)
+
+    def _set_room_attribute(self, room_id: str, attribute: str, value):
         # check if the room exists (this should throw a RoomDoesNotExist exception if it doesn't exist)
         self.get_room(room_id)
 
@@ -292,8 +322,32 @@ class RoomManager:
         )
 
         # update database
-        self.db.child(self.game_branch) \
-            .child(room_id).set(room_data)
+        room["status"] = "inprogress"
+        return self.set_room(room_id, room)
 
-        # set the room status to in progress
-        return self.set_room_status(room_id, "inprogress")
+    def rematch(self, room_id: str, current_user_id: str) -> (str, dict):
+        # get the room data from the room allocator
+        requested_room_id, room = self.get_room(room_id)
+
+        # blow out to index if the room doesn't exist
+        if not room:
+            raise RoomDoesNotExist
+
+        # make sure the current user is in the room he's trying to rematch
+        if current_user_id not in room["players"]:
+            raise RoomIsNotYours
+
+        # if the room is in progress, notify the player they cannot rematch until the game finishes
+        if room["status"] != "finished":
+            raise RoomIsInProgress
+
+        # actually try to rematch the game
+        room["rematchReady"][current_user_id] = True
+
+        # if all of the players are ready
+        if all(v for k, v in room["rematchReady"]):
+            # reset the room
+            self.reset_room(room_id)
+
+
+        return room_id, room

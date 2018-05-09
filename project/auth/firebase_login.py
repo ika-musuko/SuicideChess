@@ -62,58 +62,34 @@ class current_user_auth:
     def send_email_verification():
         return pyre_auth.send_email_verification(pyre_auth.current_user['idToken'])
 
-### user data from database
-class current_user_db:
-    @staticmethod
-    def get_property(property: str):
-        return pyre_db.child("users").child(pyre_auth.current_user['localId']).child(property).get().val()
-
-    @staticmethod
-    def set_property(property: str, value):
-        pyre_db.child("users").child(pyre_auth.current_user['localId']).child(property).set(value)
 
 ### flask_login support
 @lm.user_loader
-def user_loader(dummy):
-    return user_loader_helper()
+def user_loader(id):
+    # check if the user exists in the database
+    if pyre_db.child("users").child(id).get().val()
+        return FirebaseUser(id)
 
-def user_loader_helper():
-    # make sure the current user actually exists
-    if not pyre_auth.current_user:
-        return None
+    # return None if they don't exist
+    return None
 
-    # make sure the user exists inside the database
-    if not current_user_db.get_property("displayName"):
-        return None
-
-    # verify that the user's access token is valid
-    try:
-        parsed_jwt = fb_auth.verify_id_token(pyre_auth.current_user['idToken'], app=fb_admin)
-        return FirebaseUser()
-    # if it's invalid, refresh the token
-    except ValueError:
-        refresh_current_user()
-        return FirebaseUser()
 
 class FirebaseUser(UserMixin):
+    def __init__(self, id):
+        self.id = id
+
     def get_auth_property(self, property: str):
         return current_user_auth.get_property(property)
 
     def get_db_property(self, property: str):    #gets database property -joleena
-        return current_user_db.get_property(property)
+        return pyre_db.child("users").child(self.id).child(property).get().val()
 
     def set_db_property(self, property: str, value):
-        current_user_db.set_property(property, value)
+        pyre_db.child("users").child(self.id).child(property).set(value)
 
     def send_email_verification(self):
         return current_user_auth.send_email_verification()
 
-    @property
-    def id(self):
-        return pyre_auth.current_user['localId']
-
-    # life hack LIFE HACK....L I F E H A C K
-    # don't use this function for getting a user's id, use the id one
     def get_id(self):
-        return True
+        return self.id
 

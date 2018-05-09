@@ -1,5 +1,5 @@
 '''
-rooms.py
+room_manager.py
 
 objects and functions for managing rooms.
 
@@ -7,49 +7,9 @@ objects and functions for managing rooms.
 
 import pdb
 from project.models.new_room_data import new_room_data, new_friend_room_data
+from project.rooms import room_exceptions
 import pyrebase_ext
 
-class UseSetRoomStatus(Exception):
-    '''
-    exception to raise if you try to set the room status using set_room_attribute
-    '''
-    pass
-
-class RoomException(Exception):
-    '''
-    base class for all room exceptions
-    '''
-    pass
-
-class RoomIsNotYours(RoomException):
-    '''
-    raise this exception when a user is trying to manipulate a room he is not allowed to
-    '''
-    pass
-
-class UserAlreadyInRoom(RoomException):
-    '''
-    raise this exception if a user is already in a room
-    '''
-    pass
-
-class RoomDoesNotExist(RoomException):
-    '''
-    raise this exception when a room does not exist
-    '''
-    pass
-
-class RoomIsInProgress(RoomException):
-    '''
-    raise this exception when a room is in progress
-    '''
-    pass
-
-class RoomIsNotFriend(RoomException):
-    '''
-    raise this exception when someone is trying to join a non-friend room using the join friend room interface
-    '''
-    pass
 
 class RoomManager:
     """
@@ -122,6 +82,15 @@ class RoomManager:
             .child(assigned_room_id).set(room_data)
         return assigned_room_id, room_data
 
+    def _add_player(self, room_id: str, user_id: str, room: dict=None) -> (str, dict):
+        if not room:
+            _, room = self.get_room(room_id)
+        if not room["players"]:
+            room["players"] = [user_id]
+        else:
+            room["players"].append(user_id)
+        room["rematchReady"][user_id] = False
+        return self.set_room(room_id, room)
 
     # RANDOM mode
     def join_random_game(self
@@ -171,9 +140,13 @@ class RoomManager:
             return create_new_random_game()
 
 
+        ## A VALID ROOM EXISTS so join it
         # change the status of the room
-        open_room["players"].append(user_id)
-        return self.set_room(open_room_id, open_room)
+        open_room["status"] = "inprogress"
+
+        # add the player to the room
+        return self._add_player(open_room_id, user_id, open_room)
+
 
 
     def set_room(self, room_id: str, room: dict) -> (str, dict):
@@ -195,15 +168,12 @@ class RoomManager:
             , value=status
         )
 
-        #pdb.set_trace()
         if status == "inprogress":
             self._set_room_attribute(
                   room_id=room_id
                 , attribute="rematchReady"
                 , value={player: False for player in room["players"]}
             )
-            #print("IN PROGRESS!!!!!!!!!!!!!")
-            #pdb.set_trace()
 
         _, room = self.get_room(room_id)
         return room_id, room
@@ -234,7 +204,8 @@ class RoomManager:
 
     def join_friend_game(self
                          , user_id: str
-                         , room_id: str) -> (str, dict):
+                         , room_id: str
+                         , access_code: str) -> (str, dict):
         '''
         join an existing friend game
         :param user_id: the user who wants to join a friend game
@@ -243,17 +214,28 @@ class RoomManager:
         '''
         room_id, requested_room = self._query_room(room_id)
 
+        # make sure the room exists
         if not requested_room:
-            raise RoomDoesNotExist
+            raise room_exceptions.RoomDoesNotExist
+        # make sure the room is a friend room
         if requested_room["mode"] != "friend":
-            raise RoomIsNotFriend
-        if requested_room["status"] == "inprogress":
-            raise RoomIsInProgress
+            raise room_exceptions.RoomIsNotFriend
+        # make sure the access code is correct
+        if requested_room["accessCode"] != access_code:
+            raise room_exceptions.IncorrectAccessCode
+        # make sure the game is not already in progress
+        if requested_room["status"] != "waiting":
+            raise room_exceptions.RoomIsNotWaiting
+        # make sure the player is not trying to join his own room
         if user_id in requested_room["players"]:
-            raise UserAlreadyInRoom
+            raise room_exceptions.UserAlreadyInRoom
 
-        requested_room["players"].append(user_id)
-        return self.set_room(room_id, requested_room)
+        ## IF ALL THE ABOVE TESTS FALL THROUGH the join was successful
+        # update the room status
+        requested_room["status"] = "inprogress"
+
+        # add player to the room
+        return self._add_player(room_id, user_id, requested_room)
 
 
     def get_room(self, room_id: str) -> (str, dict):
@@ -268,9 +250,9 @@ class RoomManager:
         requested_room_id, requested_room = \
             self._query_room(room_id)
 
-        # if the room does not exist in the database raise an exception
+        # if the room does not exist in the database raise room_exceptions.an exception
         if not requested_room:
-            raise RoomDoesNotExist
+            raise room_exceptions.RoomDoesNotExist
 
         # return the room data
         return requested_room_id, requested_room
@@ -280,7 +262,7 @@ class RoomManager:
     def set_room_attribute(self, room_id: str, attribute: str, value):
         # don't use this to set room["status"]
         if attribute == "status":
-            raise UseSetRoomStatus
+            raise room_exceptions.UseSetRoomStatus
 
         self._set_room_attribute(room_id, attribute, value)
 
@@ -331,23 +313,23 @@ class RoomManager:
 
         # blow out to index if the room doesn't exist
         if not room:
-            raise RoomDoesNotExist
+            raise room_exceptions.RoomDoesNotExist
 
         # make sure the current user is in the room he's trying to rematch
         if current_user_id not in room["players"]:
-            raise RoomIsNotYours
+            raise room_exceptions.RoomIsNotYours
 
         # if the room is in progress, notify the player they cannot rematch until the game finishes
         if room["status"] != "finished":
-            raise RoomIsInProgress
+            raise room_exceptions.RoomIsInProgress
 
         # actually try to rematch the game
         room["rematchReady"][current_user_id] = True
 
         # if all of the players are ready
-        if all(v for k, v in room["rematchReady"]):
+        if all(ready_state for ready_state in room["rematchReady"].values()):
             # reset the room
-            self.reset_room(room_id)
+            return self.reset_room(room_id)
 
 
-        return room_id, room
+        return self.set_room(room_id, room)

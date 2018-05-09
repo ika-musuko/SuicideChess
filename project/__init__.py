@@ -12,7 +12,7 @@ from flask_login import LoginManager
 # firebase imports
 from config import pyrebase_config
 import pyrebase_ext
-from project.rooms.rooms import RoomManager
+from project.rooms.room_manager import RoomManager
 from project.models.new_game_data import NEW_GAME_DATA
 import firebase_admin
 

@@ -8,10 +8,11 @@ game_views.py
 from flask_login import login_required, current_user
 from flask import request, render_template, redirect, url_for, flash
 
+import project.rooms.room_exceptions
 from project import app, pyre_db, room_manager
 from project.views.view_utils import email_verified
 
-from project.rooms import rooms
+from project.rooms import room_manager
 
 @app.route("/play/<room_id>")
 @login_required
@@ -34,7 +35,7 @@ def play(room_id: str):
             return render_template("play.html", room_id=room_id, room=room)
 
         # handle errors
-        except rooms.RoomDoesNotExist:
+        except project.rooms.room_exceptions.RoomDoesNotExist:
             flash("This room does not exist.")
             return redirect(url_for("index"))
 
@@ -116,13 +117,13 @@ def rematch(room_id: str):
         # go back to the room
         return redirect(url_for("play", room_id=room_id))
 
-    except rooms.RoomDoesNotExist:
+    except project.rooms.room_exceptions.RoomDoesNotExist:
         flash("This room does not exist. Cannot rematch")
         return redirect(url_for("index"))
-    except rooms.RoomIsNotYours:
+    except project.rooms.room_exceptions.RoomIsNotYours:
         flash("This room is not yours. You cannot rematch it.")
         return redirect(url_for("index"))
-    except rooms.RoomIsInProgress:
+    except project.rooms.room_exceptions.RoomIsInProgress:
         flash("This room is still in progress")
         return redirect(url_for("play", room_id=room_id))
 

@@ -13,7 +13,7 @@ import pyrebase_ext
 
 class RoomManager:
     """
-    room allocator. responsible for allocating users to rooms and managing room states.
+    room manager. responsible for allocating users to rooms and managing room states.
 
     rooms are basically dicts. see models/new_room_data.py for details
     """
@@ -281,8 +281,7 @@ class RoomManager:
         :return:
         '''
         db_query = self.db.child(self.game_branch)\
-            .child(room_id).get()
-        db_query.remove()
+            .child(room_id).remove()
 
     def reset_room(self, room_id: str):
         # get the room
@@ -306,6 +305,7 @@ class RoomManager:
         # update database
         room["status"] = "inprogress"
         return self.set_room(room_id, room)
+
 
     def rematch(self, room_id: str, current_user_id: str) -> (str, dict):
         # get the room data from the room allocator
@@ -331,5 +331,15 @@ class RoomManager:
             # reset the room
             return self.reset_room(room_id)
 
-
         return self.set_room(room_id, room)
+
+
+    def player_in_room(self, room_id: str, user_id) -> bool:
+        '''
+        check if a player is in the room
+        :param room_id:
+        :param user_id:
+        :return:
+        '''
+        _, room = self.get_room(room_id)
+        return user_id in room["players"]

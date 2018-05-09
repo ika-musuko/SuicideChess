@@ -5,14 +5,15 @@ game_views.py
 
 '''
 
+from functools import wraps
+
 from flask_login import login_required, current_user
 from flask import request, render_template, redirect, url_for, flash
 
 import project.rooms.room_exceptions
-from project import app, pyre_db, room_manager
+from project import app, pyre_db, room_manager, player_manager
 from project.views.view_utils import email_verified
 
-from project.rooms import room_manager
 
 @app.route("/play/<room_id>")
 @login_required
@@ -75,7 +76,6 @@ def new_game(variant: str, mode: str):
             , variant=variant
         )
 
-        print(requested_room["mode"])
 
         add_to_current_games(room_id)
 
@@ -138,7 +138,32 @@ def exit_game(room_id: str):
     :param room_id:
     :return:
     '''
+
+    # room["winner"] and room["moveList"] set by game app
     # update player statistics
+    # check if the player is in the room
+    if not room_manager.player_in_room(room_id, current_user.id):
+        flash("You are not in this room.")
+        return redirect(url_for("index"))
+
+
+    _, room = room_manager.get_room(room_id)
+
+    for player in room["players"]:
+        # add the current room's move list to the game history
+        player_manager.add_game_history(player, room["moveList"])
+
+        # remove the current game from the player's currentGames list
+        player_manager.remove_current_game(player, room_id)
+
+        # add a win for the winner
+        if player == room["winner"]:
+            player_manager.add_win(player)
+
+        # else add a loss for the loser
+        else:
+            player_manager.add_loss(player)
+
 
     # clean up the game
     room_manager.clean_up_room(room_id)
@@ -146,16 +171,29 @@ def exit_game(room_id: str):
     return redirect(url_for("index"))
 
 
-@app.route("/cancel_game/<room_id>")
+@app.route("/simulate_game/<room_id>")
 @login_required
 @email_verified
-def cancel_game(room_id: str):
+def simulate_game(room_id: str):
     '''
-    just clean up the game and boot the player to the index
+    TEST GAME SIMULATOR
     :param room_id:
     :return:
     '''
-    room_manager.clean_up_room(room_id)
-    return redirect(url_for('index'))
+    # get the room
+    _, room = room_manager.get_room(room_id)
 
+    ###########################
+    ## ..................... ##
+    ## ....play the game.... ##
+    ## ..................... ##
+    ###########################
+
+    # game over, write to the room fields to be processed later
+    room["status"] = "finished"
+    room["winner"] = room["players"][0] # just get the first player as the winner for now
+    room["moveList"] = ["wow", "this", "is", "a", "test"]
+    room_manager.set_room(room_id, room)
+
+    return redirect(url_for("play", room_id=room_id))
 

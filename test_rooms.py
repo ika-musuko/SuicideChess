@@ -246,6 +246,15 @@ class RoomTestCase(unittest.TestCase):
             self.rm_test.rematch(room_id=room_id, current_user_id="Barge Simpson")
 
 
+    def test_clean_up_room(self):
+        '''
+        case:
+            make sure the room doesn't exist after it is cleared
+        :return:
+        '''
+        room_id, room = self._create_new_game()
+
+        #
 
     def tearDown(self):
         pyre_db.child("testing").remove()

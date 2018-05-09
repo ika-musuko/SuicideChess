@@ -14,6 +14,9 @@ def new_room_data(players: list, mode: str, variant: str, status: str, new_game_
                 , "status" : status
                 , "gameData" : new_game_data
                 , "rematchReady" : {player: False for player in players}
+
+                , "winner" : "" # GAME APP output
+                , "moveList" : [] # GAME APP output
             }
 
 def new_friend_room_data(players: list, mode: str, variant: str, status: str, new_game_data: dict):

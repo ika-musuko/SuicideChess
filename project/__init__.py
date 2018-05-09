@@ -12,9 +12,12 @@ from flask_login import LoginManager
 # firebase imports
 from config import pyrebase_config
 import pyrebase_ext
+import firebase_admin
+
+# models imports
 from project.rooms.room_manager import RoomManager
 from project.models.new_game_data import NEW_GAME_DATA
-import firebase_admin
+from project.players.player_manager import PlayerManager
 
 # error logging imports
 import logging
@@ -23,7 +26,7 @@ from logging.handlers import RotatingFileHandler # for error logging
 # other general imports
 import os
 
-FIREBASE_APP_NAME = "flaskbase"
+FIREBASE_APP_NAME = os.getenv("FIREBASE_APP_NAME") or "flaskbase"
 
 app = Flask(__name__)
 app.config.from_pyfile("../config/config.py")
@@ -47,6 +50,9 @@ pyre_db = pyre_firebase.database()
 
 ### ROOM MANAGER ###
 room_manager = RoomManager(db=pyre_db, game_branch="SuicideChess", new_game_data=NEW_GAME_DATA)
+
+### PLAYER MANAGER ###
+player_manager = PlayerManager(db=pyre_db, user_branch="users")
 
 ### ERROR LOGS ###
 # make a rotating file handler to log errors to disk (future: email logging support?)

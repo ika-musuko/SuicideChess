@@ -92,3 +92,12 @@ class PlayerManager:
             current_games = [room_id]
 
         self.set_stat(player_id, "currentGames", current_games)
+
+
+    def get_display_name(self, player_id: str) -> str:
+        '''
+        get the display name from a player
+        :param player_id:
+        :return:
+        '''
+        return self.get_stat(player_id, "displayName")

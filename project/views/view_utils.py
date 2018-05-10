@@ -12,7 +12,7 @@ from flask_login import current_user
 from markupsafe import Markup
 from werkzeug.utils import redirect
 
-from project import app, room_manager
+from project import app, room_manager, player_manager
 
 # use this to inject global variables into the template manager
 @app.context_processor
@@ -20,6 +20,7 @@ def inject_app_context():
     return {
          "debug" : app.debug
         ,"room_manager" : room_manager
+        ,"player_manager" : player_manager
     }
 
 

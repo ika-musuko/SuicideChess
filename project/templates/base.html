@@ -53,7 +53,7 @@
             {% if current_games %}
                 {% for room_id in current_games %}
                     {% if room_id %}
-                        <a href="{{ url_for('play', room_id=room_id) }}">{{ room_id }}</a><span> status: {{ room_manager.get_status(room_id) }}</span>
+            <a href="{{ url_for('play', room_id=room_id) }}">{{ room_id }}</a><span> <b>status:</b> {{ room_manager.get_status(room_id) }} <b>players:</b> {{ room_manager.get_players(room_id) }}</span>
                         <br/>
                     {% endif %}
                 {% endfor %}

@@ -367,7 +367,7 @@ class RoomManager:
         return self.set_room(room_id, room)
 
 
-    def get_status(self, room_id: str):
+    def get_status(self, room_id: str) -> str:
         _, room = self.get_room(room_id)
         return room["status"]
 
@@ -380,6 +380,22 @@ class RoomManager:
         '''
         _, room = self.get_room(room_id)
         return user_id in room["players"]
+
+    def get_players(self, room_id: str) -> list:
+        '''
+        return the list of players in the room by display name
+        :param room_id:
+        :return:
+        '''
+        _, room = self.get_room(room_id)
+
+        # just return the player usernames if the player manager has not been initialized
+        if not self.player_manager:
+            return room["players"]
+
+        # convert the user ID list into a display name list
+        return [self.player_manager.get_display_name(player) for player in room["players"]]
+
 
     def redirect_available(self, room_id: str):
         '''

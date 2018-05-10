@@ -12,6 +12,8 @@
 <p>right click <a href="{{ friend_url }}" id="inviteLink">here</a>, click "copy to clipboard" and then send it to a friend so they can play too!</p>
 {% endif %}
 
+<h3><b>players: </b>{{ room_manager.get_players(room_id) }}</h3>
+
 <p>
     <b>ROOM DATA</b>
     {{ room }}
@@ -20,7 +22,7 @@
 
 {% if room["status"] == "finished" %}
     <b>this game is OVER!!!</b>
-    <p>winner: {{ room["winner"] }}</p>
+    <p>winner: {{ player_manager.get_display_name(room["winner"]) }}</p>
     <p>move list: {{ room["moveList"] }}</p>
     {# has the current user clicked rematch yet #}
     {% if room["rematchReady"][current_user.id] %} {# YES THEY HAVE #}

@@ -148,6 +148,9 @@ def rematch(room_id: str):
     except room_exceptions.RoomIsInProgress:
         flash("This room is still in progress")
         return redirect(url_for("play", room_id=room_id))
+    except room_exceptions.RoomException:
+        flash("This room does not exist anymore. Your room ID may have changed.")
+        return redirect(url_for("index"))
 
 
 @app.route("/exit_game/<room_id>")
@@ -158,27 +161,31 @@ def exit_game(room_id: str):
     :param room_id:
     :return:
     '''
+    try:
+        # room["winner"] and room["moveList"] set by game app
+        # update player statistics
+        # check if the player is in the room
+        if not room_manager.player_in_room(room_id, current_user.id):
+            flash("You are not in this room.")
+            return redirect(url_for("index"))
 
-    # room["winner"] and room["moveList"] set by game app
-    # update player statistics
-    # check if the player is in the room
-    if not room_manager.player_in_room(room_id, current_user.id):
-        flash("You are not in this room.")
-        return redirect(url_for("index"))
+        _, room = room_manager.get_room(room_id)
 
-    _, room = room_manager.get_room(room_id)
+        # update statistics for each player (win, loss, etc)
+        if room["status"] != "waiting":
+            player_manager.update_statistics(room_id, room)
 
-    # update statistics for each player (win, loss, etc)
-    if room["status"] != "waiting":
-        player_manager.update_statistics(room_id, room)
+        # remove the current game from the player's currentGames list
+        for player in room["players"]:
+            player_manager.remove_current_game(player, room_id)
 
-    # remove the current game from the player's currentGames list
-    for player in room["players"]:
-        player_manager.remove_current_game(player, room_id)
+        # clean up the game
+        room_manager.clean_up_room(room_id)
+        flash("thanks for playing!")
 
-    # clean up the game
-    room_manager.clean_up_room(room_id)
-    flash("thanks for playing!")
+    except room_exceptions.RoomException:
+        flash("This room does not exist anymore. Your room ID may have changed.")
+
     return redirect(url_for("index"))
 
 

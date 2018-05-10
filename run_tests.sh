@@ -1,3 +1,3 @@
 #!/bin/sh
-. ./setenv
+. ./setenv.sh
 python tests.py

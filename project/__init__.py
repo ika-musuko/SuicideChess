@@ -53,7 +53,13 @@ player_manager = PlayerManager(db=pyre_db, user_branch="users")
 
 
 # room manager initialization
-room_manager = RoomManager(db=pyre_db, game_branch="SuicideChess", new_game_data=NEW_GAME_DATA, player_manager=player_manager)
+room_manager = RoomManager(
+             db=pyre_db
+           , game_branch="SuicideChess"
+           , new_game_data=NEW_GAME_DATA
+           , rematch_redirects_branch="SuicideChessRedirects"
+           , player_manager=player_manager
+)
 
 # error log initialization
 # make a rotating file handler to log errors to disk (future: email logging support?)

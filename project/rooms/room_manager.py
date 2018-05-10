@@ -19,9 +19,10 @@ class RoomManager:
     rooms are basically dicts. see models/new_room_data.py for details
     """
     def __init__(self, db: pyrebase_ext.Database
-                     , game_branch: str
-                     , new_game_data: dict
-                     , player_manager: PlayerManager=None):
+                 , game_branch: str
+                 , new_game_data: dict
+                 , rematch_redirects_branch: str
+                 , player_manager: PlayerManager=None):
         '''
         constructor
         :param db: the firebase db
@@ -36,15 +37,16 @@ class RoomManager:
         self.db = db
         self.game_branch = game_branch
         self.new_game_data = new_game_data
+        self.rematch_redirects_branch = rematch_redirects_branch
         self.player_manager = player_manager
 
+
     # all these methods should return an (str, dict) tuple containing (game_id, room_data)
-    def new_room(self, players: list
-                     , mode: str
-                     , variant: str
-                     , status: str="waiting"
-                     , friend_mode: bool=False
-            ) -> (str, dict):
+    def _new_room(self, players: list
+                  , mode: str
+                  , variant: str
+                  , status: str="waiting"
+                  ) -> (str, dict):
         '''
         create a new room
         :param players: the list of players for the new room
@@ -73,7 +75,7 @@ class RoomManager:
                                   , variant
                                   , status
                                   , self.new_game_data
-        ) if friend_mode else new_room_data(
+        ) if mode == "friend" else new_room_data(
                                     players
                                   , mode
                                   , variant
@@ -85,14 +87,29 @@ class RoomManager:
             .child(assigned_room_id).set(room_data)
         return assigned_room_id, room_data
 
-    def _add_player(self, room_id: str, user_id: str, room: dict=None) -> (str, dict):
+
+    def add_player(self, room_id: str, user_id: str, room: dict=None) -> (str, dict):
+        # get the room if it is not already provided in the parameter
         if not room:
             _, room = self.get_room(room_id)
+
+        # add to user's current game list
+        if self.player_manager:
+            self.player_manager.add_current_game(user_id, room_id)
+
+        # if the player list is empty, create a new list
         if not room["players"]:
             room["players"] = [user_id]
-        else:
+
+        # otherwise append this player to the list
+        elif user_id not in room["players"]:
             room["players"].append(user_id)
+
+        # this player is not "ready to rematch"
         room["rematchReady"][user_id] = False
+
+
+        # set the room data
         return self.set_room(room_id, room)
 
     # RANDOM mode
@@ -113,7 +130,7 @@ class RoomManager:
             .limit_to_first(2).get()
         '''
         def create_new_random_game():
-            return self.new_room(
+            return self._new_room(
                 players=[user_id]
                 , mode="random"
                 , variant=variant
@@ -148,7 +165,7 @@ class RoomManager:
         open_room["status"] = "inprogress"
 
         # add the player to the room
-        return self._add_player(open_room_id, user_id, open_room)
+        return self.add_player(open_room_id, user_id, open_room)
 
 
 
@@ -191,8 +208,8 @@ class RoomManager:
         :param variant: the variant of the game
         :return: the room ID and the room itself in a tuple
         '''
-        return self.new_room([user_id], "friend", variant, friend_mode=True)
-
+        room_id, room = self._new_room([user_id], "friend", variant)
+        return self.add_player(room_id, user_id)
 
     def _query_room(self
                     , room_id: str) -> (str, dict):
@@ -238,7 +255,7 @@ class RoomManager:
         requested_room["status"] = "inprogress"
 
         # add player to the room
-        return self._add_player(room_id, user_id, requested_room)
+        return self.add_player(room_id, user_id, requested_room)
 
 
     def get_room(self, room_id: str) -> (str, dict):
@@ -287,27 +304,36 @@ class RoomManager:
             .child(room_id).remove()
 
     def reset_room(self, room_id: str):
+        '''
+        boot the players out of the current room and put them in a new room
+        :param room_id:
+        :return:
+        '''
         # get the room
         _, room = self.get_room(room_id)
 
-        # set the room data to
-        room_data = new_friend_room_data(
-              players=room["players"]
-            , mode=room["mode"]
-            , variant=room["variant"]
-            , status=room["status"]
-            , new_game_data=self.new_game_data
-        ) if room["mode"] == "friend" else new_room_data(
-              players=room["players"]
-            , mode=room["mode"]
-            , variant=room["variant"]
-            , status=room["status"]
-            , new_game_data=self.new_game_data
-        )
+        # delete the current room from the database
+        self.clean_up_room(room_id)
+
+        # make a new room for the players
+        new_room_id, new_room = self._new_room(
+                              players=room["players"]
+                            , mode=room["mode"]
+                            , variant=room["variant"]
+                        )
+
+        # set the redirect path
+        self.db.child(self.rematch_redirects_branch).child(room_id).set(new_room_id)
+
+        # delete the game from each player's current games and add the new room
+        if self.player_manager:
+            for player in room["players"]:
+                self.player_manager.remove_current_game(player, room_id)
+                self.player_manager.add_current_game(player, new_room_id)
 
         # update database
-        room["status"] = "inprogress"
-        return self.set_room(room_id, room)
+        new_room["status"] = "inprogress"
+        return self.set_room(new_room_id, new_room)
 
 
     def rematch(self, room_id: str, current_user_id: str) -> (str, dict):
@@ -352,3 +378,11 @@ class RoomManager:
         '''
         _, room = self.get_room(room_id)
         return user_id in room["players"]
+
+    def redirect_available(self, room_id: str):
+        '''
+        check if this room redirects to another room
+        :param room_id:
+        :return:
+        '''
+        return self.db.child(self.rematch_redirects_branch).child(room_id).get().val()

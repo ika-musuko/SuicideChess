@@ -8,10 +8,10 @@ game_views.py
 from functools import wraps
 
 from flask_login import login_required, current_user
-from flask import request, render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash
 
-import project.rooms.room_exceptions
-from project import app, pyre_db, room_manager, player_manager
+from project.rooms import room_exceptions
+from project import app, room_manager, player_manager
 
 
 @app.route("/play/<room_id>")
@@ -34,25 +34,18 @@ def play(room_id: str):
             return render_template("play.html", room_id=room_id, room=room)
 
         # handle errors
-        except project.rooms.room_exceptions.RoomDoesNotExist:
+        except room_exceptions.RoomDoesNotExist:
             flash("This room does not exist.")
             return redirect(url_for("index"))
+
+    # handle if the room rematched (new room created)
+    redirect_available = room_manager.redirect_available(room_id)
+    if redirect_available:
+        return redirect(url_for("play", room_id=redirect_available))
 
     # user is not in the requested room
     flash("You are not playing in this room.")
     return redirect(url_for("index"))
-
-
-@login_required
-def add_to_current_games(room_id: str):
-    # get the list of current games and add it to the user's
-    # current game list
-    current_games = current_user.get_db_property("currentGames")
-    if current_games:
-        current_games.append(room_id)
-    else:
-        current_games = [room_id]
-    current_user.set_db_property("currentGames", current_games)
 
 
 @app.route("/new_game/<variant>/<mode>")
@@ -72,9 +65,6 @@ def new_game(variant: str, mode: str):
             , variant=variant
         )
 
-
-        add_to_current_games(room_id)
-
         # go to the page with the new id
         return redirect(url_for("play", room_id=room_id))
 
@@ -87,14 +77,50 @@ def new_game(variant: str, mode: str):
             , variant=variant
         )
 
-        add_to_current_games(room_id)
-
         # make a verification url for the friend game
         #verification_url = url_for("accept_friend_game", access_code=requested_room["accessCode"])
         return redirect(url_for("play", room_id=room_id))
 
     flash("This variant does not exist.")
     return redirect(url_for("index"))
+
+
+@app.route("/invite/<room_id>/<access_code>")
+@login_required
+def invite(room_id: str, access_code: str):
+    '''
+    when a friend clicks on this link they will try to join the room
+    it is successful if the access_code parameter matches the room's accessCode key
+    :param room_id:
+    :param access_code:
+    :return:
+    '''
+    try:
+        # try to join the room with the access code
+        room_manager.join_friend_game(
+              user_id=current_user.id
+            , room_id=room_id
+            , access_code=access_code
+        )
+
+        # go to the room
+        return redirect(url_for("play", room_id=room_id))
+
+    except room_exceptions.RoomDoesNotExist:
+        flash("This room does not exist")
+        return redirect(url_for("index"))
+    except room_exceptions.RoomIsNotFriend:
+        flash("This is not a friend room")
+        return redirect(url_for("index"))
+    except room_exceptions.IncorrectAccessCode:
+        flash("Your invite URL is incorrect")
+        return redirect(url_for("index"))
+    except room_exceptions.RoomIsNotWaiting:
+        flash("This room is not waiting for a friend")
+        return redirect(url_for("index"))
+    except room_exceptions.UserAlreadyInRoom:
+        flash("You can't join your own room!")
+        return redirect(url_for("play", room_id=room_id))
 
 
 @app.route("/rematch/<room_id>")
@@ -108,21 +134,20 @@ def rematch(room_id: str):
 
     # try to rematch the room
     try:
-        room_manager.rematch(room_id, current_user.id)
+        rematched_room_id, _ = room_manager.rematch(room_id, current_user.id)
 
         # go back to the room
-        return redirect(url_for("play", room_id=room_id))
+        return redirect(url_for("play", room_id=rematched_room_id))
 
-    except project.rooms.room_exceptions.RoomDoesNotExist:
+    except room_exceptions.RoomDoesNotExist:
         flash("This room does not exist. Cannot rematch")
         return redirect(url_for("index"))
-    except project.rooms.room_exceptions.RoomIsNotYours:
+    except room_exceptions.RoomIsNotYours:
         flash("This room is not yours. You cannot rematch it.")
         return redirect(url_for("index"))
-    except project.rooms.room_exceptions.RoomIsInProgress:
+    except room_exceptions.RoomIsInProgress:
         flash("This room is still in progress")
         return redirect(url_for("play", room_id=room_id))
-
 
 
 @app.route("/exit_game/<room_id>")

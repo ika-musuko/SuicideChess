@@ -5,19 +5,36 @@ tests.py
 
 '''
 
-# suppress ResourceWarning
 import warnings
-
 import unittest
 import pdb
 import os
 
 from pyrebase_init import initialize_pyrebase
 
-from project.rooms import room_exceptions
-from project.models.new_game_data import NEW_GAME_DATA
-from project.rooms import room_manager
+from project.players import player_manager
+from project.models.new_user_data import new_user_data
 
+from project.rooms import room_exceptions
+from project.rooms import room_manager
+from project.models.new_game_data import NEW_GAME_DATA
+
+'''
+class PlayerTestCase(unittest.TestCase):
+    def setUp(self):
+        # suppress resource warnings
+        warnings.simplefilter("ignore", ResourceWarning)
+
+        # testing user branch name
+        self.testing_branch_name = "testUsers"
+
+        # initialize the database
+        self.pyre_db = initialize_pyrebase().database()
+
+        # the player manager
+        self.player_manager = player_manager.PlayerManager(db=self.pyre_db, user_branch=self.testing_branch_name)
+        
+'''
 
 class RoomTestCase(unittest.TestCase):
 
@@ -25,14 +42,20 @@ class RoomTestCase(unittest.TestCase):
         # suppress resource warnings
         warnings.simplefilter("ignore", ResourceWarning)
 
-        # testing branch name
+        # testing game branch name
         self.testing_branch_name = "testing"
+        self.testing_redirects = "testingRedirects"
 
         # initialize the database
         self.pyre_db = initialize_pyrebase().database()
 
         # create games under the testing branch
-        self.room_manager = room_manager.RoomManager(db=self.pyre_db, game_branch=self.testing_branch_name, new_game_data=NEW_GAME_DATA)
+        self.room_manager = room_manager.RoomManager(
+              db=self.pyre_db
+            , game_branch=self.testing_branch_name
+            , new_game_data=NEW_GAME_DATA
+            , rematch_redirects_branch=self.testing_redirects
+        )
 
         # set player IDs
         self.player1 = "player1"
@@ -114,6 +137,7 @@ class RoomTestCase(unittest.TestCase):
             robustness, reusability
 
         '''
+
         room_id, room = self.room_manager.create_friend_game(user_id=self.player1, variant="tests")
         friend_room_id, room = self.room_manager.join_friend_game(user_id=self.player2, room_id=room_id, access_code=room["accessCode"])
         # make sure the friend's room id is the same as the one requested (same room)
@@ -198,7 +222,7 @@ class RoomTestCase(unittest.TestCase):
         # have one player rematch the room
         rematched_room_id, rematched_room = self.room_manager.rematch(room_id=room_id, current_user_id=self.player1)
 
-        # make sure they are in the same room
+        # make sure they have not moved rooms yet
         assert(rematched_room_id == room_id)
 
         # make sure only one player is ready and the other is not
@@ -211,9 +235,6 @@ class RoomTestCase(unittest.TestCase):
         # have the other player rematch the room
         rematched_room_id, rematched_room = self.room_manager.rematch(room_id=room_id, current_user_id=self.player2)
 
-        # make sure they are in the same room
-        assert(rematched_room_id == room_id)
-
         # make sure room is reset
         assert(rematched_room["status"] == "inprogress")
         # make sure both players are in room
@@ -223,7 +244,7 @@ class RoomTestCase(unittest.TestCase):
 
         # try to rematch room without finishing it (should return rooms.RoomIsInProgress exception)
         with self.assertRaises(room_exceptions.RoomIsInProgress):
-            self.room_manager.rematch(room_id=room_id, current_user_id=self.player1)
+            self.room_manager.rematch(room_id=rematched_room_id, current_user_id=self.player1)
 
 
     def test_rematch_nonexistent(self):
@@ -285,6 +306,7 @@ class RoomTestCase(unittest.TestCase):
 
     def tearDown(self):
         self.pyre_db.child(self.testing_branch_name).remove()
+        self.pyre_db.child(self.testing_redirects).remove()
 
 
 if __name__ == "__main__":

@@ -130,12 +130,14 @@ class RoomManager:
             .limit_to_first(2).get()
         '''
         def create_new_random_game():
-            return self._new_room(
+
+            room_id, room = self._new_room(
                 players=[user_id]
                 , mode="random"
                 , variant=variant
                 , status="waiting"
             )
+            return self.add_player(room_id, user_id)
 
         # get all the random games
         db_query = self.db.child(self.game_branch)\

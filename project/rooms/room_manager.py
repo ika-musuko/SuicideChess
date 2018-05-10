@@ -8,6 +8,7 @@ objects and functions for managing rooms.
 import pdb
 from project.models.new_room_data import new_room_data, new_friend_room_data
 from project.rooms import room_exceptions
+from project.players.player_manager import PlayerManager
 import pyrebase_ext
 
 
@@ -19,7 +20,8 @@ class RoomManager:
     """
     def __init__(self, db: pyrebase_ext.Database
                      , game_branch: str
-                     , new_game_data: dict):
+                     , new_game_data: dict
+                     , player_manager: PlayerManager=None):
         '''
         constructor
         :param db: the firebase db
@@ -34,6 +36,7 @@ class RoomManager:
         self.db = db
         self.game_branch = game_branch
         self.new_game_data = new_game_data
+        self.player_manager = player_manager
 
     # all these methods should return an (str, dict) tuple containing (game_id, room_data)
     def new_room(self, players: list
@@ -329,10 +332,16 @@ class RoomManager:
         # if all of the players are ready
         if all(ready_state for ready_state in room["rematchReady"].values()):
             # reset the room
+            if self.player_manager:
+                self.player_manager.update_statistics(room_id, room)
             return self.reset_room(room_id)
 
         return self.set_room(room_id, room)
 
+
+    def get_status(self, room_id: str):
+        _, room = self.get_room(room_id)
+        return room["status"]
 
     def player_in_room(self, room_id: str, user_id) -> bool:
         '''

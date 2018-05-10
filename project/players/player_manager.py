@@ -56,3 +56,16 @@ class PlayerManager:
         current_games.remove(room_id)
 
         self.set_stat(player_id, "currentGames", current_games)
+
+    def update_statistics(self, room_id: str, room: dict):
+        for player in room["players"]:
+            # add the current room's move list to the game history
+            self.add_game_history(player, room["moveList"])
+
+            # add a win for the winner
+            if player == room["winner"]:
+                self.add_win(player)
+
+            # else add a loss for the loser
+            else:
+                self.add_loss(player)

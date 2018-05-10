@@ -28,7 +28,7 @@
 
         <div class='userinfo'>
             {% if current_user.is_authenticated %}
-            <h3>current user: {{ current_user.get_db_property("displayName") }}</h3> {# ADDED BY JOLEENA: gets display name #}
+            <h3>current user: {{ current_user.display_name }}</h3> {# ADDED BY JOLEENA: gets display name #}
             {% else %}
             <h3>not logged in</h3>
             {% endif %}
@@ -37,17 +37,12 @@
         <div class='menubar'>
             <a href="{{ url_for('index') }}">home</a>
             {% if current_user.is_authenticated %}
-                {% if current_user.get_auth_property("emailVerified") %}
                 <a href="{{ url_for('new_game', variant='classic', mode='random') }}">new classic random</a>
                 <a href="{{ url_for('new_game', variant='classic', mode='friend') }}">new classic friend</a>
-                {% else %}
-                <a href="{{ url_for('resend_email_verification') }}">resend email verification</a>
-                {% endif %}
-            <a href="{{ url_for('log_out') }}">log out</a>
-            <a href="{{ url_for('delete_account') }}">delete account</a>
+                <a href="{{ url_for('log_out') }}">log out</a>
+                <a href="{{ url_for('edit_profile') }}">edit profile</a>
             {% else %}
-            <a href="{{ url_for('log_in') }}">log in</a>
-            <a href="{{ url_for('sign_up') }}">sign up</a>
+                <a href="{{ url_for('google.login') }}">log in</a>
             {% endif %}
         </div>
 
@@ -58,7 +53,8 @@
             {% if current_games %}
                 {% for room_id in current_games %}
                     {% if room_id %}
-                        <a href="{{ url_for('play', room_id=room_id) }}">{{ room_id }}</a>
+                        <a href="{{ url_for('play', room_id=room_id) }}">{{ room_id }}</a><span> status: {{ room_manager.get_status(room_id) }}</span>
+                        <br/>
                     {% endif %}
                 {% endfor %}
             {% else %}

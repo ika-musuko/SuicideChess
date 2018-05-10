@@ -12,12 +12,16 @@ from flask_login import current_user
 from markupsafe import Markup
 from werkzeug.utils import redirect
 
-from project import app
+from project import app, room_manager
 
-# be able to show debug info in a page template
+# use this to inject global variables into the template manager
 @app.context_processor
-def inject_debug():
-    return dict(debug=app.debug)
+def inject_app_context():
+    return {
+         "debug" : app.debug
+        ,"room_manager" : room_manager
+    }
+
 
 # use a @logout_required decorator to require a user to be logged out to view
 def logout_required(f):

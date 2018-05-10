@@ -21,6 +21,7 @@
 
 {% else %} {# room is waiting #}
     <h3>waiting for opponent......</h3>
+    <a href="{{ url_for('exit_game', room_id=room_id) }}">EXIT</a>
 {% endif %}
 
 {% endblock %}

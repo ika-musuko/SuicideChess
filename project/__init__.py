@@ -52,13 +52,15 @@ google_blueprint = make_google_blueprint(
     offline=offline_state
 )
 
-app.register_blueprint(google_blueprint, url_prefix='/log_in')
+app.register_blueprint(google_blueprint, url_prefix='/login')
 
-# room manager initialization
-room_manager = RoomManager(db=pyre_db, game_branch="SuicideChess", new_game_data=NEW_GAME_DATA)
 
 # player manager initialization
 player_manager = PlayerManager(db=pyre_db, user_branch="users")
+
+
+# room manager initialization
+room_manager = RoomManager(db=pyre_db, game_branch="SuicideChess", new_game_data=NEW_GAME_DATA, player_manager=player_manager)
 
 # error log initialization
 # make a rotating file handler to log errors to disk (future: email logging support?)

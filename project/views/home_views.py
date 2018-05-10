@@ -5,8 +5,8 @@ home_views.py
 
 '''
 
-from flask import render_template
-from flask_login import login_required
+from flask import render_template, flash
+from flask_login import login_required, current_user
 
 from project import app
 
@@ -24,4 +24,8 @@ def index() -> str:
 @login_required
 def edit_profile() -> str:
     form = EditProfileForm()
+    if form.validate_on_submit() and form.display_name.data:
+        current_user.set_db_property("displayName", form.display_name.data)
+        flash("Display name successfully changed!")
+
     return render_template("edit_profile.html", form=form)

@@ -12,12 +12,10 @@ from flask import request, render_template, redirect, url_for, flash
 
 import project.rooms.room_exceptions
 from project import app, pyre_db, room_manager, player_manager
-from project.views.view_utils import email_verified
 
 
 @app.route("/play/<room_id>")
 @login_required
-@email_verified
 def play(room_id: str):
     '''
     view for directly going to a room from an ID (like from the
@@ -46,7 +44,6 @@ def play(room_id: str):
 
 
 @login_required
-@email_verified
 def add_to_current_games(room_id: str):
     # get the list of current games and add it to the user's
     # current game list
@@ -60,7 +57,6 @@ def add_to_current_games(room_id: str):
 
 @app.route("/new_game/<variant>/<mode>")
 @login_required
-@email_verified
 def new_game(variant: str, mode: str):
     '''
     view for creating a new game
@@ -103,13 +99,13 @@ def new_game(variant: str, mode: str):
 
 @app.route("/rematch/<room_id>")
 @login_required
-@email_verified
 def rematch(room_id: str):
     '''
     rematch a game
     :param room_id:
     :return:
     '''
+
     # try to rematch the room
     try:
         room_manager.rematch(room_id, current_user.id)
@@ -131,7 +127,6 @@ def rematch(room_id: str):
 
 @app.route("/exit_game/<room_id>")
 @login_required
-@email_verified
 def exit_game(room_id: str):
     '''
     update the player statistics of the game and clean it up
@@ -146,24 +141,15 @@ def exit_game(room_id: str):
         flash("You are not in this room.")
         return redirect(url_for("index"))
 
-
     _, room = room_manager.get_room(room_id)
 
+    # update statistics for each player (win, loss, etc)
+    if room["status"] != "waiting":
+        player_manager.update_statistics(room_id, room)
+
+    # remove the current game from the player's currentGames list
     for player in room["players"]:
-        # add the current room's move list to the game history
-        player_manager.add_game_history(player, room["moveList"])
-
-        # remove the current game from the player's currentGames list
         player_manager.remove_current_game(player, room_id)
-
-        # add a win for the winner
-        if player == room["winner"]:
-            player_manager.add_win(player)
-
-        # else add a loss for the loser
-        else:
-            player_manager.add_loss(player)
-
 
     # clean up the game
     room_manager.clean_up_room(room_id)
@@ -173,7 +159,6 @@ def exit_game(room_id: str):
 
 @app.route("/simulate_game/<room_id>")
 @login_required
-@email_verified
 def simulate_game(room_id: str):
     '''
     TEST GAME SIMULATOR

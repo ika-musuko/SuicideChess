@@ -5,7 +5,6 @@ new_user_data.py
 '''
 
 def new_user_data(display_name: str, e_mail: str):
-
     return {
           "displayName" : display_name
         , "draws" : 0

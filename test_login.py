@@ -4,7 +4,7 @@ import pdb
 from flask_login import login_user, current_user
 
 from project import app, pyre_auth
-from project.auth.firebase_login import sign_in_firebase_user \
+from project.auth.firebase_user import sign_in_firebase_user \
     , create_firebase_user \
     , delete_current_firebase_user \
     , current_user_auth \

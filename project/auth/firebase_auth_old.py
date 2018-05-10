@@ -1,18 +1,4 @@
 '''
-firebase_login.py
-
-handling the firebase authentication module.
-deals with sending and receiving data from the firebase authentication module and also login persistence
-
-SORRY HALF OF THIS CODE IS JUST HACKS LOL
-'''
-
-import requests
-from flask_login import UserMixin
-
-from project import pyre_db, lm
-
-'''
 ### pyrebase wrappers
 # sign_in_with_email_and_password(email, password)
 def sign_in_firebase_user(email: str, password: str):
@@ -61,29 +47,3 @@ class current_user_auth:
     def send_email_verification():
         return pyre_auth.send_email_verification(pyre_auth.current_user['idToken'])
 '''
-
-
-### flask_login support
-@lm.user_loader
-def user_loader(id):
-    # check if the user exists in the database
-    if pyre_db.child("users").child(id).get().val():
-        return FirebaseUser(id)
-
-    # return None if they don't exist
-    return None
-
-
-class FirebaseUser(UserMixin):
-    def __init__(self, id):
-        self.id = id
-
-    def get_db_property(self, property: str):    #gets database property -joleena
-        return pyre_db.child("users").child(self.id).child(property).get().val()
-
-    def set_db_property(self, property: str, value):
-        pyre_db.child("users").child(self.id).child(property).set(value)
-
-    def get_id(self):
-        return self.id
-

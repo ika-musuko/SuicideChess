@@ -29,15 +29,6 @@ def logout_required(f):
         return f(*args, **kwargs)
     return decorated_view
 
-# use a @email_verified decorator to require a user to have their email verified to view
-def email_verified(f):
-    @wraps(f)
-    def decorated_view(*args, **kwargs):
-        if not (current_user.is_authenticated or current_user.get_auth_property("emailVerified")):
-            return "you must verify your email to view this content", 401
-        return f(*args, **kwargs)
-    return decorated_view
-
 
 # output a list of messages into a buileted list
 def bulletize_messages(messages: list):
@@ -47,3 +38,6 @@ def bulletize_messages(messages: list):
 # output a title and bulleted messages
 def title_and_messages(title: str, messages: list):
     return Markup("<h2>%s</h2><br/>%s" % (title, bulletize_messages(messages)))
+
+
+GETPOST = ['GET', 'POST']

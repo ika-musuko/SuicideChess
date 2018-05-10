@@ -7,7 +7,7 @@ from flask_login import LoginManager
 
 
 # firebase imports
-import pyrebase_ext
+from pyrebase_init import initialize_pyrebase
 
 # google login imports
 from flask_dance.contrib.google import make_google_blueprint
@@ -34,14 +34,7 @@ lm = LoginManager()
 lm.init_app(app)
 
 # pyrebase initialization (python-firebase library)
-pyre_firebase = pyrebase_ext.initialize_app({
-      "apiKey" : os.getenv("PYREBASE_API_KEY") or ""
-    , "authDomain" : os.getenv("PYREBASE_AUTH_DOMAIN") or ""
-    , "databaseURL" : os.getenv("PYREBASE_DATABASE_URL") or ""
-    , "storageBucket" : os.getenv("PYREBASE_STORAGE_BUCKET") or ""
-    , "messagingSenderId" : os.getenv("PYREBASE_MESSAGING_SENDER_ID") or ""
-})
-pyre_db = pyre_firebase.database()
+pyre_db = initialize_pyrebase().database()
 
 # google login initialization
 offline_state = not os.getenv("IS_ONLINE")

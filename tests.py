@@ -1,20 +1,43 @@
+'''
+tests.py
+
+!!!!! WARNING! DO NOT RUN THIS BY ITSELF! run run_tests.sh instead !!!!!
+
+'''
+
+# suppress ResourceWarning
+import warnings
+
 import unittest
 import pdb
 import os
 
+from pyrebase_init import initialize_pyrebase
+
 from project.rooms import room_exceptions
-from project import app, pyre_db
 from project.models.new_game_data import NEW_GAME_DATA
 from project.rooms import room_manager
+
 
 class RoomTestCase(unittest.TestCase):
 
     def setUp(self):
-        app.config['TESTING'] = True
+        # suppress resource warnings
+        warnings.simplefilter("ignore", ResourceWarning)
+
+        # testing branch name
+        self.testing_branch_name = "testing"
+
+        # initialize the database
+        self.pyre_db = initialize_pyrebase().database()
+
         # create games under the testing branch
-        self.rm_test = room_manager.RoomManager(pyre_db, "testing", NEW_GAME_DATA)
+        self.room_manager = room_manager.RoomManager(db=self.pyre_db, game_branch=self.testing_branch_name, new_game_data=NEW_GAME_DATA)
+
+        # set player IDs
         self.player1 = "player1"
         self.player2 = "player2"
+
 
     def test_join_random_game(self):
         '''
@@ -29,7 +52,7 @@ class RoomTestCase(unittest.TestCase):
         '''
 
         # create a friend room
-        self.rm_test.create_friend_game(
+        self.room_manager.create_friend_game(
               user_id="the friend"
             , variant="tests"
         )
@@ -38,7 +61,7 @@ class RoomTestCase(unittest.TestCase):
         for i, player in enumerate("asdfghjk"):
             #pdb.set_trace()
             # player joins a random game
-            room_id, room = self.rm_test.join_random_game(user_id=player, variant="tests")
+            room_id, room = self.room_manager.join_random_game(user_id=player, variant="tests")
 
 
             # ensure this is a random room
@@ -71,8 +94,8 @@ class RoomTestCase(unittest.TestCase):
             robustness, reusability
 
         '''
-        id, _ = self.rm_test.create_friend_game(user_id=self.player1, variant="tests")
-        db_query = pyre_db.child("testing").child(id).get()
+        id, _ = self.room_manager.create_friend_game(user_id=self.player1, variant="tests")
+        db_query = self.pyre_db.child(self.testing_branch_name).child(id).get()
         game_id, requested_room = db_query.key(), db_query.val()
 
         # assert that the the room actually exists
@@ -91,8 +114,8 @@ class RoomTestCase(unittest.TestCase):
             robustness, reusability
 
         '''
-        room_id, room = self.rm_test.create_friend_game(user_id=self.player1, variant="tests")
-        friend_room_id, room = self.rm_test.join_friend_game(user_id=self.player2, room_id=room_id, access_code=room["accessCode"])
+        room_id, room = self.room_manager.create_friend_game(user_id=self.player1, variant="tests")
+        friend_room_id, room = self.room_manager.join_friend_game(user_id=self.player2, room_id=room_id, access_code=room["accessCode"])
         # make sure the friend's room id is the same as the one requested (same room)
         assert(room_id == friend_room_id)
         # make sure both players are in the room
@@ -110,7 +133,7 @@ class RoomTestCase(unittest.TestCase):
         '''
         # throw exception signaling that the room doesn't exist
         with self.assertRaises(room_exceptions.RoomDoesNotExist):
-            self.rm_test.join_friend_game(user_id="coolman", room_id="nonexistentroom", access_code="")
+            self.room_manager.join_friend_game(user_id="coolman", room_id="nonexistentroom", access_code="")
 
     def test_join_friend_game_in_progress(self):
         '''
@@ -124,9 +147,9 @@ class RoomTestCase(unittest.TestCase):
         '''
         # throw exception signaling that the room is full
         with self.assertRaises(room_exceptions.RoomIsNotWaiting):
-            id, room = self.rm_test.create_friend_game(user_id=self.player1, variant="tests")
-            id, room = self.rm_test.join_friend_game(user_id=self.player2, room_id=id, access_code=room["accessCode"])
-            self.rm_test.join_friend_game(user_id="Barge Simpson", room_id=id, access_code=room["accessCode"])
+            id, room = self.room_manager.create_friend_game(user_id=self.player1, variant="tests")
+            id, room = self.room_manager.join_friend_game(user_id=self.player2, room_id=id, access_code=room["accessCode"])
+            self.room_manager.join_friend_game(user_id="Barge Simpson", room_id=id, access_code=room["accessCode"])
 
     def test_join_friend_game_incorrect_access_code(self):
         '''
@@ -137,8 +160,8 @@ class RoomTestCase(unittest.TestCase):
             throw an IncorrectAccessCode exception
         '''
         with self.assertRaises(room_exceptions.IncorrectAccessCode):
-            id, room = self.rm_test.create_friend_game(user_id=self.player1, variant="tests")
-            self.rm_test.join_friend_game(user_id=self.player2, room_id=id, access_code="WRONG!!!!!!")
+            id, room = self.room_manager.create_friend_game(user_id=self.player1, variant="tests")
+            self.room_manager.join_friend_game(user_id=self.player2, room_id=id, access_code="WRONG!!!!!!")
 
     def test_join_friend_game_not_friend(self):
         '''
@@ -152,13 +175,13 @@ class RoomTestCase(unittest.TestCase):
 
         '''
         with self.assertRaises(room_exceptions.RoomIsNotFriend):
-            id, room = self.rm_test.join_random_game(user_id="wowexcellentman", variant="tests")
-            self.rm_test.join_friend_game(user_id="snooper", room_id=id, access_code="")
+            id, room = self.room_manager.join_random_game(user_id="wowexcellentman", variant="tests")
+            self.room_manager.join_friend_game(user_id="snooper", room_id=id, access_code="")
 
     def _create_new_game(self):
         # have two random users join games
-        self.rm_test.join_random_game(user_id=self.player1, variant="tests")
-        room_id, room = self.rm_test.join_random_game(user_id=self.player2, variant="tests")
+        self.room_manager.join_random_game(user_id=self.player1, variant="tests")
+        room_id, room = self.room_manager.join_random_game(user_id=self.player2, variant="tests")
         return room_id, room
 
     def test_rematch(self):
@@ -170,10 +193,10 @@ class RoomTestCase(unittest.TestCase):
         room_id, room = self._create_new_game()
 
         # finish the game
-        self.rm_test.set_room_status(room_id, "finished")
+        self.room_manager.set_room_status(room_id, "finished")
 
         # have one player rematch the room
-        rematched_room_id, rematched_room = self.rm_test.rematch(room_id=room_id, current_user_id=self.player1)
+        rematched_room_id, rematched_room = self.room_manager.rematch(room_id=room_id, current_user_id=self.player1)
 
         # make sure they are in the same room
         assert(rematched_room_id == room_id)
@@ -186,7 +209,7 @@ class RoomTestCase(unittest.TestCase):
         assert(rematched_room["status"] == "finished")
 
         # have the other player rematch the room
-        rematched_room_id, rematched_room = self.rm_test.rematch(room_id=room_id, current_user_id=self.player2)
+        rematched_room_id, rematched_room = self.room_manager.rematch(room_id=room_id, current_user_id=self.player2)
 
         # make sure they are in the same room
         assert(rematched_room_id == room_id)
@@ -200,7 +223,7 @@ class RoomTestCase(unittest.TestCase):
 
         # try to rematch room without finishing it (should return rooms.RoomIsInProgress exception)
         with self.assertRaises(room_exceptions.RoomIsInProgress):
-            self.rm_test.rematch(room_id=room_id, current_user_id=self.player1)
+            self.room_manager.rematch(room_id=room_id, current_user_id=self.player1)
 
 
     def test_rematch_nonexistent(self):
@@ -211,7 +234,7 @@ class RoomTestCase(unittest.TestCase):
         '''
         # try to rematch a nonexistent room
         with self.assertRaises(room_exceptions.RoomDoesNotExist):
-            self.rm_test.rematch(room_id="NONEXISTENT", current_user_id=self.player1)
+            self.room_manager.rematch(room_id="NONEXISTENT", current_user_id=self.player1)
 
     def test_rematch_room_in_progress(self):
         '''
@@ -225,7 +248,7 @@ class RoomTestCase(unittest.TestCase):
 
         # try to rematch room without finishing it (should return rooms.RoomIsInProgress exception)
         with self.assertRaises(room_exceptions.RoomIsInProgress):
-            self.rm_test.rematch(room_id=room_id, current_user_id=self.player1)
+            self.room_manager.rematch(room_id=room_id, current_user_id=self.player1)
 
 
     def test_rematch_non_player(self):
@@ -239,11 +262,11 @@ class RoomTestCase(unittest.TestCase):
         room_id, room = self._create_new_game()
 
         # finish the game
-        self.rm_test.set_room_status(room_id, "finished")
+        self.room_manager.set_room_status(room_id, "finished")
 
         # have a non-player try to rematch the room
         with self.assertRaises(room_exceptions.RoomIsNotYours):
-            self.rm_test.rematch(room_id=room_id, current_user_id="Barge Simpson")
+            self.room_manager.rematch(room_id=room_id, current_user_id="Barge Simpson")
 
 
     def test_clean_up_room(self):
@@ -254,11 +277,16 @@ class RoomTestCase(unittest.TestCase):
         '''
         room_id, room = self._create_new_game()
 
-        #
+        # clear the room
+        self.room_manager.clean_up_room(room_id)
+
+        with self.assertRaises(room_exceptions.RoomDoesNotExist):
+            self.room_manager.get_room(room_id)
 
     def tearDown(self):
-        pyre_db.child("testing").remove()
+        self.pyre_db.child(self.testing_branch_name).remove()
 
 
 if __name__ == "__main__":
+    # run tests
     unittest.main()

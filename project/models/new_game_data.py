@@ -5,5 +5,5 @@ this is just dummy data for a new game. we will have to specify what a suicide c
 '''
 
 NEW_GAME_DATA = {
-    "moveList" : ["hi"]
+    "dummyGameData" : "DUMMY_GAME_DATA"
 }

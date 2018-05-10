@@ -6,6 +6,10 @@
 # for example, in this case there is no "project.py" but there is a folder called "project". inside you will find
 #       an "__init__.py" file so go there
 from project import app
+import subprocess
+import os
 
 if __name__ == "__main__":
+    if os.path.isfile("setenv"):
+        subprocess.call([".", "setenv"])
     app.run(debug=True)

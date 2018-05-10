@@ -10,9 +10,10 @@ from flask_login import LoginManager
 
 
 # firebase imports
-from config import pyrebase_config
 import pyrebase_ext
-import firebase_admin
+
+# google login imports
+from flask_dance.contrib.google import make_google_blueprint
 
 # models imports
 from project.rooms.room_manager import RoomManager
@@ -38,15 +39,28 @@ lm.init_app(app)
 
 ### FIREBASE ADMIN ###
 # initialize the admin using initialize_firebase_admin.py
+'''
 if FIREBASE_APP_NAME not in firebase_admin._apps:
     cred = firebase_admin.credentials.Certificate("config/firebase_auth.json")
     firebase_admin.initialize_app(cred, name=FIREBASE_APP_NAME)
 fb_admin = firebase_admin.get_app(name=FIREBASE_APP_NAME)
+'''
 
 ### PYREBASE ###
-pyre_firebase = pyrebase_ext.initialize_app(pyrebase_config.config) # see https://github.com/thisbejim/Pyrebase for details of pyrebase_config
-pyre_auth = pyre_firebase.auth()
+pyre_firebase = pyrebase_ext.initialize_app({
+      "apiKey" : os.getenv("PYREBASE_API_KEY") or ""
+    , "authDomain" : os.getenv("PYREBASE_AUTH_DOMAIN") or ""
+    , "databaseURL" : os.getenv("PYREBASE_DATABASE_URL") or ""
+    , "storageBucket" : os.getenv("PYREBASE_STORAGE_BUCKET") or ""
+    , "messagingSenderId" : os.getenv("PYREBASE_MESSAGING_SENDER_ID") or ""
+})
 pyre_db = pyre_firebase.database()
+
+### GOOGLE LOGIN ###
+GOOGLE_AUTH_KEYS = {
+      "GOOGLE_CLIENT_ID" : os.getenv("GOOGLE_CLIENT_ID") or ""
+    , "GOOGLE_CLIENT_SECRET" : os.getenv("GOOGLE_CLIENT_SECRET") or ""
+}
 
 ### ROOM MANAGER ###
 room_manager = RoomManager(db=pyre_db, game_branch="SuicideChess", new_game_data=NEW_GAME_DATA)

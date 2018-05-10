@@ -8,12 +8,11 @@ SORRY HALF OF THIS CODE IS JUST HACKS LOL
 '''
 
 import requests
-from firebase_admin import auth as fb_auth
-from flask_login import UserMixin, logout_user, current_user
+from flask_login import UserMixin
 
-from project import pyre_db, pyre_auth, lm, fb_admin
+from project import pyre_db, lm
 
-
+'''
 ### pyrebase wrappers
 # sign_in_with_email_and_password(email, password)
 def sign_in_firebase_user(email: str, password: str):
@@ -61,13 +60,14 @@ class current_user_auth:
     @staticmethod
     def send_email_verification():
         return pyre_auth.send_email_verification(pyre_auth.current_user['idToken'])
+'''
 
 
 ### flask_login support
 @lm.user_loader
 def user_loader(id):
     # check if the user exists in the database
-    if pyre_db.child("users").child(id).get().val()
+    if pyre_db.child("users").child(id).get().val():
         return FirebaseUser(id)
 
     # return None if they don't exist
@@ -78,17 +78,11 @@ class FirebaseUser(UserMixin):
     def __init__(self, id):
         self.id = id
 
-    def get_auth_property(self, property: str):
-        return current_user_auth.get_property(property)
-
     def get_db_property(self, property: str):    #gets database property -joleena
         return pyre_db.child("users").child(self.id).child(property).get().val()
 
     def set_db_property(self, property: str, value):
         pyre_db.child("users").child(self.id).child(property).set(value)
-
-    def send_email_verification(self):
-        return current_user_auth.send_email_verification()
 
     def get_id(self):
         return self.id

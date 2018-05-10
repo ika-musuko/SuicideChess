@@ -10,7 +10,7 @@ start reading from backend.py and follow the imports
 ## Goals
 ### Expected - Version 1.0
 - [X] Create an account for the site
-- [X] ~~Verify themselves via email~~ **implemented Google Login instead as the sole form of authentication**
+- [X] ~~Verify themselves via email~~ *implemented Google Login instead as the sole form of authentication*
 - [X] Login to and logout from the site
 - [ ] Play the Classic variant of Suicide Chess with a random person
 - [ ] Play the Classic variant of Suicide Chess with a friend via links

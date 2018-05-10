@@ -1,10 +1,21 @@
 # Suicide Chess
 
 ## Instructions
-TO RUN: use ./run_server.sh
+### Running
+Install all of the requirements using pip and the included requirements.txt (preferably to a virtualenv)
 
-make sure you have a file called setenv with all the specified environment variables in project/\_\_init\_\_.py
+linux/mac: use `./run_server.sh`
+windows: lol
 
+make sure you have a file called setenv.sh with all the specified environment variables in project/\_\_init\_\_.py
+
+### testing
+linux/mac: use `./run_tests.sh`
+windows: lmao
+
+write all tests in tests.py
+
+### reading the code
 start reading from backend.py and follow the imports
 
 ## Goals

@@ -10,4 +10,4 @@ __pycache__
 firebase_auth.json
 pyrebase_config.py
 now-win.exe
-setenv
+setenv.sh

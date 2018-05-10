@@ -2,18 +2,18 @@
 
 ## Instructions
 ### Running
-Install all of the requirements using pip and the included requirements.txt (preferably to a virtualenv)
+Install all of the requirements using pip and the included requirements.txt (preferably to a virtualenv)  
 
-linux/mac: use `./run_server.sh`
-windows: lol
+**linux/mac**: use `./run_server.sh`  
+**windows**: lol  
 
-make sure you have a file called setenv.sh with all the specified environment variables in project/\_\_init\_\_.py
+make sure you have a file called setenv.sh with all the specified environment variables in project/\_\_init\_\_.py  
 
 ### testing
-linux/mac: use `./run_tests.sh`
-windows: lmao
+**linux/mac**: use `./run_tests.sh`  
+**windows**: lmao  
 
-write all tests in tests.py
+write all tests in tests.py  
 
 ### reading the code
 start reading from backend.py and follow the imports

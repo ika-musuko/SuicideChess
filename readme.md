@@ -42,5 +42,5 @@ start reading from backend.py and follow the imports
 - [ ] Limit their opponent of a friend game to a specific user
 - [ ] Play Blitz games
 - [ ] Anonymous users would be able to play and join blitz games
-- [ ] Write profile bios
+- [X] Write profile bios
 - [ ] Receive browser notifications upon opponent move

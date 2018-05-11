@@ -1,11 +1,11 @@
-'''
+"""
 error_views.py
 
     routes for error codes
 
     they should return a template string, in addition to the error code in a tuple
 
-'''
+"""
 
 from project import app
 

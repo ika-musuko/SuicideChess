@@ -1,9 +1,9 @@
-'''
+"""
 view_utils.py
 
     functions to help with views, to be used across the view pages
 
-'''
+"""
 
 from functools import wraps
 
@@ -14,13 +14,14 @@ from werkzeug.utils import redirect
 
 from project import app, room_manager, player_manager
 
+
 # use this to inject global variables into the template manager
 @app.context_processor
 def inject_app_context():
     return {
-         "debug" : app.debug
-        ,"room_manager" : room_manager
-        ,"player_manager" : player_manager
+        "debug": app.debug
+        , "room_manager": room_manager
+        , "player_manager": player_manager
     }
 
 
@@ -32,6 +33,7 @@ def logout_required(f):
             flash("you are already logged in")
             return redirect(url_for('index'))
         return f(*args, **kwargs)
+
     return decorated_view
 
 
@@ -39,6 +41,7 @@ def logout_required(f):
 def bulletize_messages(messages: list):
     bulleted_messages = ["<li>%s</li>" % m for m in messages]
     return "<ul>%s</ul>" % '\n'.join(bulleted_messages)
+
 
 # output a title and bulleted messages
 def title_and_messages(title: str, messages: list):

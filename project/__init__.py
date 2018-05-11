@@ -1,10 +1,9 @@
-'''
+"""
 __init__.py
 initialization of the project
-'''
+"""
 from flask import Flask
 from flask_login import LoginManager
-
 
 # firebase imports
 from pyrebase_init import initialize_pyrebase
@@ -19,7 +18,7 @@ from project.players.player_manager import PlayerManager
 
 # error logging imports
 import logging
-from logging.handlers import RotatingFileHandler # for error logging
+from logging.handlers import RotatingFileHandler  # for error logging
 
 # other general imports
 import os
@@ -39,26 +38,24 @@ pyre_db = initialize_pyrebase().database()
 # google login initialization
 offline_state = not os.getenv("IS_ONLINE")
 google_blueprint = make_google_blueprint(
-    client_id=os.getenv("GOOGLE_CLIENT_ID") or "", #Your client_id here
-    client_secret=os.getenv("GOOGLE_CLIENT_SECRET") or "",#Your client secret here
+    client_id=os.getenv("GOOGLE_CLIENT_ID") or "",  # Your client_id here
+    client_secret=os.getenv("GOOGLE_CLIENT_SECRET") or "",  # Your client secret here
     scope=['profile', 'email'],
     offline=offline_state
 )
 
 app.register_blueprint(google_blueprint, url_prefix='/login')
 
-
 # player manager initialization
 player_manager = PlayerManager(db=pyre_db, user_branch="users")
 
-
 # room manager initialization
 room_manager = RoomManager(
-             db=pyre_db
-           , game_branch="SuicideChess"
-           , new_game_data=NEW_GAME_DATA
-           , rematch_redirects_branch="SuicideChessRedirects"
-           , player_manager=player_manager
+    db=pyre_db
+    , game_branch="SuicideChess"
+    , new_game_data=NEW_GAME_DATA
+    , rematch_redirects_branch="SuicideChessRedirects"
+    , player_manager=player_manager
 )
 
 # error log initialization
@@ -68,7 +65,7 @@ if not os.path.exists("logs"):
 file_handler = RotatingFileHandler("logs/flaskbase.log", maxBytes=16384, backupCount=10)
 file_handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]"))
 file_handler.setLevel(logging.INFO)
-app.logger.addHandler(file_handler) # add it to the project's list of loggers
+app.logger.addHandler(file_handler)  # add it to the project's list of loggers
 
 app.logger.setLevel(logging.INFO)
 app.logger.info('flaskbase startup')

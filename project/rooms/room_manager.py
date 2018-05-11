@@ -1,15 +1,14 @@
-'''
+"""
 room_manager.py
 
 objects and functions for managing rooms.
 
-'''
+"""
 
-import pdb
-from project.models.new_room_data import new_room_data, new_friend_room_data
-from project.rooms import room_exceptions
-from project.players.player_manager import PlayerManager
 import pyrebase_ext
+from project.models.new_room_data import new_room_data, new_friend_room_data
+from project.players.player_manager import PlayerManager
+from project.rooms import room_exceptions
 
 
 class RoomManager:
@@ -18,12 +17,13 @@ class RoomManager:
 
     rooms are basically dicts. see models/new_room_data.py for details
     """
+
     def __init__(self, db: pyrebase_ext.Database
                  , game_branch: str
                  , new_game_data: dict
                  , rematch_redirects_branch: str
-                 , player_manager: PlayerManager=None):
-        '''
+                 , player_manager: PlayerManager = None):
+        """
         constructor
         :param db: the firebase db
         :param game_branch: the name of the parent node to store
@@ -33,21 +33,20 @@ class RoomManager:
                              this is where the name
                             of those games would be placed
         :param new_game_data: the default data for a new game
-        '''
+        """
         self.db = db
         self.game_branch = game_branch
         self.new_game_data = new_game_data
         self.rematch_redirects_branch = rematch_redirects_branch
         self.player_manager = player_manager
 
-
     # all these methods should return an (str, dict) tuple containing (game_id, room_data)
     def _new_room(self, players: list
                   , mode: str
                   , variant: str
-                  , status: str="waiting"
+                  , status: str = "waiting"
                   ) -> (str, dict):
-        '''
+        """
         create a new room
         :param players: the list of players for the new room
         :param mode: the game mode (ex: 'friend', 'random')
@@ -55,40 +54,39 @@ class RoomManager:
         :param status: is the game waiting or
                        inprogress or finished?
         :return: the room ID and the room itself in a tuple
-        '''
+        """
         # get the latest game number and use as an ID
-        total_games = self.db.child(self.game_branch)\
+        total_games = self.db.child(self.game_branch) \
             .child("TOTAL_GAMES").get().val()
         if not total_games:
-            self.db.child(self.game_branch)\
+            self.db.child(self.game_branch) \
                 .child("TOTAL_GAMES").set(0)
             total_games = 0
         total_games += 1
-        self.db.child(self.game_branch)\
+        self.db.child(self.game_branch) \
             .child("TOTAL_GAMES").set(total_games)
         assigned_room_id = "%s%s%s" % (variant, mode, total_games)
 
         # add a new game room
         room_data = new_friend_room_data(
-                                    players
-                                  , mode
-                                  , variant
-                                  , status
-                                  , self.new_game_data
+            players
+            , mode
+            , variant
+            , status
+            , self.new_game_data
         ) if mode == "friend" else new_room_data(
-                                    players
-                                  , mode
-                                  , variant
-                                  , status
-                                  , self.new_game_data)
+            players
+            , mode
+            , variant
+            , status
+            , self.new_game_data)
 
         # update database
-        self.db.child(self.game_branch)\
+        self.db.child(self.game_branch) \
             .child(assigned_room_id).set(room_data)
         return assigned_room_id, room_data
 
-
-    def add_player(self, room_id: str, user_id: str, room: dict=None) -> (str, dict):
+    def add_player(self, room_id: str, user_id: str, room: dict = None) -> (str, dict):
         # get the room if it is not already provided in the parameter
         if not room:
             _, room = self.get_room(room_id)
@@ -108,7 +106,6 @@ class RoomManager:
         # this player is not "ready to rematch"
         room["rematchReady"][user_id] = False
 
-
         # set the room data
         return self.set_room(room_id, room)
 
@@ -116,12 +113,12 @@ class RoomManager:
     def join_random_game(self
                          , user_id: str
                          , variant: str) -> (str, dict):
-        '''
+        """
         have a user join a random game
         :param user_id: the ID of the user joining
         :param variant: which variant to play
         :return: the room ID and the room itself in a tuple
-        '''
+        """
         # firebase only lets you filter on one condition epic fail
         '''
         db_query = self.db.child(self.game_branch)\
@@ -129,6 +126,7 @@ class RoomManager:
             .order_by_child("status").equal_to("waiting")\
             .limit_to_first(2).get()
         '''
+
         def create_new_random_game():
 
             room_id, room = self._new_room(
@@ -140,8 +138,8 @@ class RoomManager:
             return self.add_player(room_id, user_id)
 
         # get all the random games
-        db_query = self.db.child(self.game_branch)\
-            .order_by_child("mode").equal_to("random")\
+        db_query = self.db.child(self.game_branch) \
+            .order_by_child("mode").equal_to("random") \
             .get()
 
         branch, random_rooms = db_query.key(), db_query.val()
@@ -161,15 +159,12 @@ class RoomManager:
         if user_id in open_room["players"]:
             return create_new_random_game()
 
-
         ## A VALID ROOM EXISTS so join it
         # change the status of the room
         open_room["status"] = "inprogress"
 
         # add the player to the room
         return self.add_player(open_room_id, user_id, open_room)
-
-
 
     def set_room(self, room_id: str, room: dict) -> (str, dict):
         # check if the room exists
@@ -185,14 +180,14 @@ class RoomManager:
     def set_room_status(self, room_id: str, status: str) -> (str, dict):
         _, room = self.get_room(room_id)
         self._set_room_attribute(
-              room_id=room_id
+            room_id=room_id
             , attribute="status"
             , value=status
         )
 
         if status == "inprogress":
             self._set_room_attribute(
-                  room_id=room_id
+                room_id=room_id
                 , attribute="rematchReady"
                 , value={player: False for player in room["players"]}
             )
@@ -204,23 +199,23 @@ class RoomManager:
     def create_friend_game(self
                            , user_id: str
                            , variant: str) -> (str, dict):
-        '''
+        """
         create a new friend game
         :param user_id: the user who wants to create the game
         :param variant: the variant of the game
         :return: the room ID and the room itself in a tuple
-        '''
+        """
         room_id, room = self._new_room([user_id], "friend", variant)
         return self.add_player(room_id, user_id)
 
     def _query_room(self
                     , room_id: str) -> (str, dict):
-        '''
+        """
         helper method for querying a single room from a room id
         :param room_id: the room id
         :return: the room id and the room itself in a tuple
-        '''
-        db_query = self.db.child(self.game_branch)\
+        """
+        db_query = self.db.child(self.game_branch) \
             .child(room_id).get()
         return db_query.key(), db_query.val()
 
@@ -228,12 +223,13 @@ class RoomManager:
                          , user_id: str
                          , room_id: str
                          , access_code: str) -> (str, dict):
-        '''
+        """
         join an existing friend game
+        :param access_code:
         :param user_id: the user who wants to join a friend game
         :param room_id: the room ID of the room the user wants to join
         :return: the room ID and the room itself in a tuple (the returned room ID should be the same as the one in the parameter)
-        '''
+        """
         room_id, requested_room = self._query_room(room_id)
 
         # make sure the room exists
@@ -259,16 +255,12 @@ class RoomManager:
         # add player to the room
         return self.add_player(room_id, user_id, requested_room)
 
-
     def get_room(self, room_id: str) -> (str, dict):
-        '''
+        """
         go to a room from the room id
-        this will only return a room if the player has
-        this room in their current game list
-        :param user:
         :param room_id:
         :return:
-        '''
+        """
         requested_room_id, requested_room = \
             self._query_room(room_id)
 
@@ -278,8 +270,6 @@ class RoomManager:
 
         # return the room data
         return requested_room_id, requested_room
-
-
 
     def set_room_attribute(self, room_id: str, attribute: str, value):
         # don't use this to set room["status"]
@@ -296,21 +286,21 @@ class RoomManager:
         self.db.child(self.game_branch).child(room_id).child(attribute).set(value)
 
     def clean_up_room(self, room_id: str):
-        '''
+        """
         delete the room from the room list
         !!! CALL THIS AFTER THE GAME STATISTICS HAVE BEEN RECORDED !!!
         :param room_id:
         :return:
-        '''
-        db_query = self.db.child(self.game_branch)\
+        """
+        db_query = self.db.child(self.game_branch) \
             .child(room_id).remove()
 
     def reset_room(self, room_id: str):
-        '''
+        """
         boot the players out of the current room and put them in a new room
         :param room_id:
         :return:
-        '''
+        """
         # get the room
         _, room = self.get_room(room_id)
 
@@ -319,10 +309,10 @@ class RoomManager:
 
         # make a new room for the players
         new_room_id, new_room = self._new_room(
-                              players=room["players"]
-                            , mode=room["mode"]
-                            , variant=room["variant"]
-                        )
+            players=room["players"]
+            , mode=room["mode"]
+            , variant=room["variant"]
+        )
 
         # set the redirect path
         self.db.child(self.rematch_redirects_branch).child(room_id).set(new_room_id)
@@ -336,7 +326,6 @@ class RoomManager:
         # update database
         new_room["status"] = "inprogress"
         return self.set_room(new_room_id, new_room)
-
 
     def rematch(self, room_id: str, current_user_id: str) -> (str, dict):
         # get the room data from the room allocator
@@ -366,38 +355,35 @@ class RoomManager:
 
         return self.set_room(room_id, room)
 
-
     def get_status(self, room_id: str) -> str:
         _, room = self.get_room(room_id)
         return room["status"]
 
     def player_in_room(self, room_id: str, user_id) -> bool:
-        '''
+        """
         check if a player is in the room
         :param room_id:
         :param user_id:
         :return:
-        '''
+        """
         _, room = self.get_room(room_id)
         return user_id in room["players"]
 
-
     def get_players_by_id(self, room_id: str) -> list:
-        '''
+        """
         return the list of players in the room by display name
         :param room_id:
         :return:
-        '''
+        """
         _, room = self.get_room(room_id)
         return room["players"] if room["players"] else []
 
-
     def get_players_by_display_name(self, room_id: str) -> list:
-        '''
+        """
         return the list of players in the room by display name
         :param room_id:
         :return:
-        '''
+        """
         _, room = self.get_room(room_id)
 
         # just return the player usernames if the player manager has not been initialized
@@ -407,11 +393,10 @@ class RoomManager:
         # convert the user ID list into a display name list
         return [self.player_manager.get_display_name(player) for player in room["players"]]
 
-
     def redirect_available(self, room_id: str):
-        '''
+        """
         check if this room redirects to another room
         :param room_id:
         :return:
-        '''
+        """
         return self.db.child(self.rematch_redirects_branch).child(room_id).get().val()

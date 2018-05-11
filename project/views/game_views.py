@@ -1,35 +1,33 @@
-'''
+"""
 game_views.py
 
     routes for the game
 
-'''
+"""
 
-from functools import wraps
-
-from flask_login import login_required, current_user
 from flask import render_template, redirect, url_for, flash
+from flask_login import login_required, current_user
 
-from project.rooms import room_exceptions
 from project import app, room_manager, player_manager
+from project.rooms import room_exceptions
 
 
 @app.route("/play/<room_id>")
 @login_required
 def play(room_id: str):
-    '''
+    """
     view for directly going to a room from an ID (like from the
     sidebar)
     :param room_id: the room ID
     :return: template for the room_id if the room exists and the
              player is in the room or redirect to home page with
              a flashed message.
-    '''
+    """
 
     # check if the current user is in the requested room
     if room_id in current_user.get_db_property("currentGames"):
         try:
-        # get the room from the room allocator
+            # get the room from the room allocator
             _, room = room_manager.get_room(room_id)
             return render_template("play.html", room_id=room_id, room=room)
 
@@ -51,34 +49,33 @@ def play(room_id: str):
 @app.route("/new_game/<variant>/<mode>")
 @login_required
 def new_game(variant: str, mode: str):
-    '''
+    """
     view for creating a new game
     :param variant: the game variant eg: "blitz", "classic"
     :param mode: the game mode eg: "random", "friend"
     :return:
-    '''
+    """
     # random mode
     if mode == "random":
         # join a random room
         room_id, requested_room = room_manager.join_random_game(
-              user_id=current_user.id
+            user_id=current_user.id
             , variant=variant
         )
 
         # go to the page with the new id
         return redirect(url_for("play", room_id=room_id))
 
-
     # friend mode (CREATING a new friend game)
     if mode == "friend":
         # create a new friend game
         room_id, requested_room = room_manager.create_friend_game(
-              user_id=current_user.id
+            user_id=current_user.id
             , variant=variant
         )
 
         # make a verification url for the friend game
-        #verification_url = url_for("accept_friend_game", access_code=requested_room["accessCode"])
+        # verification_url = url_for("accept_friend_game", access_code=requested_room["accessCode"])
         return redirect(url_for("play", room_id=room_id))
 
     flash("This variant does not exist.")
@@ -88,17 +85,17 @@ def new_game(variant: str, mode: str):
 @app.route("/invite/<room_id>/<access_code>")
 @login_required
 def invite(room_id: str, access_code: str):
-    '''
+    """
     when a friend clicks on this link they will try to join the room
     it is successful if the access_code parameter matches the room's accessCode key
     :param room_id:
     :param access_code:
     :return:
-    '''
+    """
     try:
         # try to join the room with the access code
         room_manager.join_friend_game(
-              user_id=current_user.id
+            user_id=current_user.id
             , room_id=room_id
             , access_code=access_code
         )
@@ -126,11 +123,11 @@ def invite(room_id: str, access_code: str):
 @app.route("/rematch/<room_id>")
 @login_required
 def rematch(room_id: str):
-    '''
+    """
     rematch a game
     :param room_id:
     :return:
-    '''
+    """
 
     # try to rematch the room
     try:
@@ -156,11 +153,11 @@ def rematch(room_id: str):
 @app.route("/exit_game/<room_id>")
 @login_required
 def exit_game(room_id: str):
-    '''
+    """
     update the player statistics of the game and clean it up
     :param room_id:
     :return:
-    '''
+    """
     try:
         # room["winner"] and room["moveList"] set by game app
         # update player statistics
@@ -192,11 +189,11 @@ def exit_game(room_id: str):
 @app.route("/simulate_game/<room_id>")
 @login_required
 def simulate_game(room_id: str):
-    '''
+    """
     TEST GAME SIMULATOR
     :param room_id:
     :return:
-    '''
+    """
     # get the room
     _, room = room_manager.get_room(room_id)
 
@@ -208,9 +205,8 @@ def simulate_game(room_id: str):
 
     # game over, write to the room fields to be processed later
     room["status"] = "finished"
-    room["winner"] = room["players"][0] # just get the first player as the winner for now
+    room["winner"] = room["players"][0]  # just get the first player as the winner for now
     room["moveList"] = ["wow", "this", "is", "a", "test"]
     room_manager.set_room(room_id, room)
 
     return redirect(url_for("play", room_id=room_id))
-

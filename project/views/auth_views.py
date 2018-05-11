@@ -1,25 +1,20 @@
-'''
+"""
 auth_views.py
 
     all of the routes related to user authorization and credentials
 
-'''
-
-from hashlib import sha224
+"""
 
 from flask import url_for
+from flask_dance.consumer import oauth_authorized
+from flask_dance.contrib.google import google
 from flask_login import logout_user, login_required, login_user
 from werkzeug.utils import redirect
-from flask_dance.contrib.google import google
-from flask_dance.consumer import oauth_authorized
 
 from project import app
 from project import google_blueprint
-
 from project.auth.firebase_user import get_firebase_user, create_firebase_user
-
 from project.views.view_utils import logout_required
-
 
 
 @app.route('/log_out')
@@ -47,5 +42,3 @@ def log_in(blueprint, token):
 
         # login the user
         login_user(user)
-
-

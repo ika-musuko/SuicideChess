@@ -1,8 +1,8 @@
-'''
+"""
 migrate.py
 
 tools for updating items from a database
-'''
+"""
 
 
 def add_property(database: str, property_name: str, default_value):
@@ -14,6 +14,7 @@ def add_property(database: str, property_name: str, default_value):
     :return:
     """
     pass
+
 
 def delete_property(database: str, property_name: str):
     """

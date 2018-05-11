@@ -1,9 +1,9 @@
-'''
+"""
 user_views.py
 
     routes for the home page and user settings
 
-'''
+"""
 
 from flask import render_template, flash, redirect, url_for
 from flask_login import login_required, current_user
@@ -17,10 +17,10 @@ from project.views.view_utils import GETPOST
 @app.route('/')
 @app.route('/index')
 def index() -> str:
-    '''
+    """
     show the user's own profile
     :return:
-    '''
+    """
     return render_template("index.html")
 
 ### ALL USERS ###
@@ -33,11 +33,11 @@ def all_users() -> str:
 ### VIEW PROFILE ###
 @app.route('/user/<user_id>')
 def user(user_id: str) -> str:
-    '''
+    """
     view for showing another user's profile page
     :param user_id:
     :return:
-    '''
+    """
     try:
         user = player_manager.get_user(user_id)
         return render_template("user.html", user=user, user_id=user_id)
@@ -51,10 +51,10 @@ def user(user_id: str) -> str:
 @app.route('/edit_profile', methods=GETPOST)
 @login_required
 def edit_profile() -> str:
-    '''
+    """
     edit a profile
     :return:
-    '''
+    """
     form = EditProfileForm()
     if form.validate_on_submit():
         # only update their display name if it's not blank

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% set title = "{{ user['displayName'] }}'s profile" %}
+{% set title = [user['displayName'], "'s profile"]|join %} {# string concatenation #}
 {% block content %}
 {% include "user_profile.html" %}
 {% endblock %}

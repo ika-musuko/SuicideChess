@@ -4,7 +4,7 @@ export function canMoveKnight(piece, toX, toY, currentPos, pieces) {
 
     for(var property in pieces) {
         if(pieces.hasOwnProperty(property)) {
-            if (piece.substring(0,5) === property.substring(0,5) && pieces[property].x === toX && pieces[property].y === toY) {
+            if (piece.substring(0,6) === property.substring(0,6) && pieces[property].x === toX && pieces[property].y === toY) {
                 return false
             }
         }
@@ -20,8 +20,8 @@ export function canMoveQueen(toX, toY, currentPos, pieces, piece) {
     let dy = toY - currentPos.y
 
     for(var property in pieces) {
-        if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
-            if (pieces[property].x === toX && pieces[property].y === toY && property.substring(0,5) === piece.substring(0,5)) {
+        if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
+            if (pieces[property].x === toX && pieces[property].y === toY && property.substring(0,6) === piece.substring(0,6)) {
                 return false
             }
         }
@@ -35,28 +35,28 @@ export function canMoveQueen(toX, toY, currentPos, pieces, piece) {
 
         if(dx < 0) {
             for(property in pieces) {
-                if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                     if (pieces[property].x > toX && pieces[property].x < currentPos.x && pieces[property].y === currentPos.y) {
                         return false
                     }
                 }
             }
         }
-        
+
         //Positive movement
-        
+
         else if (dx > 0) {
             for(property in pieces) {
-                if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                     if (pieces[property].x < toX && pieces[property].x > currentPos.x && pieces[property].y === currentPos.y) {
                         return false
                     }
                 }
             }
         }
-    } 
-    
-    //Movement in y direction    
+    }
+
+    //Movement in y direction
 
     else if (dx === 0) {
 
@@ -64,29 +64,29 @@ export function canMoveQueen(toX, toY, currentPos, pieces, piece) {
 
         if(dy < 0) {
             for(property in pieces) {
-                if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                     if(pieces[property].y > toY && pieces[property].y < currentPos.y && pieces[property].x === currentPos.x) {
                         return false
                     }
                 }
             }
-        } 
-        
+        }
+
         //Positive Movement
 
         else if (dy > 0) {
             for(property in pieces) {
-                if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                     if(pieces[property].y < toY && pieces[property].y > currentPos.y && pieces[property].x === currentPos.x) {
                         return false
                     }
                 }
             }
         }
-    } 
-    
+    }
+
     //Diagonal movement
-    
+
     else if (Math.abs(dx) === Math.abs(dy)) {
 
         //Movement in positive x and y
@@ -95,7 +95,7 @@ export function canMoveQueen(toX, toY, currentPos, pieces, piece) {
             var i = 1
             while(i < Math.abs(dy) && i < Math.abs(dx)) {
                 for(property in pieces) {
-                    if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                    if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                         if(pieces[property].x === currentPos.x + i && pieces[property].y === currentPos.y + i && property !== piece) {
                             return false;
                         }
@@ -111,7 +111,7 @@ export function canMoveQueen(toX, toY, currentPos, pieces, piece) {
             i = 1
             while(i < Math.abs(dy) && i < Math.abs(dx)) {
                 for(property in pieces) {
-                    if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                    if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                         if(pieces[property].x === currentPos.x - i && pieces[property].y === currentPos.y - i && property !== piece) {
                             return false;
                         }
@@ -127,14 +127,14 @@ export function canMoveQueen(toX, toY, currentPos, pieces, piece) {
             i = 1
             while(i < Math.abs(dy) && i < Math.abs(dx)) {
                 for(property in pieces) {
-                    if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                    if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                         if(pieces[property].x === currentPos.x - i && pieces[property].y === currentPos.y + i && property !== piece) {
                             return false;
                         }
                     }
                 }
                 i++;
-            } 
+            }
         }
 
         //Movement in positive x and negative y
@@ -143,14 +143,14 @@ export function canMoveQueen(toX, toY, currentPos, pieces, piece) {
             i = 1
             while(i < Math.abs(dy) && i < Math.abs(dx)) {
                 for(property in pieces) {
-                    if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                    if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                         if(pieces[property].x === currentPos.x + i && pieces[property].y === currentPos.y - i && property !== piece) {
                             return false;
                         }
                     }
                 }
                 i++;
-            } 
+            }
         }
 
     } else {
@@ -165,8 +165,8 @@ export function canMoveBishop(toX, toY, currentPos, pieces, piece) {
     let dy = toY - currentPos.y
 
     for(var property in pieces) {
-        if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
-            if (pieces[property].x === toX && pieces[property].y === toY && property.substring(0,5) === piece.substring(0,5)) {
+        if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
+            if (pieces[property].x === toX && pieces[property].y === toY && property.substring(0,6) === piece.substring(0,6)) {
                 return false
             }
         }
@@ -180,7 +180,7 @@ export function canMoveBishop(toX, toY, currentPos, pieces, piece) {
             var i = 1
             while(i < Math.abs(dy) && i < Math.abs(dx)) {
                 for(property in pieces) {
-                    if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                    if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                         if(pieces[property].x === currentPos.x + i && pieces[property].y === currentPos.y + i && property !== piece) {
                             return false;
                         }
@@ -196,7 +196,7 @@ export function canMoveBishop(toX, toY, currentPos, pieces, piece) {
             i = 1
             while(i < Math.abs(dy) && i < Math.abs(dx)) {
                 for(property in pieces) {
-                    if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                    if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                         if(pieces[property].x === currentPos.x - i && pieces[property].y === currentPos.y - i && property !== piece) {
                             return false;
                         }
@@ -212,14 +212,14 @@ export function canMoveBishop(toX, toY, currentPos, pieces, piece) {
             i = 1
             while(i < Math.abs(dy) && i < Math.abs(dx)) {
                 for(property in pieces) {
-                    if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                    if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                         if(pieces[property].x === currentPos.x - i && pieces[property].y === currentPos.y + i && property !== piece) {
                             return false;
                         }
                     }
                 }
                 i++;
-            } 
+            }
         }
 
         //Movement in positive x and negative y
@@ -228,14 +228,14 @@ export function canMoveBishop(toX, toY, currentPos, pieces, piece) {
             i = 1
             while(i < Math.abs(dy) && i < Math.abs(dx)) {
                 for(property in pieces) {
-                    if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                    if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                         if(pieces[property].x === currentPos.x + i && pieces[property].y === currentPos.y - i && property !== piece) {
                             return false;
                         }
                     }
                 }
                 i++;
-            } 
+            }
         }
     } else {
         return false
@@ -251,8 +251,8 @@ export function canMoveRook(toX, toY, currentPos, pieces, piece) {
     //Movement in x direction
 
     for(var property in pieces) {
-        if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
-            if (pieces[property].x === toX && pieces[property].y === toY && property.substring(0,5) === piece.substring(0,5)) {
+        if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
+            if (pieces[property].x === toX && pieces[property].y === toY && property.substring(0,6) === piece.substring(0,6)) {
                 return false
             }
         }
@@ -264,28 +264,28 @@ export function canMoveRook(toX, toY, currentPos, pieces, piece) {
 
         if(dx < 0) {
             for(property in pieces) {
-                if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                     if (pieces[property].x > toX && pieces[property].x < currentPos.x && pieces[property].y === currentPos.y) {
                         return false
                     }
                 }
             }
         }
-        
+
         //Positive movement
-        
+
         else if (dx > 0) {
             for(property in pieces) {
-                if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                     if (pieces[property].x < toX && pieces[property].x > currentPos.x && pieces[property].y === currentPos.y) {
                         return false
                     }
                 }
             }
         }
-    } 
-    
-    //Movement in y direction    
+    }
+
+    //Movement in y direction
 
     else if (dx === 0) {
 
@@ -293,19 +293,19 @@ export function canMoveRook(toX, toY, currentPos, pieces, piece) {
 
         if(dy < 0) {
             for(property in pieces) {
-                if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                     if(pieces[property].y > toY && pieces[property].y < currentPos.y && pieces[property].x === currentPos.x) {
                         return false
                     }
                 }
             }
-        } 
-        
+        }
+
         //Positive Movement
 
         else if (dy > 0) {
             for(property in pieces) {
-                if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+                if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                     if(pieces[property].y < toY && pieces[property].y > currentPos.y && pieces[property].x === currentPos.x) {
                         return false
                     }
@@ -325,8 +325,8 @@ export function canMoveKing(toX, toY, currentPos, pieces, piece) {
         return false
     } else {
         for(var property in pieces) {
-            if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
-                if(pieces[property].x === toX && pieces[property].y === toY && property.substring(0,5) === piece.substring(0,5)){
+            if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
+                if(pieces[property].x === toX && pieces[property].y === toY && property.substring(0,6) === piece.substring(0,6)){
                     return false
                 }
             }
@@ -338,12 +338,11 @@ export function canMoveKing(toX, toY, currentPos, pieces, piece) {
 export function canMoveBlackPawn(toX, toY, currentPos, pieces, firstMove) {
     let dx = toX - currentPos.x
     let dy = toY - currentPos.y
-    
     if(dy < 0) {
         return false
     } else if (dy === 1 && dx === 0) {
         for(var property in pieces) {
-            if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+            if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                 if(pieces[property].x === toX && pieces[property].y === toY) {
                     return false
                 }
@@ -352,7 +351,7 @@ export function canMoveBlackPawn(toX, toY, currentPos, pieces, firstMove) {
         return true
     } else if (dy === 2 && dx === 0 && firstMove) {
         for(property in pieces) {
-            if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+            if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                 if(pieces[property].x === toX && (pieces[property].y === toY - 1 || pieces[property].y === toY)) {
                     return false
                 }
@@ -361,8 +360,8 @@ export function canMoveBlackPawn(toX, toY, currentPos, pieces, firstMove) {
         return true
     } else if (dy === 1 && Math.abs(dx) === 1){
         for(property in pieces) {
-            if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
-                if(pieces[property].x === toX && pieces[property].y === toY && property.substring(0,5) === "white") {
+            if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
+                if(pieces[property].x === toX && pieces[property].y === toY && property.substring(0,6) === "white_") {
                     return true
                 }
             }
@@ -383,7 +382,7 @@ export function canMoveWhitePawn(toX, toY, currentPos, pieces, firstMove) {
         return false
     } else if (dy === -1 && dx === 0) {
         for(var property in pieces) {
-            if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+            if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                 if(pieces[property].x === toX && pieces[property].y === toY) {
                     return false
                 }
@@ -392,17 +391,17 @@ export function canMoveWhitePawn(toX, toY, currentPos, pieces, firstMove) {
         return true
     } else if (dy === -2 && dx === 0 && firstMove) {
         for(property in pieces) {
-            if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
+            if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
                 if(pieces[property].x === toX && (pieces[property].y === toY + 1 || pieces[property].y === toY)) {
                     return false
                 }
             }
         }
         return true
-    } else if (dy === -1 && Math.abs(dx) === 1) { 
+    } else if (dy === -1 && Math.abs(dx) === 1) {
         for(property in pieces) {
-            if(pieces.hasOwnProperty(property) && (property.substring(0,5) === "black" || property.substring(0,5) === "white")) {
-                if(pieces[property].x === toX && pieces[property].y === toY && property.substring(0,5) === "black") {
+            if(pieces.hasOwnProperty(property) && (property.substring(0,6) === "black_" || property.substring(0,6) === "white_")) {
+                if(pieces[property].x === toX && pieces[property].y === toY && property.substring(0,6) === "black_") {
                     return true
                 }
             }

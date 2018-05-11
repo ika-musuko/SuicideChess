@@ -7,7 +7,7 @@ import { getValidMoves } from '../Utilities/GetValidMoves'
 import { movePiece } from '../Game'
 import firebase from '../firebase'
 import { getRequiredMoves } from '../Utilities/GetRequiredMoves'
-import { setRequiredMoves } from '../Game'
+import { setRequiredMoves, setPieces } from '../Game'
 
 class gamescene extends Component {
   constructor(props) {
@@ -57,7 +57,7 @@ class gamescene extends Component {
 
       blackWin: false,
 
-      databaseRef: firebase.database().ref('games'),
+      databaseRef: firebase.database().ref('/games/' + this.props.roomID),
 
       rematchRoute: '/rematch/' + this.props.roomID,
       exitGameRoute: '/exit_game/' + this.propsroomID,
@@ -65,7 +65,7 @@ class gamescene extends Component {
       submitted: false,
 
       isWhite: false,
-      username: '',
+      username: this.props.user,
       otherUser: '',
       roomID: this.props.roomID,
 
@@ -79,7 +79,7 @@ class gamescene extends Component {
   };
 
   componentDidMount() {
-    this.setState({
+    /*this.setState({
       white_knightA: { x: -1, y: 7 },
       white_knightB: { x: -1, y: 7 },
       white_bishopA: { x: -1, y: 7 },
@@ -95,8 +95,75 @@ class gamescene extends Component {
       white_pawnE: { x: -1, y: 6, firstMove: true },
       white_pawnF: { x: -1, y: 6, firstMove: true },
       white_pawnG: { x: -1, y: 6, firstMove: true },
+    })*/
+    let a = this;
+    this.state.databaseRef.once('value').then(function(snapshot) {
+      var room = snapshot.val();
+      if(room['user1'] === a.state.username) {
+
+        var gameData = room['gameData']
+
+        a.setState({
+          ...gameData,
+          whiteTurn: gameData['whiteTurn'],
+          username: a.state.username,
+          otherUser: room['user2'],
+          submitted: true,
+          isWhite: true,
+        });
+        a.updateStateAfterDatabaseSync()
+      } else if (room['user2'] === a.state.username) {
+
+        var gameData = room['gameData']
+
+        a.setState({
+          ...gameData,
+          whiteTurn: gameData['whiteTurn'],
+          username: a.state.username,
+          otherUser: room['user1'],
+          submitted: true,
+          isWhite: false
+        })
+        a.updateStateAfterDatabaseSync()
+      }
     })
   }
+
+  updateStateAfterDatabaseSync = () => {
+    var newGameData = new Object();
+
+    for(var piece in this.state) {
+      if(this.state.hasOwnProperty(piece) && (piece.substring(0,6) === "black_" || piece.substring(0,6) === "white_")){
+        newGameData[piece] = this.state[piece]
+      }
+    }
+    newGameData['whiteTurn'] = this.state.whiteTurn
+    setPieces(newGameData, newGameData['whiteTurn']);
+
+    let requiredMoves = [];
+    console.log(newGameData['whiteTurn']);
+    console.log(this.state.whiteTurn);
+    if(newGameData['whiteTurn']) {
+      requiredMoves = getRequiredMoves(newGameData, true);
+    } else {
+      requiredMoves = getRequiredMoves(newGameData, false);
+    }
+
+    console.log(requiredMoves);
+
+    var gameListener = firebase.database().ref('/games/' + this.state.roomID + '/gameData/');
+    gameListener.on('child_changed', function(snapshot) {
+      if(snapshot.key.substring(0,6) === 'white_' || snapshot.key.substring(0,6) === 'black_'){
+        var data = snapshot.val();
+        data['piece'] = snapshot.key;
+        movePiece(data);
+      }
+    });
+    this.setState({
+      requiredMoves: requiredMoves
+    })
+  }
+
 
   componentDidUpdate() {
   }
@@ -205,7 +272,7 @@ class gamescene extends Component {
   };
 
   handleSelectButton (event) {
-    let a = this;
+    /*let a = this;
     var gameData = {};
     for(var property in a.state) {
       if(a.state.hasOwnProperty(property) && (property.substring(0,1) === 'w' || property.substring(0,1) === 'b')){
@@ -243,7 +310,44 @@ class gamescene extends Component {
           });
         });
       } else {
-        for(var property in games) {
+        if(games[a.state.roomID]['user1'] === a.state.username) {
+          var gameListener = firebase.database().ref('/games/' + property + '/gameData/');
+          gameListener.on('child_changed', function(snapshot) {
+            if(snapshot.key.substring(0,6) === 'white_' || snapshot.key.substring(0,6) === 'black_'){
+              var data = snapshot.val();
+              data['piece'] = snapshot.key;
+              movePiece(data);
+            }
+          });
+          gameData = games[a.state.roomID]['gameData']
+          setPieces(gameData)
+          a.setState({
+            ...gameData,
+            isWhite: true,
+            username: a.state.username,
+            otherUser: games[a.state.roomID]['user2'],
+            submitted: true,
+          });
+        } else if (games[a.state.roomID]['user2'] === a.state.username) {
+          gameListener = firebase.database().ref('/games/' + property + '/gameData/');
+          gameListener.on('child_changed', function(snapshot) {
+            if(snapshot.key.substring(0,6) === 'white_' || snapshot.key.substring(0,6) === 'black_'){
+              var data = snapshot.val();
+              data['piece'] = snapshot.key;
+              movePiece(data);
+            }
+          });
+          gameData = games[a.state.roomID]['gameData']
+          setPieces(gameData);
+          a.setState({
+            ...gameData,
+            isWhite: false,
+            username: a.state.username,
+            otherUser: games[a.state.roomID]['user1'],
+            submitted: true,
+          })
+        }
+        /*for(var property in games) {
           if(games.hasOwnProperty(property)) {
             if(games[property]['user2'] === '') {
               var postData ={
@@ -272,7 +376,7 @@ class gamescene extends Component {
           }
         }
       }
-    })
+    })*/
   };
 
   getHeader = () => {
@@ -289,10 +393,18 @@ class gamescene extends Component {
         } else {
           return "You won!"
         }
-      } else if (this.state.whiteTurn && this.state.isWhite) {
-        return "Your turn"
+      } else if (this.state.isWhite) {
+        if(this.state.whiteTurn) {
+          return "Your turn"
+        } else {
+          return "Opponent's turn"
+        }
       } else {
-        return "Opponent's turn"
+        if(this.state.whiteTurn){
+          return "Opponent's turn"
+        } else {
+          return "Your Turn"
+        }
       }
     }
   }

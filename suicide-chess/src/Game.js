@@ -18,7 +18,23 @@ let pieces = {
     black_pawnG: { x: 6, y: 1, firstMove: true },
     black_pawnH: { x: 7, y: 1, firstMove: true },
 
-    white_knightA: { x: -1, y: 7 },
+    white_knightA: { x: 1, y: 7 },
+    white_knightB: { x: 6, y: 7 },
+    white_bishopA: { x: 2, y: 7 },
+    white_bishopB: { x: 5, y: 7 },
+    white_rookA: { x: 0, y: 7 },
+    white_rookB: { x: 7, y: 7 },
+    white_queen: { x: 3, y: 7 },
+    white_king: { x: 4, y: 7 },
+    white_pawnA: { x: 0, y: 6, firstMove: true },
+    white_pawnB: { x: 1, y: 6, firstMove: true },
+    white_pawnC: { x: 2, y: 6, firstMove: true },
+    white_pawnD: { x: 3, y: 6, firstMove: true },
+    white_pawnE: { x: 4, y: 6, firstMove: true },
+    white_pawnF: { x: 5, y: 6, firstMove: true },
+    white_pawnG: { x: 6, y: 6, firstMove: true },
+    white_pawnH: { x: 7, y: 6, firstMove: true },
+    /*white_knightA: { x: -1, y: 7 },
     white_knightB: { x: -1, y: 7 },
     white_bishopA: { x: -1, y: 7 },
     white_bishopB: { x: -1, y: 7 },
@@ -33,7 +49,7 @@ let pieces = {
     white_pawnE: { x: -1, y: 6, firstMove: true },
     white_pawnF: { x: -1, y: 6, firstMove: true },
     white_pawnG: { x: -1, y: 6, firstMove: true },
-    white_pawnH: { x: 7, y: 6, firstMove: true },
+    white_pawnH: { x: 7, y: 6, firstMove: true },*/
 }
 
 let observer = null
@@ -56,6 +72,11 @@ function emitChange() {
 
 export function setRequiredMoves(moves) {
   requiredMoves = moves;
+}
+
+export function setPieces(data, turn) {
+  whiteTurn = turn
+  pieces = data;
 }
 
 export function observe(o) {

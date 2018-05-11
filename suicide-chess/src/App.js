@@ -7,7 +7,7 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Suicide Chess</h1>
-        <Gamescene />
+        <Gamescene roomID={this.props.roomID}/>
       </div>
     );
   }

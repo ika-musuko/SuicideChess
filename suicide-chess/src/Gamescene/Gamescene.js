@@ -49,6 +49,8 @@ class gamescene extends Component {
       validTiles: [],
       requiredMoves: [],
 
+      moveList:[],
+
       whiteTurn: true,
 
       whiteWin: false,
@@ -57,15 +59,15 @@ class gamescene extends Component {
 
       databaseRef: firebase.database().ref('games'),
 
-      rematchRoute: '/rematch/' + gameID,
-      exitGameRoute:'/exit_game/' + gameID,
+      rematchRoute: '/rematch/' + this.props.roomID,
+      exitGameRoute: '/exit_game/' + this.propsroomID,
 
       submitted: false,
 
       isWhite: false,
       username: '',
       otherUser: '',
-      gameID: '',
+      roomID: this.props.roomID,
 
       selectedPiece: null
     }
@@ -76,29 +78,31 @@ class gamescene extends Component {
     this.handleSelectButton = this.handleSelectButton.bind(this);
   };
 
-  handlePieceMove (pieces, changesMade) {
+  componentDidMount() {
+    this.setState({
+      white_knightA: { x: -1, y: 7 },
+      white_knightB: { x: -1, y: 7 },
+      white_bishopA: { x: -1, y: 7 },
+      white_bishopB: { x: -1, y: 7 },
+      white_rookA: { x: -1, y: 7 },
+      white_rookB: { x: -1, y: 7 },
+      white_queen: { x: -1, y: 7 },
+      white_king: { x: -1, y: 7 },
+      white_pawnA: { x: -1, y: 6, firstMove: true },
+      white_pawnB: { x: -1, y: 6, firstMove: true },
+      white_pawnC: { x: -1, y: 6, firstMove: true },
+      white_pawnD: { x: -1, y: 6, firstMove: true },
+      white_pawnE: { x: -1, y: 6, firstMove: true },
+      white_pawnF: { x: -1, y: 6, firstMove: true },
+      white_pawnG: { x: -1, y: 6, firstMove: true },
+    })
+  }
+
+  componentDidUpdate() {
+  }
+
+  handlePieceMove (pieces, changesMade, move) {
     if(this.state.submitted) {
-      let blackWin = true
-      let whiteWin = true
-      for(var property in pieces) {
-        if(pieces.hasOwnProperty(property)) {
-          if(pieces[property].x !== -1) {
-            if(property.substring(0,5) === "black") {
-              blackWin = false;
-            } else {
-              whiteWin = false;
-            }
-          }
-        }
-      }
-
-      if(blackWin || whiteWin) {
-        this.setState({
-          whiteWin: whiteWin,
-          blackWin: blackWin,
-        });
-      }
-
       if(this.state && changesMade) {
         let requiredMoves = [];
         if(this.state.whiteTurn) {
@@ -106,16 +110,55 @@ class gamescene extends Component {
         } else {
           requiredMoves = getRequiredMoves(pieces, true);
         }
+
         setRequiredMoves(requiredMoves);
+
+        var newMoves = this.state.moveList;
+        newMoves.push(move)
         var gameData = pieces;
         gameData['whiteTurn'] = changesMade ? !this.state.whiteTurn : this.state.whiteTurn;
         var updates = {};
-        updates['/games/' + this.state.gameID + '/gameData/'] = gameData;
+        updates['/games/' + this.state.roomID + '/gameData/'] = gameData;
+        updates['/games/' + this.state.roomID + '/moveList'] = newMoves;
+
+        let blackWin = true
+        let whiteWin = true
+        for(var piece in pieces) {
+          if(pieces.hasOwnProperty(piece)) {
+            if(pieces[piece].x !== -1) {
+              if(piece.substring(0,6) === "black_") {
+                blackWin = false;
+              } else if (piece.substring(0,6) === "white_") {
+                whiteWin = false;
+              }
+            }
+          }
+        }
+        if(whiteWin) {
+          updates['/games/' + this.state.roomID + '/status'] = "finished"
+          if(this.state.isWhite) {
+            updates['/games/' + this.state.roomID + '/winner'] = this.state.username
+          } else {
+            updates['/games/' + this.state.roomID + '/winner'] = this.state.otherUser
+          }
+        } else if (blackWin) {
+          updates['/games/' + this.state.roomID + '/status'] = "finished"
+          if(this.state.isWhite) {
+            updates['/games/' + this.state.roomID + '/winner'] = this.state.otherUser
+          } else {
+            updates['/games/' + this.state.roomID + '/winner'] = this.state.username
+          }
+        }
+
         firebase.database().ref().update(updates);
+
         this.setState({
           validTiles: [],
           ...pieces,
+          blackWin: blackWin,
+          whiteWin: whiteWin,
           selectedPiece: null,
+          moveList: newMoves,
           requiredMoves: requiredMoves,
           whiteTurn: changesMade ? !this.state.whiteTurn : this.state.whiteTurn,
         });
@@ -129,7 +172,7 @@ class gamescene extends Component {
   };
 
   handlePieceSelect (piece) {
-    if(this.state.submitted) {
+    if(this.state.submitted && !(this.state.whiteWin || this.state.blackWin)) {
       if((this.state.isWhite && this.state.whiteTurn) || (!this.state.isWhite && !this.state.whiteTurn)) {
         let validTiles = getValidMoves(this.state, piece)
         if(Object.keys(this.state.requiredMoves).length > 0) {
@@ -177,17 +220,17 @@ class gamescene extends Component {
           user2: '',
           gameData: gameData,
         };
-        var gameID = a.state.databaseRef.push(info).key
+        var roomID = a.state.databaseRef.push(info).key
         a.setState({
           username: a.state.username,
           isWhite: true,
-          gameID: gameID,
+          roomID: roomID,
           submitted: true,
         });
-        var user2Joins = firebase.database().ref('/games/' + gameID);
+        var user2Joins = firebase.database().ref('/games/' + roomID);
         user2Joins.on('child_changed', function(snapshot) {
           user2Joins.off('child_changed');
-          var gameListener = firebase.database().ref('/games/' + gameID + '/gameData/');
+          var gameListener = firebase.database().ref('/games/' + roomID + '/gameData/');
           gameListener.on('child_changed', function(snapshot) {
             if(snapshot.key.substring(0,6) === 'white_' || snapshot.key.substring(0,6) === 'black_'){
               var data = snapshot.val();
@@ -223,7 +266,7 @@ class gamescene extends Component {
                 username: a.state.username,
                 otherUser: games[property]['user1'],
                 submitted: true,
-                gameID: property,
+                roomID: property,
               });
             }
           }
@@ -232,10 +275,34 @@ class gamescene extends Component {
     })
   };
 
+  getHeader = () => {
+    if(this.state.submitted) {
+      if(this.state.whiteWin) {
+        if(this.state.isWhite) {
+          return "You won!"
+        } else {
+          return "You lost!"
+        }
+      } else if (this.state.blackWin) {
+        if(this.state.isWhite) {
+          return "You lost!"
+        } else {
+          return "You won!"
+        }
+      } else if (this.state.whiteTurn && this.state.isWhite) {
+        return "Your turn"
+      } else {
+        return "Opponent's turn"
+      }
+    }
+  }
+
   render() {
+
+    var header = this.getHeader()
     return (
       <div className="Gamescene">
-        <h2>{this.state.blackWin ? "Black won!" : this.state.whiteWin ? "White won!" : this.state.whiteTurn ? (this.state.isWhite ? "Your Turn" : "Their Turn") : (this.state.isWhite ? "Their Turn" : "Your Turn")}</h2>
+        <h2>{header}</h2>
         {this.state.submitted ?
           <p> Username: {this.state.username}  Opponent: {this.state.otherUser}</p>
            :

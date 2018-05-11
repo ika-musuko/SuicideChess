@@ -12,7 +12,16 @@
 <p>right click <a href="{{ friend_url }}" id="inviteLink">here</a>, click "copy to clipboard" and then send it to a friend so they can play too!</p>
 {% endif %}
 
-<h3><b>players: </b>{{ room_manager.get_players(room_id) }}</h3>
+<h3><b>players: </b></h3>
+{% set players = room_manager.get_players_by_id(room_id) %}
+{% if players %}
+    <ul class="playerList">
+        {% for player_id in players %}
+            {% set player_data = player_manager.get_user(player_id) %}
+            <li><a class="playerLink" href="{{ url_for('user', user_id=player_id) }}">{{ player_data["displayName"] }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
 <p>
     <b>ROOM DATA</b>

@@ -7,6 +7,7 @@ objects and functions for managing player statistics
 import pdb
 import pyrebase_ext
 
+from project.players import player_exceptions
 from project.models.new_game_history import new_game_history
 
 class PlayerManager:
@@ -30,6 +31,7 @@ class PlayerManager:
     def get_user_attribute(self, player_id: str, stat: str):
         return self.db.child(self.user_branch).child(player_id).child(stat).get().val()
 
+
     def set_user_attribute(self, player_id: str, stat: str, value):
         self.db.child(self.user_branch).child(player_id).child(stat).set(value)
 
@@ -37,8 +39,10 @@ class PlayerManager:
     def add_win(self, player_id: str):
         self.increment_stat(player_id, "wins")
 
+
     def add_loss(self, player_id: str):
         self.increment_stat(player_id, "losses")
+
 
     def add_game_history(self, player_id: str, room_id: str, game_history: dict):
         game_histories = self.get_user_attribute(player_id, "gameHistories")
@@ -58,6 +62,7 @@ class PlayerManager:
         current_games.remove(room_id)
 
         self.set_user_attribute(player_id, "currentGames", current_games)
+
 
     def update_statistics(self, room_id: str, room: dict):
         for player in room["players"]:
@@ -94,6 +99,14 @@ class PlayerManager:
         self.set_user_attribute(player_id, "currentGames", current_games)
 
 
+    def get_user(self, user_id: str) -> dict:
+        # try to get a user
+        user = self.db.child(self.user_branch).child(user_id).get().val()
+        if not user:
+            raise player_exceptions.PlayerNotFound
+        return user
+
+
     def get_display_name(self, player_id: str) -> str:
         '''
         get the display name from a player
@@ -101,3 +114,12 @@ class PlayerManager:
         :return:
         '''
         return self.get_user_attribute(player_id, "displayName")
+
+
+    def get_all_user_ids(self) -> list:
+        '''
+        return every user id
+        :return:
+        '''
+        all_user_data = self.db.child(self.user_branch).get().val()
+        return all_user_data.keys() if all_user_data else []

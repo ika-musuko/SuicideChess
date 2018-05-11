@@ -381,7 +381,18 @@ class RoomManager:
         _, room = self.get_room(room_id)
         return user_id in room["players"]
 
-    def get_players(self, room_id: str) -> list:
+
+    def get_players_by_id(self, room_id: str) -> list:
+        '''
+        return the list of players in the room by display name
+        :param room_id:
+        :return:
+        '''
+        _, room = self.get_room(room_id)
+        return room["players"] if room["players"] else []
+
+
+    def get_players_by_display_name(self, room_id: str) -> list:
         '''
         return the list of players in the room by display name
         :param room_id:

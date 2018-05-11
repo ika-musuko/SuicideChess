@@ -36,6 +36,7 @@
 
         <div class='menubar'>
             <a href="{{ url_for('index') }}">home</a>
+            <a href="{{ url_for('all_users') }}">all users</a>
             {% if current_user.is_authenticated %}
                 <a href="{{ url_for('new_game', variant='classic', mode='random') }}">new classic random</a>
                 <a href="{{ url_for('new_game', variant='classic', mode='friend') }}">new classic friend</a>
@@ -53,7 +54,7 @@
             {% if current_games %}
                 {% for room_id in current_games %}
                     {% if room_id %}
-            <a href="{{ url_for('play', room_id=room_id) }}">{{ room_id }}</a><span> <b>status:</b> {{ room_manager.get_status(room_id) }} <b>players:</b> {{ room_manager.get_players(room_id) }}</span>
+            <a href="{{ url_for('play', room_id=room_id) }}">{{ room_id }}</a><span> <b>status:</b> {{ room_manager.get_status(room_id) }} <b>players:</b> {{ room_manager.get_players_by_display_name(room_id) }}</span>
                         <br/>
                     {% endif %}
                 {% endfor %}

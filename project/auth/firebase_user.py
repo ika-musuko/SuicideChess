@@ -49,18 +49,28 @@ class FirebaseUser(UserMixin):
     def __init__(self, user_id):
         self.id = user_id
 
+    # UserMixin overload
+    def get_id(self):
+        return self.id
+
     def get_db_property(self, property: str):    #gets database property -joleena
         return pyre_db.child("users").child(self.id).child(property).get().val()
 
     def set_db_property(self, property: str, value):
         pyre_db.child("users").child(self.id).child(property).set(value)
 
-    def get_id(self):
-        return self.id
+    def as_dict(self):
+        '''
+        get the user data as a dict
+        :return:
+        '''
+        return pyre_db.child("users").child(self.id).get().val()
 
     @property
     def display_name(self):
         return self.get_db_property("displayName")
+
+
 
 
 

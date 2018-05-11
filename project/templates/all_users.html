@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% set title = "all users" %}
+{% block content %}
+<h3>Total users: {{ all_user_ids|length }}</h3>
+<ul class="userList">
+{% for user_id in all_user_ids %}
+    {% set user_data = player_manager.get_user(user_id) %}
+    <li><a class="userLink" href="{{ url_for('user', user_id=user_id) }}">{{ user_data["displayName"] }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

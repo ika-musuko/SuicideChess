@@ -74,4 +74,4 @@ app.logger.setLevel(logging.INFO)
 app.logger.info('flaskbase startup')
 
 # finally import the project views and models
-from project.views import auth_views, game_views, home_views, error_views
+from project.views import auth_views, game_views, user_views, error_views

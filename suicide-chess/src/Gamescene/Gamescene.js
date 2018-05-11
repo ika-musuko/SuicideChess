@@ -57,7 +57,7 @@ class gamescene extends Component {
 
       blackWin: false,
 
-      databaseRef: firebase.database().ref('/games/' + this.props.roomID),
+      databaseRef: firebase.database().ref('/SuicideChess/' + this.props.roomID),
 
       rematchRoute: '/rematch/' + this.props.roomID,
       exitGameRoute: '/exit_game/' + this.propsroomID,
@@ -99,7 +99,7 @@ class gamescene extends Component {
     let a = this;
     this.state.databaseRef.once('value').then(function(snapshot) {
       var room = snapshot.val();
-      if(room['user1'] === a.state.username) {
+      if(room['players'][0] === a.state.username) {
 
         var gameData = room['gameData']
 
@@ -107,12 +107,13 @@ class gamescene extends Component {
           ...gameData,
           whiteTurn: gameData['whiteTurn'],
           username: a.state.username,
-          otherUser: room['user2'],
+          otherUser: room['players'][1],
+          moveList: room['moveList'],
           submitted: true,
           isWhite: true,
         });
         a.updateStateAfterDatabaseSync()
-      } else if (room['user2'] === a.state.username) {
+      } else if (room['players'][1] === a.state.username) {
 
         var gameData = room['gameData']
 
@@ -120,7 +121,8 @@ class gamescene extends Component {
           ...gameData,
           whiteTurn: gameData['whiteTurn'],
           username: a.state.username,
-          otherUser: room['user1'],
+          otherUser: room['players'][0],
+          moveList: room['moveList'],
           submitted: true,
           isWhite: false
         })
@@ -141,17 +143,13 @@ class gamescene extends Component {
     setPieces(newGameData, newGameData['whiteTurn']);
 
     let requiredMoves = [];
-    console.log(newGameData['whiteTurn']);
-    console.log(this.state.whiteTurn);
     if(newGameData['whiteTurn']) {
       requiredMoves = getRequiredMoves(newGameData, true);
     } else {
       requiredMoves = getRequiredMoves(newGameData, false);
     }
 
-    console.log(requiredMoves);
-
-    var gameListener = firebase.database().ref('/games/' + this.state.roomID + '/gameData/');
+    var gameListener = firebase.database().ref('/SuicideChess/' + this.state.roomID + '/gameData/');
     gameListener.on('child_changed', function(snapshot) {
       if(snapshot.key.substring(0,6) === 'white_' || snapshot.key.substring(0,6) === 'black_'){
         var data = snapshot.val();
@@ -185,8 +183,8 @@ class gamescene extends Component {
         var gameData = pieces;
         gameData['whiteTurn'] = changesMade ? !this.state.whiteTurn : this.state.whiteTurn;
         var updates = {};
-        updates['/games/' + this.state.roomID + '/gameData/'] = gameData;
-        updates['/games/' + this.state.roomID + '/moveList'] = newMoves;
+        updates['/SuicideChess/' + this.state.roomID + '/gameData/'] = gameData;
+        updates['/SuicideChess/' + this.state.roomID + '/moveList'] = newMoves;
 
         let blackWin = true
         let whiteWin = true
@@ -202,18 +200,18 @@ class gamescene extends Component {
           }
         }
         if(whiteWin) {
-          updates['/games/' + this.state.roomID + '/status'] = "finished"
+          updates['/SuicideChess/' + this.state.roomID + '/status'] = "finished"
           if(this.state.isWhite) {
-            updates['/games/' + this.state.roomID + '/winner'] = this.state.username
+            updates['/SuicideChess/' + this.state.roomID + '/winner'] = this.state.username
           } else {
-            updates['/games/' + this.state.roomID + '/winner'] = this.state.otherUser
+            updates['/SuicideChess/' + this.state.roomID + '/winner'] = this.state.otherUser
           }
         } else if (blackWin) {
-          updates['/games/' + this.state.roomID + '/status'] = "finished"
+          updates['/SuicideChess/' + this.state.roomID + '/status'] = "finished"
           if(this.state.isWhite) {
-            updates['/games/' + this.state.roomID + '/winner'] = this.state.otherUser
+            updates['/SuicideChess/' + this.state.roomID + '/winner'] = this.state.otherUser
           } else {
-            updates['/games/' + this.state.roomID + '/winner'] = this.state.username
+            updates['/SuicideChess/' + this.state.roomID + '/winner'] = this.state.username
           }
         }
 

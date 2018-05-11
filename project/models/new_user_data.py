@@ -15,5 +15,6 @@ def new_user_data(display_name: str, e_mail: str):
         , "losses" : 0
         , "rank" : 0
         , "wins" : 0
+        , "bio" : "This user has not written a bio yet."
     }
 

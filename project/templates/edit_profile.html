@@ -3,7 +3,8 @@
 {% block content %}
     <form action="" method="post" class="loginform">
         display name{{ form.display_name() }}<br/>
-        email: {{ current_user.get_db_property("email") }}
+        email: {{ current_user.get_db_property("email") }}<br/>
+        bio: {{ form.bio() }}<br/>
         {{ form.submit() }}<br/>
         {{ form.csrf_token }}
     </form>

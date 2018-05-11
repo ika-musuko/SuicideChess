@@ -1,4 +1,9 @@
 {% extends "base.html" %}
 {% set title = "home" %}
 {% block content %}
+{% if current_user.is_authenticated %}
+    {% with user_id=current_user.id %}
+        {% include "user.html" %}
+    {% endwith %}
+{% endif %}
 {% endblock %}

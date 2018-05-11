@@ -1,0 +1,27 @@
+<h2>{{ player_manager.get_display_name(user_id) }}'s Profile</h2>
+<div>
+    <h4>User Information</h4>
+    <b>id: </b>{{ user_id }}<br/>
+    <b>bio: </b>{{ player_manager.get_user_attribute(user_id, "bio") }}<br/>
+
+    <h4>Player Statistics</h4>
+    <b>wins: </b>{{ player_manager.get_user_attribute(user_id, "wins") }}<br/>
+    <b>losses: </b>{{ player_manager.get_user_attribute(user_id, "losses") }}<br/>
+    <b>draws: </b>{{ player_manager.get_user_attribute(user_id, "draws") }}<br/>
+
+    <h4>Game Histories</h4>
+    {% set game_histories = player_manager.get_user_attribute(user_id, "gameHistories") %}
+    {% if game_histories %}
+        <ul class="gameHistories">
+        {% for room_id, game_history in game_histories.items() %}
+            <li class="gameHistoryItem"><b>{{ room_id }}</b>
+                <ul class="gameHistory">
+                    <li class="winner">Winner: {{ game_history["winner"] }}</li>
+                    <li class="timeFinished">Time finished: {{ game_history["timeFinished"] }}</li>
+                    <li class="moveList">Move List: {{ game_history["moveList"] }}</li>
+                </ul>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</div>

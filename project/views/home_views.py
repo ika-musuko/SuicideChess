@@ -24,8 +24,15 @@ def index() -> str:
 @login_required
 def edit_profile() -> str:
     form = EditProfileForm()
-    if form.validate_on_submit() and form.display_name.data:
-        current_user.set_db_property("displayName", form.display_name.data)
-        flash("Display name successfully changed!")
+    if form.validate_on_submit():
+        # only update their display name if it's not blank
+        if form.display_name.data:
+            current_user.set_db_property("displayName", form.display_name.data)
+
+        # only update their bio if it's not blank
+        if form.bio.data:
+            current_user.set_db_property("bio", form.bio.data)
+
+        flash("Profile successfully changed!")
 
     return render_template("edit_profile.html", form=form)

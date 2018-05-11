@@ -23,14 +23,14 @@ class PlayerManager:
 
     # PYREBASE DOESN'T LET YOU SAVE CHAINED QUERIES INTO VARIABLES LOL
     def increment_stat(self, player_id: str, stat: str):
-        current_stat = self.get_stat(player_id, stat)
-        self.set_stat(player_id, stat, current_stat+1)
+        current_stat = self.get_user_attribute(player_id, stat)
+        self.set_user_attribute(player_id, stat, current_stat + 1)
 
 
-    def get_stat(self, player_id: str, stat: str):
+    def get_user_attribute(self, player_id: str, stat: str):
         return self.db.child(self.user_branch).child(player_id).child(stat).get().val()
 
-    def set_stat(self, player_id: str, stat: str, value):
+    def set_user_attribute(self, player_id: str, stat: str, value):
         self.db.child(self.user_branch).child(player_id).child(stat).set(value)
 
 
@@ -41,23 +41,23 @@ class PlayerManager:
         self.increment_stat(player_id, "losses")
 
     def add_game_history(self, player_id: str, room_id: str, game_history: dict):
-        game_histories = self.get_stat(player_id, "gameHistories")
+        game_histories = self.get_user_attribute(player_id, "gameHistories")
 
         if not game_histories:
             game_histories = {room_id : game_history}
         else:
             game_histories[room_id] = game_history
 
-        self.set_stat(player_id, "gameHistories", game_histories)
+        self.set_user_attribute(player_id, "gameHistories", game_histories)
 
 
     def remove_current_game(self, player_id: str, room_id: str):
         # get list of current games
-        current_games = self.get_stat(player_id, "currentGames")
+        current_games = self.get_user_attribute(player_id, "currentGames")
 
         current_games.remove(room_id)
 
-        self.set_stat(player_id, "currentGames", current_games)
+        self.set_user_attribute(player_id, "currentGames", current_games)
 
     def update_statistics(self, room_id: str, room: dict):
         for player in room["players"]:
@@ -80,7 +80,7 @@ class PlayerManager:
     def add_current_game(self, player_id: str, room_id: str):
         # get the list of current games and add it to the user's
         # current game list
-        current_games = self.get_stat(player_id, "currentGames")
+        current_games = self.get_user_attribute(player_id, "currentGames")
 
         if current_games:
             # don't add a duplicate game
@@ -91,7 +91,7 @@ class PlayerManager:
         else:
             current_games = [room_id]
 
-        self.set_stat(player_id, "currentGames", current_games)
+        self.set_user_attribute(player_id, "currentGames", current_games)
 
 
     def get_display_name(self, player_id: str) -> str:
@@ -100,4 +100,4 @@ class PlayerManager:
         :param player_id:
         :return:
         '''
-        return self.get_stat(player_id, "displayName")
+        return self.get_user_attribute(player_id, "displayName")

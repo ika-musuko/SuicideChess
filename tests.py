@@ -8,7 +8,7 @@ tests.py
 import unittest
 import warnings
 
-from project.models.new_game_data import NEW_GAME_DATA
+from project.models import new_game_data
 from project.rooms import room_exceptions
 from project.rooms import room_manager
 from pyrebase_init import initialize_pyrebase
@@ -48,7 +48,7 @@ class RoomTestCase(unittest.TestCase):
         self.room_manager = room_manager.RoomManager(
             db=self.pyre_db
             , game_branch=self.testing_branch_name
-            , new_game_data=NEW_GAME_DATA
+            , new_game_data=new_game_data.NEW_SUICIDE_CHESS_GAME_DATA
             , rematch_redirects_branch=self.testing_redirects
         )
 

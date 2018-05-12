@@ -13,7 +13,7 @@ from flask_dance.contrib.google import make_google_blueprint
 
 # models imports
 from project.rooms.room_manager import RoomManager
-from project.models.new_game_data import NEW_GAME_DATA
+from project.models import new_game_data
 from project.players.player_manager import PlayerManager
 
 # error logging imports
@@ -53,7 +53,7 @@ player_manager = PlayerManager(db=pyre_db, user_branch="users")
 room_manager = RoomManager(
     db=pyre_db
     , game_branch="SuicideChess"
-    , new_game_data=NEW_GAME_DATA
+    , new_game_data=new_game_data.NEW_SUICIDE_CHESS_GAME_DATA
     , rematch_redirects_branch="SuicideChessRedirects"
     , player_manager=player_manager
 )

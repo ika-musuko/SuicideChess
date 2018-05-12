@@ -26,8 +26,8 @@ def new_room_data(players: list, mode: str, variant: str, status: str, new_game_
         , "gameData": new_game_data
         , "rematchReady": {player: False for player in players}
 
-        , "winner": ""  # GAME APP output
-        , "gameHistory": {}  # GAME APP output
+        , "winner": "$DUMMY"  # GAME APP output
+        , "moveList": ["$DUMMY"]
     }
 
 

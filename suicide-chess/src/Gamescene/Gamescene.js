@@ -13,39 +13,39 @@ class gamescene extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      black_knightA: { x: 1, y: 0 },
-      black_knightB: { x: 6, y: 0 },
-      black_bishopA: { x: 2, y: 0 },
-      black_bishopB: { x: 5, y: 0 },
-      black_rookA: { x: 0, y: 0 },
-      black_rookB: { x: 7, y: 0 },
-      black_queen: { x: 3, y: 0 },
-      black_king: { x: 4, y: 0 },
-      black_pawnA: { x: 0, y: 1, firstMove: true },
-      black_pawnB: { x: 1, y: 1, firstMove: true },
-      black_pawnC: { x: 2, y: 1, firstMove: true },
-      black_pawnD: { x: 3, y: 1, firstMove: true },
-      black_pawnE: { x: 4, y: 1, firstMove: true },
-      black_pawnF: { x: 5, y: 1, firstMove: true },
-      black_pawnG: { x: 6, y: 1, firstMove: true },
-      black_pawnH: { x: 7, y: 1, firstMove: true },
+      black_knightA: { x: -1, y: 0 },
+      black_knightB: { x: -1, y: 0 },
+      black_bishopA: { x: -1, y: 0 },
+      black_bishopB: { x: -1, y: 0 },
+      black_rookA: { x: -1, y: 0 },
+      black_rookB: { x: -1, y: 0 },
+      black_queen: { x: -1, y: 0 },
+      black_king: { x: -1, y: 0 },
+      black_pawnA: { x: -1, y: 1, firstMove: true },
+      black_pawnB: { x: -1, y: 1, firstMove: true },
+      black_pawnC: { x: -1, y: 1, firstMove: true },
+      black_pawnD: { x: -1, y: 1, firstMove: true },
+      black_pawnE: { x: -1, y: 1, firstMove: true },
+      black_pawnF: { x: -1, y: 1, firstMove: true },
+      black_pawnG: { x: -1, y: 1, firstMove: true },
+      black_pawnH: { x: -1, y: 1, firstMove: true },
 
-      white_knightA: { x: 1, y: 7 },
-      white_knightB: { x: 6, y: 7 },
-      white_bishopA: { x: 2, y: 7 },
-      white_bishopB: { x: 5, y: 7 },
-      white_rookA: { x: 0, y: 7 },
-      white_rookB: { x: 7, y: 7 },
-      white_queen: { x: 3, y: 7 },
-      white_king: { x: 4, y: 7 },
-      white_pawnA: { x: 0, y: 6, firstMove: true },
-      white_pawnB: { x: 1, y: 6, firstMove: true },
-      white_pawnC: { x: 2, y: 6, firstMove: true },
-      white_pawnD: { x: 3, y: 6, firstMove: true },
-      white_pawnE: { x: 4, y: 6, firstMove: true },
-      white_pawnF: { x: 5, y: 6, firstMove: true },
-      white_pawnG: { x: 6, y: 6, firstMove: true },
-      white_pawnH: { x: 7, y: 6, firstMove: true },
+      white_knightA: { x: -1, y: 7 },
+      white_knightB: { x: -1, y: 7 },
+      white_bishopA: { x: -1, y: 7 },
+      white_bishopB: { x: -1, y: 7 },
+      white_rookA: { x: -1, y: 7 },
+      white_rookB: { x: -1, y: 7 },
+      white_queen: { x: -1, y: 7 },
+      white_king: { x: -1, y: 7 },
+      white_pawnA: { x: -1, y: 6, firstMove: true },
+      white_pawnB: { x: -1, y: 6, firstMove: true },
+      white_pawnC: { x: -1, y: 6, firstMove: true },
+      white_pawnD: { x: -1, y: 6, firstMove: true },
+      white_pawnE: { x: -1, y: 6, firstMove: true },
+      white_pawnF: { x: -1, y: 6, firstMove: true },
+      white_pawnG: { x: -1, y: 6, firstMove: true },
+      white_pawnH: { x: -1, y: 6, firstMove: true },
       validTiles: [],
       requiredMoves: [],
 
@@ -103,6 +103,33 @@ class gamescene extends Component {
 
         var gameData = room['gameData']
 
+        var winner = room['winner']
+
+        console.log(winner);
+        if(winner === a.state.username) {
+          a.setState({
+            ...gameData,
+            whiteTurn: gameData['whiteTurn'],
+            username: a.state.username,
+            otherUser: room['players'][1],
+            moveList: room['moveList'],
+            submitted: true,
+            isWhite: true,
+            whiteWin: true,
+          });
+        } else if (winner === room['players'][1]) {
+          a.setState({
+            ...gameData,
+            whiteTurn: gameData['whiteTurn'],
+            username: a.state.username,
+            otherUser: room['players'][1],
+            moveList: room['moveList'],
+            submitted: true,
+            isWhite: true,
+            blackWin: true,
+          });
+        }
+
         a.setState({
           ...gameData,
           whiteTurn: gameData['whiteTurn'],
@@ -116,6 +143,30 @@ class gamescene extends Component {
       } else if (room['players'][1] === a.state.username) {
 
         var gameData = room['gameData']
+        var winner = room['winner']
+        if(winner === a.state.username) {
+          a.setState({
+            ...gameData,
+            whiteTurn: gameData['whiteTurn'],
+            username: a.state.username,
+            otherUser: room['players'][0],
+            moveList: room['moveList'],
+            submitted: true,
+            isWhite: false,
+            blackWin: true,
+          })
+        } else if (winner === room['players'][0]) {
+          a.setState({
+            ...gameData,
+            whiteTurn: gameData['whiteTurn'],
+            username: a.state.username,
+            otherUser: room['players'][0],
+            moveList: room['moveList'],
+            submitted: true,
+            isWhite: false,
+            whiteWin: true,
+          })
+        }
 
         a.setState({
           ...gameData,
@@ -426,5 +477,41 @@ class gamescene extends Component {
     );
   };
 }
+
+/* starting game data:
+black_knightA: { x: 2, y: 0 },
+black_knightB: { x: 6, y: 0 },
+black_bishopA: { x: 2, y: 0 },
+black_bishopB: { x: 5, y: 0 },
+black_rookA: { x: 0, y: 0 },
+black_rookB: { x: 7, y: 0 },
+black_queen: { x: 3, y: 0 },
+black_king: { x: 4, y: 0 },
+black_pawnA: { x: 0, y: 1, firstMove: true },
+black_pawnB: { x: 1, y: 1, firstMove: true },
+black_pawnC: { x: 2, y: 1, firstMove: true },
+black_pawnD: { x: 3, y: 1, firstMove: true },
+black_pawnE: { x: 4, y: 1, firstMove: true },
+black_pawnF: { x: 5, y: 1, firstMove: true },
+black_pawnG: { x: 6, y: 1, firstMove: true },
+black_pawnH: { x: 7, y: 1, firstMove: true },
+
+white_knightA: { x: 1, y: 7 },
+white_knightB: { x: 6, y: 7 },
+white_bishopA: { x: 2, y: 7 },
+white_bishopB: { x: 5, y: 7 },
+white_rookA: { x: 0, y: 7 },
+white_rookB: { x: 7, y: 7 },
+white_queen: { x: 3, y: 7 },
+white_king: { x: 4, y: 7 },
+white_pawnA: { x: 0, y: 6, firstMove: true },
+white_pawnB: { x: 1, y: 6, firstMove: true },
+white_pawnC: { x: 2, y: 6, firstMove: true },
+white_pawnD: { x: 3, y: 6, firstMove: true },
+white_pawnE: { x: 4, y: 6, firstMove: true },
+white_pawnF: { x: 5, y: 6, firstMove: true },
+white_pawnG: { x: 6, y: 6, firstMove: true },
+white_pawnH: { x: 7, y: 6, firstMove: true },
+*/
 
 export default gamescene;

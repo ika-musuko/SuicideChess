@@ -104,7 +104,7 @@ class gamescene extends Component {
         var gameData = room['gameData']
 
         var winner = room['winner']
-        
+
         if(winner === a.state.username) {
           a.setState({
             ...gameData,
@@ -463,7 +463,7 @@ class gamescene extends Component {
       <div className="Gamescene">
         <h2>{header}</h2>
           <p> Username: {this.state.username}  Opponent: {this.state.otherUser}</p>
-        <Board state={this.state} selectedPiece={this.state.selectedPiece} validTiles={this.state.validTiles} requiredMoves={this.state.requiredMoves}/>
+        <Board flip={!this.state.isWhite} state={this.state} selectedPiece={this.state.selectedPiece} validTiles={this.state.validTiles} requiredMoves={this.state.requiredMoves}/>
       </div>
     );
   };

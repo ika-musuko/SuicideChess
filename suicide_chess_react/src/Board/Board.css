@@ -1,6 +1,14 @@
-.Board {
+.board {
     display: inline-block;
     height: 400px;
     width: 400px;
     border: 1px solid #ccc;
+}
+
+.board-flipped {
+    display: inline-block;
+    height: 400px;
+    width: 400px;
+    border: 1px solid #ccc;
+    transform: rotate(180deg);
 }

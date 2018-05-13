@@ -31,6 +31,7 @@ class board extends Component {
                 key={8*y + x}
                 color={color}
                 requiredMove={this.checkIfRequiredMove(x,y)}
+                flip={this.props.flip}
                 click={this.handleSquareClick.bind(this, {piece: this.props.selectedPiece, x: x, y: y})}
             >
                 <div>
@@ -67,9 +68,17 @@ class board extends Component {
             squares.push(this.renderSquare(i))
         }
         return (
-            <div className="Board">
+          <div>
+            {this.props.flip ? (
+              <div className="board-flipped">
                 {squares}
-            </div>
+              </div>
+            ) : (
+              <div className="board">
+                {squares}
+              </div>
+            )}
+          </div>
         );
     }
 }

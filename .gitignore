@@ -13,3 +13,4 @@ setenv.sh
 *.pxm
 project/static/react/*
 logs
+.idea/*

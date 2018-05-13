@@ -464,14 +464,7 @@ class gamescene extends Component {
     return (
       <div className="Gamescene">
         <h2>{header}</h2>
-        {this.state.submitted ?
           <p> Username: {this.state.username}  Opponent: {this.state.otherUser}</p>
-           :
-          <form>
-            Username: <input type="text" value={this.state.username} onChange= {this.handleFormChange}/>
-            <button type="button" onClick={this.handleSelectButton}>Submit</button>
-          </form>
-        }
         <Board state={this.state} selectedPiece={this.state.selectedPiece} validTiles={this.state.validTiles}/>
       </div>
     );

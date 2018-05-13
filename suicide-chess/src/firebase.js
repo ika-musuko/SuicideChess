@@ -1,11 +1,11 @@
 import firebase from 'firebase'
 var config = {
-    apiKey: "AIzaSyCcyyNLlr0XKkfwFP_EAsYX2i-ZLoIiPlQ",
-    authDomain: "suicide-chess-dev.firebaseapp.com",
-    databaseURL: "https://suicide-chess-dev.firebaseio.com",
-    projectId: "suicide-chess-dev",
-    storageBucket: "suicide-chess-dev.appspot.com",
-    messagingSenderId: "721124950701"
+    apiKey: "AIzaSyCXou2TZBE14UqO0ZuhOyCk8k-pBgSHkqQ",
+    authDomain: "suicide-chess.firebaseapp.com",
+    databaseURL: "https://suicide-chess.firebaseio.com",
+    projectId: "suicide-chess",
+    storageBucket: "suicide-chess.appspot.com",
+    messagingSenderId: "306643895755"
   };
 firebase.initializeApp(config);
 export default firebase;

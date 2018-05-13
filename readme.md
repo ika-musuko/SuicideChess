@@ -112,4 +112,4 @@ write all flask tests in tests.py
 - `draft_html` - Rendered HTML documents of which pages are needed
 - `project` - Entry for the Flask project (Website Engine)
 - `suicide_chess_react` - Entry for the React project (Suicide Chess Game App)
-
+- `uidraft` - screenshot drafts of the UI

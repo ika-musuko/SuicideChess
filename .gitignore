@@ -9,8 +9,8 @@ __pycache__
 *venv_*
 firebase_auth.json
 pyrebase_config.py
-now-win.exe
 setenv.sh
 *.png
 *.xml
 *.pxm
+static/react

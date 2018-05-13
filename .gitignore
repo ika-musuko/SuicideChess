@@ -10,7 +10,5 @@ __pycache__
 firebase_auth.json
 pyrebase_config.py
 setenv.sh
-*.png
-*.xml
 *.pxm
 static/react

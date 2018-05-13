@@ -20,20 +20,37 @@ Make sure you can run `node` and `npm` from the terminal.
 1. Create a Python Virtual Environment somewhere. We will refer to the path as `$VIRTUAL_ENV_PATH`  
 `python3.6 -m virtualenv $VIRTUAL_ENV_PATH`
     - Note: If this command does not work, try running `python3.6 -m pip install virtualenv` first.
-2. Install the requirements
+2. Go into the virtual environment.  
+`source $VIRTUAL_ENV_PATH/bin/activate`
+    - You should see `($VIRTUAL_ENV_PATH)` before your terminal output now.
+3. Install the requirements
+    - `pip install -r requirements.txt`
+
+### Building the React App
+1. Run `./build_react.sh`
 
 ### Running
+1. Make sure you are in the virtual environment
+    - You should see `($VIRTUAL_ENV_PATH)` before your terminal output.
+2. `./run_server.sh` to start the server, and go to the URL the terminal output gives you.
+3. If you want to build the React App and run, use `./build_and_run.sh` 
 
-`./run_server.sh`  
+make sure you have a file called setenv.sh with all the specified environment variables in `project/__init__.py`  
 
-make sure you have a file called setenv.sh with all the specified environment variables in project/\_\_init\_\_.py  
+### Testing
+1. Make sure you are in the virtual environment
+    - You should see `($VIRTUAL_ENV_PATH)` before your terminal output.
+2. `./run_tests.sh`  
 
-### testing
-`./run_tests.sh`  
 
 write all flask tests in tests.py  
 
-### reading the code
+
+### Leaving the virtual environment
+
+`deactivate`
+
+### Reading the code
 start reading from backend.py and follow the imports
 
 ## Goals

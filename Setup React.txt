@@ -1,0 +1,39 @@
+PART 1: SETTING UP DEVELOPMENT TOOLS
+
+1. Install git-bash: https://git-scm.com/download/win
+	On the "Choosing the default editor" page of the installer choose whatever you'd like (I just use Vim, the default one)
+	On the "Adjusting your PATH environment" page choose the "Use Git from Git Bash only" option
+2. Install Microsoft Visual Studio Code : https://code.visualstudio.com/docs/?dv=win
+3. Install node.js :https://nodejs.org/dist/v8.9.4/node-v8.9.4-x64.msi
+4. Open Git Bash (You can just search for it)
+5. Go to GitHub, make sure you're signed in and then go to your account settings
+6. On the left click SSH and GPG keys
+7. Click New SSH Key in the top right corner
+8. Put whatever you like in the title.
+9. Now go back to git bash and type these commands (If you want to copy and paste ctrl+c and the right click in the git bash and select paste) and press enter after:
+	ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+	press enter once prompted to enter a file
+	Enter a password or just press enter to leave it blank if you want (note: when you type nothing will show up, don't worry about this it's still typing you just can't see it)
+	Repeat the password
+	eval $(ssh-agent -s)
+	ssh-add ~/.ssh/id_rsa
+10. Your SSH key is now added to your computer, now we need to add it to your github account, back in the bash type this command and press enter:
+	clip < ~/.ssh/id_rsa.pub
+11. Now your key should be copied, go back to github and paste it into the ssh key box and click add
+
+PART 2: SETTING UP REACT ENVIRONMENT
+
+1. Open up git bash, you should be in your home directory
+2. type command and press enter: 
+	cd Documents
+	git clone git@github.com:Diskiddin/Suicide-Chess.git
+	cd Suicide-Chess
+3. You now should have the files downloaded
+4. Cd into the project folder(yes this is repeated)
+	cd suicide-chess
+5. Run commands (this first one will take a while):
+	npm install
+	npm start
+6. You should be all set up here, if you have any questions just ask me
+
+

@@ -1,0 +1,6 @@
+.Board {
+    display: inline-block;
+    height: 400px;
+    width: 400px;
+    border: 1px solid #ccc;
+}

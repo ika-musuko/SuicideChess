@@ -14,3 +14,4 @@ setenv.sh
 project/static/react/*
 logs
 .idea/*
+server_ship.sh

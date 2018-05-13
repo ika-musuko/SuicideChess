@@ -10,6 +10,7 @@ from flask_login import UserMixin
 from project import pyre_db, lm
 from project.models.new_user_data import new_user_data
 
+# append this string at the beginning of invalid character replacement
 CONVERTER_STRING = "zHGHGHGHGzz"
 
 class InvalidEmailAddress(Exception):

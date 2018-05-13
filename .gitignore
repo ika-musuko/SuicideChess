@@ -11,5 +11,5 @@ firebase_auth.json
 pyrebase_config.py
 setenv.sh
 *.pxm
-project/static/react
+project/static/react/*
 logs

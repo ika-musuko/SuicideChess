@@ -19,7 +19,7 @@ npm run build
 rm -rf $BUILD_FOLDER_REL
 
 #Make new react directory
-mkdir $BUILD_FOLDER_REL
+mkdir -p $BUILD_FOLDER_REL
 
 #Move generated react build to new static directory
 mv build/static $BUILD_FOLDER_REL

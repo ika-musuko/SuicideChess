@@ -29,7 +29,7 @@ def play(room_id: str):
         try:
             # get the room from the room allocator
             _, room = room_manager.get_room(room_id)
-            return render_template("play.html", room_id=room_id, room=room)
+            return render_template("play.html", room_id=room_id, room=room, user_id=current_user.id)
 
         # handle errors
         except room_exceptions.RoomDoesNotExist:

@@ -1,5 +1,11 @@
 # Suicide Chess
 
+Team Members:
+Joleena Marshall
+Junia Iken
+Sherwyn Golgi
+Eric Scaramuzzo
+
 ## Instructions
 ### Running
 Install all of the requirements using pip and the included requirements.txt (preferably to a virtualenv)  

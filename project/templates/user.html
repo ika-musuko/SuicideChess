@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% block head %}
+{% endblock %}
 {% set title = [user['displayName'], "'s profile"]|join %} {# string concatenation #}
 {% block content %}
 {% include "user_profile.html" %}

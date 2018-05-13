@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% set title = "play "+room_id %}
+{% block head %}
+<head>
+    {# REACT: css styling for the react app #}
+    <link href="{{ url_for('static', filename='react/static/css/game_compiled.css') }}" rel="stylesheet">
+</head>
+{% endblock %}
+
 {% block content %}
 <h2>GAME!!!! {{ room_id }}</h2>
 
@@ -25,8 +32,8 @@
 
 <p>
     <b>ROOM DATA</b>
-    {# {{ room }} #}
-    <div id="gameRoom" user="{{ user_id }}" roomID="{{ room_id }}"></div>
+    {# REACT: container for the game #}
+    <div id="gameRoot" user="{{ user_id }}" roomID="{{ room_id }}"></div>
 </p>
 
 
@@ -44,12 +51,13 @@
 
 {% elif room["status"] == "inprogress" %}
     {# NOTE: DO NOT USE /simulate_game IN THE TEMPLATE! THIS IS ONLY FOR TESTING. ERIC WILL DEAL WITH IT IN THE REACT APP #}
-    <a href="{{ url_for('simulate_game', room_id=room_id) }}">simulate game</a>
+    {# <a href="{{ url_for('simulate_game', room_id=room_id) }}">simulate game</a> #}
 
 {% else %} {# room is waiting #}
     <h3>waiting for opponent......</h3>
     <a href="{{ url_for('exit_game', room_id=room_id) }}">EXIT</a>
 {% endif %}
 
-
+{# REACT: load the react game script #}
+<script type="text/javascript" src="{{ url_for('static', filename='react/static/js/game_compiled.js') }}"></script>
 {% endblock %}

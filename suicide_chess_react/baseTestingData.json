@@ -1,0 +1,1053 @@
+{
+  "SuicideChess" : {
+    "TOTAL_GAMES" : 3,
+    "classicfriend3" : {
+      "accessCode" : "0EEGP1eJ",
+      "gameData" : {
+        "black_bishopA" : {
+          "x" : 2,
+          "y" : 0
+        },
+        "black_bishopB" : {
+          "x" : 5,
+          "y" : 0
+        },
+        "black_king" : {
+          "x" : 4,
+          "y" : 0
+        },
+        "black_knightA" : {
+          "x" : 1,
+          "y" : 0
+        },
+        "black_knightB" : {
+          "x" : 6,
+          "y" : 0
+        },
+        "black_pawnA" : {
+          "firstMove" : true,
+          "x" : 0,
+          "y" : 1
+        },
+        "black_pawnB" : {
+          "firstMove" : true,
+          "x" : 1,
+          "y" : 1
+        },
+        "black_pawnC" : {
+          "firstMove" : true,
+          "x" : 2,
+          "y" : 1
+        },
+        "black_pawnD" : {
+          "firstMove" : true,
+          "x" : 3,
+          "y" : 1
+        },
+        "black_pawnE" : {
+          "firstMove" : true,
+          "x" : 4,
+          "y" : 1
+        },
+        "black_pawnF" : {
+          "firstMove" : true,
+          "x" : 5,
+          "y" : 1
+        },
+        "black_pawnG" : {
+          "firstMove" : true,
+          "x" : 6,
+          "y" : 1
+        },
+        "black_pawnH" : {
+          "firstMove" : true,
+          "x" : 7,
+          "y" : 1
+        },
+        "black_queen" : {
+          "x" : 3,
+          "y" : 0
+        },
+        "black_rookA" : {
+          "x" : 0,
+          "y" : 0
+        },
+        "black_rookB" : {
+          "x" : 7,
+          "y" : 0
+        },
+        "whiteTurn" : true,
+        "white_bishopA" : {
+          "x" : 2,
+          "y" : 7
+        },
+        "white_bishopB" : {
+          "x" : 5,
+          "y" : 7
+        },
+        "white_king" : {
+          "x" : 4,
+          "y" : 7
+        },
+        "white_knightA" : {
+          "x" : 1,
+          "y" : 7
+        },
+        "white_knightB" : {
+          "x" : 6,
+          "y" : 7
+        },
+        "white_pawnA" : {
+          "firstMove" : true,
+          "x" : 0,
+          "y" : 6
+        },
+        "white_pawnB" : {
+          "firstMove" : true,
+          "x" : 1,
+          "y" : 6
+        },
+        "white_pawnC" : {
+          "firstMove" : true,
+          "x" : 2,
+          "y" : 6
+        },
+        "white_pawnD" : {
+          "firstMove" : true,
+          "x" : 3,
+          "y" : 6
+        },
+        "white_pawnE" : {
+          "firstMove" : true,
+          "x" : 4,
+          "y" : 6
+        },
+        "white_pawnF" : {
+          "firstMove" : true,
+          "x" : 5,
+          "y" : 6
+        },
+        "white_pawnG" : {
+          "firstMove" : true,
+          "x" : 6,
+          "y" : 6
+        },
+        "white_pawnH" : {
+          "firstMove" : true,
+          "x" : 7,
+          "y" : 6
+        },
+        "white_queen" : {
+          "x" : 3,
+          "y" : 7
+        },
+        "white_rookA" : {
+          "x" : 0,
+          "y" : 7
+        },
+        "white_rookB" : {
+          "x" : 7,
+          "y" : 7
+        }
+      },
+      "mode" : "friend",
+      "moveList" : [ "$DUMMY" ],
+      "players" : [ "mariokart2196", "easfella" ],
+      "rematchReady" : {
+        "easfella" : false,
+        "mariokart2196" : false
+      },
+      "status" : "inprogress",
+      "variant" : "classic",
+      "winner" : "$DUMMY"
+    },
+    "classicrandom1" : {
+      "gameData" : {
+        "black_bishopA" : {
+          "x" : 2,
+          "y" : 0
+        },
+        "black_bishopB" : {
+          "x" : 5,
+          "y" : 0
+        },
+        "black_king" : {
+          "x" : 4,
+          "y" : 0
+        },
+        "black_knightA" : {
+          "x" : 1,
+          "y" : 0
+        },
+        "black_knightB" : {
+          "x" : 5,
+          "y" : 2
+        },
+        "black_pawnA" : {
+          "firstMove" : true,
+          "x" : 0,
+          "y" : 1
+        },
+        "black_pawnB" : {
+          "firstMove" : true,
+          "x" : 1,
+          "y" : 1
+        },
+        "black_pawnC" : {
+          "firstMove" : false,
+          "x" : 2,
+          "y" : 3
+        },
+        "black_pawnD" : {
+          "firstMove" : false,
+          "x" : -1,
+          "y" : -1
+        },
+        "black_pawnE" : {
+          "firstMove" : false,
+          "x" : 3,
+          "y" : 2
+        },
+        "black_pawnF" : {
+          "firstMove" : true,
+          "x" : 5,
+          "y" : 1
+        },
+        "black_pawnG" : {
+          "firstMove" : true,
+          "x" : 6,
+          "y" : 1
+        },
+        "black_pawnH" : {
+          "firstMove" : true,
+          "x" : 7,
+          "y" : 1
+        },
+        "black_queen" : {
+          "x" : 3,
+          "y" : 0
+        },
+        "black_rookA" : {
+          "x" : 0,
+          "y" : 0
+        },
+        "black_rookB" : {
+          "x" : 7,
+          "y" : 0
+        },
+        "whiteTurn" : true,
+        "white_bishopA" : {
+          "x" : 2,
+          "y" : 7
+        },
+        "white_bishopB" : {
+          "x" : 5,
+          "y" : 7
+        },
+        "white_king" : {
+          "x" : 4,
+          "y" : 7
+        },
+        "white_knightA" : {
+          "x" : 1,
+          "y" : 7
+        },
+        "white_knightB" : {
+          "x" : 5,
+          "y" : 5
+        },
+        "white_pawnA" : {
+          "firstMove" : true,
+          "x" : 0,
+          "y" : 6
+        },
+        "white_pawnB" : {
+          "firstMove" : true,
+          "x" : 1,
+          "y" : 6
+        },
+        "white_pawnC" : {
+          "firstMove" : true,
+          "x" : 2,
+          "y" : 6
+        },
+        "white_pawnD" : {
+          "firstMove" : true,
+          "x" : 3,
+          "y" : 6
+        },
+        "white_pawnE" : {
+          "firstMove" : false,
+          "x" : -1,
+          "y" : -1
+        },
+        "white_pawnF" : {
+          "firstMove" : true,
+          "x" : 5,
+          "y" : 6
+        },
+        "white_pawnG" : {
+          "firstMove" : true,
+          "x" : 6,
+          "y" : 6
+        },
+        "white_pawnH" : {
+          "firstMove" : true,
+          "x" : 7,
+          "y" : 6
+        },
+        "white_queen" : {
+          "x" : 3,
+          "y" : 7
+        },
+        "white_rookA" : {
+          "x" : 0,
+          "y" : 7
+        },
+        "white_rookB" : {
+          "x" : 7,
+          "y" : 7
+        }
+      },
+      "mode" : "random",
+      "moveList" : [ "$DUMMY", {
+        "piece" : "white_pawnE",
+        "x" : 4,
+        "y" : 4
+      }, {
+        "firstMove" : false,
+        "piece" : "black_pawnC",
+        "x" : 2,
+        "y" : 3
+      }, {
+        "piece" : "white_pawnE",
+        "x" : 4,
+        "y" : 3
+      }, {
+        "firstMove" : false,
+        "piece" : "black_pawnD",
+        "x" : 3,
+        "y" : 2
+      }, {
+        "piece" : "white_pawnE",
+        "x" : 3,
+        "y" : 2
+      }, {
+        "firstMove" : false,
+        "piece" : "black_pawnE",
+        "x" : 3,
+        "y" : 2
+      }, {
+        "piece" : "white_knightB",
+        "x" : 5,
+        "y" : 5
+      }, {
+        "piece" : "black_knightB",
+        "x" : 5,
+        "y" : 2
+      } ],
+      "players" : [ "mariokart2196", "ytgoluigi2196" ],
+      "rematchReady" : {
+        "mariokart2196" : false,
+        "ytgoluigi2196" : false
+      },
+      "status" : "inprogress",
+      "variant" : "classic",
+      "winner" : "$DUMMY"
+    },
+    "classicrandom2" : {
+      "gameData" : {
+        "black_bishopA" : {
+          "x" : 2,
+          "y" : 0
+        },
+        "black_bishopB" : {
+          "x" : 5,
+          "y" : 0
+        },
+        "black_king" : {
+          "x" : 4,
+          "y" : 0
+        },
+        "black_knightA" : {
+          "x" : 1,
+          "y" : 0
+        },
+        "black_knightB" : {
+          "x" : 5,
+          "y" : 2
+        },
+        "black_pawnA" : {
+          "firstMove" : true,
+          "x" : 0,
+          "y" : 1
+        },
+        "black_pawnB" : {
+          "firstMove" : true,
+          "x" : 1,
+          "y" : 1
+        },
+        "black_pawnC" : {
+          "firstMove" : false,
+          "x" : 2,
+          "y" : 3
+        },
+        "black_pawnD" : {
+          "firstMove" : false,
+          "x" : -1,
+          "y" : -1
+        },
+        "black_pawnE" : {
+          "firstMove" : false,
+          "x" : 3,
+          "y" : 2
+        },
+        "black_pawnF" : {
+          "firstMove" : true,
+          "x" : 5,
+          "y" : 1
+        },
+        "black_pawnG" : {
+          "firstMove" : true,
+          "x" : 6,
+          "y" : 1
+        },
+        "black_pawnH" : {
+          "firstMove" : true,
+          "x" : 7,
+          "y" : 1
+        },
+        "black_queen" : {
+          "x" : 3,
+          "y" : 0
+        },
+        "black_rookA" : {
+          "x" : 0,
+          "y" : 0
+        },
+        "black_rookB" : {
+          "x" : 7,
+          "y" : 0
+        },
+        "whiteTurn" : true,
+        "white_bishopA" : {
+          "x" : 2,
+          "y" : 7
+        },
+        "white_bishopB" : {
+          "x" : 5,
+          "y" : 7
+        },
+        "white_king" : {
+          "x" : 4,
+          "y" : 7
+        },
+        "white_knightA" : {
+          "x" : 1,
+          "y" : 7
+        },
+        "white_knightB" : {
+          "x" : 5,
+          "y" : 5
+        },
+        "white_pawnA" : {
+          "firstMove" : true,
+          "x" : 0,
+          "y" : 6
+        },
+        "white_pawnB" : {
+          "firstMove" : true,
+          "x" : 1,
+          "y" : 6
+        },
+        "white_pawnC" : {
+          "firstMove" : true,
+          "x" : 2,
+          "y" : 6
+        },
+        "white_pawnD" : {
+          "firstMove" : true,
+          "x" : 3,
+          "y" : 6
+        },
+        "white_pawnE" : {
+          "firstMove" : false,
+          "x" : -1,
+          "y" : -1
+        },
+        "white_pawnF" : {
+          "firstMove" : true,
+          "x" : 5,
+          "y" : 6
+        },
+        "white_pawnG" : {
+          "firstMove" : true,
+          "x" : 6,
+          "y" : 6
+        },
+        "white_pawnH" : {
+          "firstMove" : true,
+          "x" : 7,
+          "y" : 6
+        },
+        "white_queen" : {
+          "x" : 3,
+          "y" : 7
+        },
+        "white_rookA" : {
+          "x" : 0,
+          "y" : 7
+        },
+        "white_rookB" : {
+          "x" : 7,
+          "y" : 7
+        }
+      },
+      "mode" : "random",
+      "moveList" : [ "$DUMMY", {
+        "piece" : "white_pawnE",
+        "x" : 4,
+        "y" : 4
+      }, {
+        "firstMove" : false,
+        "piece" : "black_pawnC",
+        "x" : 2,
+        "y" : 3
+      }, {
+        "piece" : "white_pawnE",
+        "x" : 4,
+        "y" : 3
+      }, {
+        "firstMove" : false,
+        "piece" : "black_pawnD",
+        "x" : 3,
+        "y" : 2
+      }, {
+        "piece" : "white_pawnE",
+        "x" : 3,
+        "y" : 2
+      }, {
+        "firstMove" : false,
+        "piece" : "black_pawnE",
+        "x" : 3,
+        "y" : 2
+      }, {
+        "piece" : "white_knightB",
+        "x" : 5,
+        "y" : 5
+      }, {
+        "piece" : "black_knightB",
+        "x" : 5,
+        "y" : 2
+      } ],
+      "players" : [ "Eric", "Diskiddin" ],
+      "rematchReady" : {
+        "mariokart2196" : false,
+        "ytgoluigi2196" : false
+      },
+      "status" : "inprogress",
+      "variant" : "classic",
+      "winner" : "$DUMMY"
+    }
+  },
+  "SuicideChessRedirects" : {
+    "classicfriend2" : "classicfriend3"
+  },
+  "users" : {
+    "easfella" : {
+      "bio" : "I beat sherwyn",
+      "currentGames" : [ "classicfriend3" ],
+      "displayName" : "Diskiddin",
+      "draws" : 0,
+      "email" : "easfella@gmail.com",
+      "emailNotifications" : true,
+      "gameHistories" : {
+        "classicfriend2" : {
+          "moveList" : [ "$DUMMY", {
+            "piece" : "white_pawnD",
+            "x" : 3,
+            "y" : 4
+          }, {
+            "piece" : "black_pawnE",
+            "x" : 4,
+            "y" : 3
+          }, {
+            "firstMove" : false,
+            "piece" : "white_pawnD",
+            "x" : 4,
+            "y" : 3
+          }, {
+            "piece" : "black_pawnD",
+            "x" : 3,
+            "y" : 2
+          }, {
+            "firstMove" : false,
+            "piece" : "white_pawnD",
+            "x" : 3,
+            "y" : 2
+          }, {
+            "piece" : "black_pawnC",
+            "x" : 3,
+            "y" : 2
+          }, {
+            "piece" : "white_queen",
+            "x" : 3,
+            "y" : 2
+          }, {
+            "piece" : "black_queen",
+            "x" : 3,
+            "y" : 2
+          }, {
+            "firstMove" : false,
+            "piece" : "white_pawnE",
+            "x" : 4,
+            "y" : 4
+          }, {
+            "piece" : "black_queen",
+            "x" : 7,
+            "y" : 6
+          }, {
+            "piece" : "white_rookB",
+            "x" : 7,
+            "y" : 6
+          }, {
+            "piece" : "black_pawnF",
+            "x" : 5,
+            "y" : 3
+          }, {
+            "firstMove" : false,
+            "piece" : "white_pawnE",
+            "x" : 5,
+            "y" : 3
+          }, {
+            "piece" : "black_bishopA",
+            "x" : 5,
+            "y" : 3
+          }, {
+            "piece" : "white_rookB",
+            "x" : 7,
+            "y" : 1
+          }, {
+            "piece" : "black_rookB",
+            "x" : 7,
+            "y" : 1
+          }, {
+            "piece" : "white_bishopA",
+            "x" : 7,
+            "y" : 2
+          }, {
+            "piece" : "black_pawnG",
+            "x" : 7,
+            "y" : 2
+          }, {
+            "firstMove" : false,
+            "piece" : "white_pawnG",
+            "x" : 6,
+            "y" : 4
+          }, {
+            "piece" : "black_bishopA",
+            "x" : 2,
+            "y" : 6
+          }, {
+            "piece" : "white_bishopB",
+            "x" : 0,
+            "y" : 2
+          }, {
+            "piece" : "black_bishopA",
+            "x" : 1,
+            "y" : 7
+          }, {
+            "piece" : "white_rookA",
+            "x" : 1,
+            "y" : 7
+          }, {
+            "piece" : "black_pawnB",
+            "x" : 0,
+            "y" : 2
+          }, {
+            "firstMove" : false,
+            "piece" : "white_pawnG",
+            "x" : 6,
+            "y" : 3
+          }, {
+            "piece" : "black_pawnG",
+            "x" : 6,
+            "y" : 3
+          }, {
+            "firstMove" : false,
+            "piece" : "white_pawnF",
+            "x" : 5,
+            "y" : 4
+          }, {
+            "piece" : "black_pawnG",
+            "x" : 5,
+            "y" : 4
+          }, {
+            "piece" : "white_rookA",
+            "x" : 2,
+            "y" : 7
+          }, {
+            "piece" : "black_rookB",
+            "x" : 2,
+            "y" : 1
+          }, {
+            "piece" : "white_rookA",
+            "x" : 2,
+            "y" : 1
+          }, {
+            "piece" : "black_bishopB",
+            "x" : 0,
+            "y" : 5
+          }, {
+            "piece" : "white_rookA",
+            "x" : 0,
+            "y" : 1
+          }, {
+            "piece" : "black_bishopB",
+            "x" : 1,
+            "y" : 6
+          }, {
+            "piece" : "white_rookA",
+            "x" : 0,
+            "y" : 2
+          }, {
+            "piece" : "black_rookA",
+            "x" : 0,
+            "y" : 2
+          }, {
+            "piece" : "white_king",
+            "x" : 5,
+            "y" : 7
+          }, {
+            "piece" : "black_rookA",
+            "x" : 0,
+            "y" : 6
+          }, {
+            "piece" : "white_king",
+            "x" : 4,
+            "y" : 7
+          }, {
+            "piece" : "black_pawnG",
+            "x" : 5,
+            "y" : 5
+          }, {
+            "piece" : "white_knightB",
+            "x" : 5,
+            "y" : 5
+          }, {
+            "piece" : "black_bishopB",
+            "x" : 3,
+            "y" : 4
+          }, {
+            "piece" : "white_knightB",
+            "x" : 3,
+            "y" : 4
+          }, {
+            "piece" : "black_knightA",
+            "x" : 2,
+            "y" : 2
+          }, {
+            "piece" : "white_knightB",
+            "x" : 2,
+            "y" : 2
+          }, {
+            "piece" : "black_king",
+            "x" : 3,
+            "y" : 0
+          }, {
+            "piece" : "white_knightB",
+            "x" : 3,
+            "y" : 0
+          }, {
+            "piece" : "black_rookA",
+            "x" : 4,
+            "y" : 6
+          }, {
+            "piece" : "white_king",
+            "x" : 4,
+            "y" : 6
+          }, {
+            "piece" : "black_knightB",
+            "x" : 5,
+            "y" : 2
+          }, {
+            "piece" : "white_king",
+            "x" : 5,
+            "y" : 5
+          }, {
+            "piece" : "black_knightB",
+            "x" : 4,
+            "y" : 4
+          }, {
+            "piece" : "white_king",
+            "x" : 4,
+            "y" : 4
+          } ],
+          "timeFinished" : "2018-05-12 21:11:34.846551",
+          "winner" : "easfella"
+        }
+      },
+      "losses" : 0,
+      "rank" : 0,
+      "wins" : 1
+    },
+    "mariokart2196" : {
+      "bio" : "This user has not written a bio yet.",
+      "currentGames" : [ "classicrandom1", "classicfriend3" ],
+      "displayName" : "sherwyn golgi",
+      "draws" : 0,
+      "email" : "mariokart2196@gmail.com",
+      "emailNotifications" : true,
+      "gameHistories" : {
+        "classicfriend2" : {
+          "moveList" : [ "$DUMMY", {
+            "piece" : "white_pawnD",
+            "x" : 3,
+            "y" : 4
+          }, {
+            "piece" : "black_pawnE",
+            "x" : 4,
+            "y" : 3
+          }, {
+            "firstMove" : false,
+            "piece" : "white_pawnD",
+            "x" : 4,
+            "y" : 3
+          }, {
+            "piece" : "black_pawnD",
+            "x" : 3,
+            "y" : 2
+          }, {
+            "firstMove" : false,
+            "piece" : "white_pawnD",
+            "x" : 3,
+            "y" : 2
+          }, {
+            "piece" : "black_pawnC",
+            "x" : 3,
+            "y" : 2
+          }, {
+            "piece" : "white_queen",
+            "x" : 3,
+            "y" : 2
+          }, {
+            "piece" : "black_queen",
+            "x" : 3,
+            "y" : 2
+          }, {
+            "firstMove" : false,
+            "piece" : "white_pawnE",
+            "x" : 4,
+            "y" : 4
+          }, {
+            "piece" : "black_queen",
+            "x" : 7,
+            "y" : 6
+          }, {
+            "piece" : "white_rookB",
+            "x" : 7,
+            "y" : 6
+          }, {
+            "piece" : "black_pawnF",
+            "x" : 5,
+            "y" : 3
+          }, {
+            "firstMove" : false,
+            "piece" : "white_pawnE",
+            "x" : 5,
+            "y" : 3
+          }, {
+            "piece" : "black_bishopA",
+            "x" : 5,
+            "y" : 3
+          }, {
+            "piece" : "white_rookB",
+            "x" : 7,
+            "y" : 1
+          }, {
+            "piece" : "black_rookB",
+            "x" : 7,
+            "y" : 1
+          }, {
+            "piece" : "white_bishopA",
+            "x" : 7,
+            "y" : 2
+          }, {
+            "piece" : "black_pawnG",
+            "x" : 7,
+            "y" : 2
+          }, {
+            "firstMove" : false,
+            "piece" : "white_pawnG",
+            "x" : 6,
+            "y" : 4
+          }, {
+            "piece" : "black_bishopA",
+            "x" : 2,
+            "y" : 6
+          }, {
+            "piece" : "white_bishopB",
+            "x" : 0,
+            "y" : 2
+          }, {
+            "piece" : "black_bishopA",
+            "x" : 1,
+            "y" : 7
+          }, {
+            "piece" : "white_rookA",
+            "x" : 1,
+            "y" : 7
+          }, {
+            "piece" : "black_pawnB",
+            "x" : 0,
+            "y" : 2
+          }, {
+            "firstMove" : false,
+            "piece" : "white_pawnG",
+            "x" : 6,
+            "y" : 3
+          }, {
+            "piece" : "black_pawnG",
+            "x" : 6,
+            "y" : 3
+          }, {
+            "firstMove" : false,
+            "piece" : "white_pawnF",
+            "x" : 5,
+            "y" : 4
+          }, {
+            "piece" : "black_pawnG",
+            "x" : 5,
+            "y" : 4
+          }, {
+            "piece" : "white_rookA",
+            "x" : 2,
+            "y" : 7
+          }, {
+            "piece" : "black_rookB",
+            "x" : 2,
+            "y" : 1
+          }, {
+            "piece" : "white_rookA",
+            "x" : 2,
+            "y" : 1
+          }, {
+            "piece" : "black_bishopB",
+            "x" : 0,
+            "y" : 5
+          }, {
+            "piece" : "white_rookA",
+            "x" : 0,
+            "y" : 1
+          }, {
+            "piece" : "black_bishopB",
+            "x" : 1,
+            "y" : 6
+          }, {
+            "piece" : "white_rookA",
+            "x" : 0,
+            "y" : 2
+          }, {
+            "piece" : "black_rookA",
+            "x" : 0,
+            "y" : 2
+          }, {
+            "piece" : "white_king",
+            "x" : 5,
+            "y" : 7
+          }, {
+            "piece" : "black_rookA",
+            "x" : 0,
+            "y" : 6
+          }, {
+            "piece" : "white_king",
+            "x" : 4,
+            "y" : 7
+          }, {
+            "piece" : "black_pawnG",
+            "x" : 5,
+            "y" : 5
+          }, {
+            "piece" : "white_knightB",
+            "x" : 5,
+            "y" : 5
+          }, {
+            "piece" : "black_bishopB",
+            "x" : 3,
+            "y" : 4
+          }, {
+            "piece" : "white_knightB",
+            "x" : 3,
+            "y" : 4
+          }, {
+            "piece" : "black_knightA",
+            "x" : 2,
+            "y" : 2
+          }, {
+            "piece" : "white_knightB",
+            "x" : 2,
+            "y" : 2
+          }, {
+            "piece" : "black_king",
+            "x" : 3,
+            "y" : 0
+          }, {
+            "piece" : "white_knightB",
+            "x" : 3,
+            "y" : 0
+          }, {
+            "piece" : "black_rookA",
+            "x" : 4,
+            "y" : 6
+          }, {
+            "piece" : "white_king",
+            "x" : 4,
+            "y" : 6
+          }, {
+            "piece" : "black_knightB",
+            "x" : 5,
+            "y" : 2
+          }, {
+            "piece" : "white_king",
+            "x" : 5,
+            "y" : 5
+          }, {
+            "piece" : "black_knightB",
+            "x" : 4,
+            "y" : 4
+          }, {
+            "piece" : "white_king",
+            "x" : 4,
+            "y" : 4
+          } ],
+          "timeFinished" : "2018-05-12 21:11:34.601480",
+          "winner" : "easfella"
+        }
+      },
+      "losses" : 1,
+      "rank" : 0,
+      "wins" : 0
+    },
+    "orangejuicecp" : {
+      "bio" : "This user has not written a bio yet.",
+      "displayName" : "OrangeJuiceCP",
+      "draws" : 0,
+      "email" : "orangejuicecp@gmail.com",
+      "emailNotifications" : true,
+      "losses" : 0,
+      "rank" : 0,
+      "wins" : 0
+    },
+    "ytgoluigi2196" : {
+      "bio" : "This user has not written a bio yet.",
+      "currentGames" : [ "classicrandom1" ],
+      "displayName" : "goluigi2196 YOUTUBE",
+      "draws" : 0,
+      "email" : "ytgoluigi2196@gmail.com",
+      "emailNotifications" : true,
+      "losses" : 0,
+      "rank" : 0,
+      "wins" : 0
+    }
+  }
+}

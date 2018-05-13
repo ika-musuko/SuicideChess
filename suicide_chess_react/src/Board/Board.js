@@ -25,16 +25,17 @@ class board extends Component {
             }
         }
         return (
-            <Tile 
-                x={x} 
-                y={y} 
-                key={8*y + x} 
+            <Tile
+                x={x}
+                y={y}
+                key={8*y + x}
                 color={color}
+                requiredMove={this.checkIfRequiredMove(x,y)}
                 click={this.handleSquareClick.bind(this, {piece: this.props.selectedPiece, x: x, y: y})}
             >
                 <div>
                     {greenTile ?
-                        <div className="circle"></div>
+                        <div className="move-indicator"></div>
                         :
                         null
                     }
@@ -44,7 +45,19 @@ class board extends Component {
         )
     }
 
+    checkIfRequiredMove = (x,y) => {
+      var piece = getPiece(this.props, x, y)
+      if(piece !== null) {
+        return Object.keys(this.props.requiredMoves).includes(getPiece(this.props,x,y).key) && ((this.props.state.isWhite && this.props.state.whiteTurn) || (!this.props.state.isWhite && !this.props.state.whiteTurn))
+      } else {
+        return false
+      }
+    }
+
     renderPiece = (x, y) => {
+        var piece = getPiece(this.props, x, y)
+        if(piece !== null) {
+        }
         return getPiece(this.props, x, y)
     }
 

@@ -29,16 +29,16 @@ def log_out() -> str:
 def log_in(blueprint, token):
     # get oauth response
     resp = google.get("/oauth2/v2/userinfo")
-    user_id = resp.json()['email'].split("@")[0]
+    email = resp.json()['email']
 
     if resp.ok:
         # see if the user already exists
-        user = get_firebase_user(user_id)
+        user = get_firebase_user(email)
 
         # if they don't exist create a new user
         if not user:
             display_name = resp.json()['name']
-            user = create_firebase_user(display_name, user_id)
+            user = create_firebase_user(display_name, email)
 
         # login the user
         login_user(user)

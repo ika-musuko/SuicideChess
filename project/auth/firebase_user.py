@@ -11,33 +11,50 @@ from project import pyre_db, lm
 from project.models.new_user_data import new_user_data
 
 
-def get_firebase_user(user_id: str):
+def get_firebase_user(email: str):
     """
-    check if a Firebase user already exists and return it
+    check if a Firebase user already exists by email and return it
     if they don't return None
-    :param user_id:
+    :param email:
     :return:
     """
-    # check if the user exists in the database
-    if pyre_db.child("users").child(user_id).get().val():
-        return FirebaseUser(user_id)
+    # get the user id from the userKeys
+    user_id = pyre_db.child("userKeys").child(email).get().val()
+
+    # if the user id exists
+    if user_id:
+        # check if the user exists in the database
+        if pyre_db.child("users").child(user_id).get().val():
+            return FirebaseUser(user_id)
 
     # return None if they don't exist
     return None
 
 
-def create_firebase_user(display_name: str, user_id: str):
+def create_firebase_user(display_name: str, email: str):
     """
     create a new firebase user with a display_name and user_id
 
     :param display_name:
-    :param user_id:
+    :param email:
     :return:
     """
-    new_user = new_user_data(display_name=display_name, e_mail=user_id)
-    pyre_db.child("users").child(user_id).set(new_user)
 
-    return FirebaseUser(user_id)
+    # get a new user ID for the user
+    total_users = pyre_db.child("userKeys").get("TOTAL_USERS").get().val()
+
+    # increment the total amount of users
+    total_users = total_users + 1 if total_users else 1
+    pyre_db.child("userKeys").child("TOTAL_USERS").set(total_users)
+
+    # add the user's email to the user keys
+    pyre_db.child("userKeys").child(email).set(total_users)
+
+    # add the user to the database
+    new_user = new_user_data(display_name=display_name, e_mail=email)
+    pyre_db.child("users").child(total_users).set(new_user) # use total_users as key (list)
+
+    return FirebaseUser(total_users)
 
 
 # session management via Flask-Login

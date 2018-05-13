@@ -27,7 +27,7 @@ class PlayerTestCase(unittest.TestCase):
 
         # the player manager
         self.player_manager = player_manager.PlayerManager(db=self.pyre_db, user_branch=self.testing_branch_name)
-        
+
 '''
 
 

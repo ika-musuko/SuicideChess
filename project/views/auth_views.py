@@ -5,15 +5,14 @@ auth_views.py
 
 """
 
-from flask import url_for
+from flask import flash, redirect, url_for
 from flask_dance.consumer import oauth_authorized
 from flask_dance.contrib.google import google
 from flask_login import logout_user, login_required, login_user
-from werkzeug.utils import redirect
 
 from project import app
 from project import google_blueprint
-from project.auth.firebase_user import get_firebase_user, create_firebase_user
+from project.auth.firebase_user import get_firebase_user_by_email, create_firebase_user, InvalidEmailAddress, CONVERTER_STRING
 from project.views.view_utils import logout_required
 
 
@@ -29,16 +28,20 @@ def log_out() -> str:
 def log_in(blueprint, token):
     # get oauth response
     resp = google.get("/oauth2/v2/userinfo")
-    user_id = resp.json()['email'].split("@")[0]
+    email_id = resp.json()['email']
 
     if resp.ok:
         # see if the user already exists
-        user = get_firebase_user(user_id)
+        user = get_firebase_user_by_email(email_id)
 
         # if they don't exist create a new user
         if not user:
-            display_name = resp.json()['name']
-            user = create_firebase_user(display_name, user_id)
+            try:
+                display_name = resp.json()['name']
+                user = create_firebase_user(display_name, email_id)
+            except InvalidEmailAddress:
+                flash("This email address is invalid. It cannot have % in it." % CONVERTER_STRING)
+                redirect(url_for("index"))
 
         # login the user
         login_user(user)

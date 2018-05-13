@@ -33,7 +33,7 @@ Make sure you can run `node` and `npm` from the terminal.
 1. Make sure you are in the virtual environment
     - You should see `($VIRTUAL_ENV_PATH)` before your terminal output.
 2. `./run_server.sh` to start the server, and go to the URL the terminal output gives you.
-3. If you want to build the React App and run, use `./build_and_run.sh` 
+3. If you want to build the React App and run, use `./build_and_run.sh`
 
 make sure you have a file called setenv.sh with all the specified environment variables in `project/__init__.py`  
 
@@ -60,17 +60,17 @@ start reading from backend.py and follow the imports
 - [X] Login to and logout from the site
 - [ ] Play the Classic variant of Suicide Chess with a random person
     - [X] Backend
-    - [ ] Game Integration
+    - [X] Game Integration
     - [ ] HTML/CSS
     - [ ] Templating
 - [ ] Play the Classic variant of Suicide Chess with a friend via links
     - [X] Backend
-    - [ ] Game Integration
+    - [X] Game Integration
     - [ ] HTML/CSS
     - [ ] Templating
 
 ### Desired - Version 2.0
-- [ ] View and edit their own Profile Settings 
+- [ ] View and edit their own Profile Settings
     - [X] Backend
     - [ ] HTML/CSS
     - [ ] Templating

@@ -3,10 +3,16 @@
     "users" : {
       ".indexOn" : ["email", "displayName", "gameHistories", "currentGames", "wins", "losses", "draws", "rank"]
     },
+
+    "testUsers" : {
+      ".indexOn" : ["email", "displayName", "gameHistories", "currentGames", "wins", "losses", "draws", "rank"]
+    },
+
     "testing" : {
        ".indexOn" : ["gameId", "players" , "currentPlayer", "variant", "status", "gameData", "mode"]
     },
-    "messagespam" : {
+
+    "SuicideChess" : {
        ".indexOn" : ["gameId", "players" , "currentPlayer", "variant", "status", "gameData", "mode"]
     },
 

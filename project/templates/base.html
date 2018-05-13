@@ -1,13 +1,21 @@
+{# base.html #}
+{# extend this to show the same content out of every page  that extends out of this #}
+{# in this, we show a title, the current user, a menu bar, and their current games list #}
+
 <html>
     <head>
+        {# SET THE TITLE OF THE PAGE (window bar) #}
+        {# check if the title variable exists #}
         {% if title %}
         <title>{{ title }} | suicide chess</title>
         {% else %}
+        {# just set it to "suicide chess" #}
         <title>suicide chess</title>
         {% endif %}
     </head>
 
     <body>
+        {# this is a container to show all "flashed" messages. if you go to the python code, if you see flash() and then redirect(), this is where the message inside flash() will appear #}
         <div class='flash'>
             {% with messages = get_flashed_messages() %}
             {% if messages %}

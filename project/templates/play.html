@@ -25,7 +25,8 @@
 
 <p>
     <b>ROOM DATA</b>
-    {{ room }}
+    {# {{ room }} #}
+    <div id="gameRoom" user="{{ user_id }}" roomID="{{ room_id }}"></div>
 </p>
 
 
@@ -43,7 +44,6 @@
 
 {% elif room["status"] == "inprogress" %}
     {# NOTE: DO NOT USE /simulate_game IN THE TEMPLATE! THIS IS ONLY FOR TESTING. ERIC WILL DEAL WITH IT IN THE REACT APP #}
-    {# to contain the react app, i think you just do (confirm with eric) <div id="gameRoom" user="{{ user_id }}" roomID="{{ room_id }}"></div> here instead #}
     <a href="{{ url_for('simulate_game', room_id=room_id) }}">simulate game</a>
 
 {% else %} {# room is waiting #}

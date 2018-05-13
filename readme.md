@@ -1,25 +1,37 @@
 # Suicide Chess
 
 Team Members:
-Joleena Marshall
-Junia Iken
-Sherwyn Golgi
-Eric Scaramuzzo
+- Joleena Marshall
+- Junia Ikeh
+- Sherwyn Sen
+- Eric Scaramuzzo
 
 ## Instructions
-### Running
-Install all of the requirements using pip and the included requirements.txt (preferably to a virtualenv)  
+**Note:** These instructions only work for Linux or Mac (or anything that can interpret .sh files). Good luck if you have Micro$oft Window$!
 
-**linux/mac**: use `./run_server.sh`  
-**windows**: lol  
+### Dependencies
+- Python 3.6
+- node.js v8
+
+Make sure you can run `node` and `npm` from the terminal.
+
+### Setting up your Environment
+
+1. Create a Python Virtual Environment somewhere. We will refer to the path as `$VIRTUAL_ENV_PATH`  
+`python3.6 -m virtualenv $VIRTUAL_ENV_PATH`
+    - Note: If this command does not work, try running `python3.6 -m pip install virtualenv` first.
+2. Install the requirements
+
+### Running
+
+`./run_server.sh`  
 
 make sure you have a file called setenv.sh with all the specified environment variables in project/\_\_init\_\_.py  
 
 ### testing
-**linux/mac**: use `./run_tests.sh`  
-**windows**: lmao  
+`./run_tests.sh`  
 
-write all tests in tests.py  
+write all flask tests in tests.py  
 
 ### reading the code
 start reading from backend.py and follow the imports

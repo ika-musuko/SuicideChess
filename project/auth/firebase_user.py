@@ -9,9 +9,13 @@ deals with sending and receiving data from the firebase authentication module an
 from flask_login import UserMixin
 from project import pyre_db, lm
 from project.models.new_user_data import new_user_data
+import os
 
 # append this string at the beginning of invalid character replacement
 CONVERTER_STRING = "zHGHGHGHGzz"
+
+# prepend user ids with this string
+USER_ID_PREFIX = os.getenv("USER_ID_PREFIX") or "user_prefix"
 
 class InvalidEmailAddress(Exception):
     '''
@@ -131,7 +135,7 @@ def create_firebase_user(display_name: str, email: str):
     pyre_db.child("userKeys").child("TOTAL_USERS").set(total_users)
 
     # make a new user id
-    user_id = ''.join(("u", str(total_users)))
+    user_id = ''.join((USER_ID_PREFIX, str(total_users)))
 
     # add the user's email to the user keys
     pyre_db.child("userKeys").child(user_key).set(user_id)

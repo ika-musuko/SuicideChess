@@ -1,5 +1,6 @@
 # Suicide Chess
-*Website link coming soon*
+http://suicidechess.org/
+
 ## About
 Multiplayer Suicide Chess game web application.  
 The goal of Suicide Chess is to lose all of your pieces (rather than capture the opponent's king)  

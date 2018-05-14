@@ -13,7 +13,7 @@ from markupsafe import Markup
 from werkzeug.utils import redirect
 
 from project import app, room_manager, player_manager
-
+import datetime
 
 # use this to inject global variables into the template manager
 @app.context_processor
@@ -24,6 +24,12 @@ def inject_app_context():
         , "player_manager": player_manager
     }
 
+# write any code that should be executed on all routes here
+@app.before_request
+def update_last_here():
+    if current_user.is_authenticated:
+        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        player_manager.set_user_attribute(current_user.id, "lastHere", now)
 
 # use a @logout_required decorator to require a user to be logged out to view
 def logout_required(f):

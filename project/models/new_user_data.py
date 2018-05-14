@@ -3,9 +3,10 @@ new_user_data.py
 
     the data structure for a new user.
 """
-
+import datetime
 
 def new_user_data(display_name: str, e_mail: str):
+    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     return {
         "displayName": display_name
         , "draws": 0
@@ -17,4 +18,6 @@ def new_user_data(display_name: str, e_mail: str):
         , "rank": 0
         , "wins": 0
         , "bio": "This user has not written a bio yet."
+        , "joinedOn" : now
+        , "lastHere" : now
     }

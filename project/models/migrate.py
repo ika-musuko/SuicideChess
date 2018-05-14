@@ -1,26 +1,21 @@
 """
 migrate.py
 
-tools for updating items from a database
+tools for updating items in the database
 """
+from project import pyre_db
 
-
-def add_property(database: str, property_name: str, default_value):
-    """
-    add a new property to each member of database
-    :param database:
+def add_user_property(property_name: str, default_value):
+    '''
+    add a new property for each user
     :param property_name:
     :param default_value:
     :return:
-    """
-    pass
+    '''
 
+    users = pyre_db.child("users").get().val()
+    if users:
+        for user_id, user_data in users.items():
+            user_data[property_name] = default_value
+            pyre_db.child("users").child(user_id).set(user_data)
 
-def delete_property(database: str, property_name: str):
-    """
-    delete property_name from database
-    :param database:
-    :param property_name:
-    :return:
-    """
-    pass

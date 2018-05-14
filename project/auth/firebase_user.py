@@ -15,7 +15,7 @@ import os
 CONVERTER_STRING = "zHGHGHGHGzz"
 
 # prepend user ids with this string
-USER_ID_PREFIX = os.getenv("USER_ID_PREFIX") or "user_prefix"
+USER_ID_PREFIX = os.getenv("USER_ID_PREFIX") or "v"
 
 class InvalidEmailAddress(Exception):
     '''

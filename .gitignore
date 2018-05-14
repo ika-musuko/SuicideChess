@@ -9,7 +9,7 @@ __pycache__
 *venv_*
 firebase_auth.json
 pyrebase_config.py
-setenv.sh
+setenv*.sh
 *.pxm
 project/static/react/*
 logs

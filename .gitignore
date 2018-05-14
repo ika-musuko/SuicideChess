@@ -18,3 +18,6 @@ server_ship.sh
 build_server.sh
 firebase_prod.js
 run_production.sh
+build_production.sh
+gitbranchcheck.sh
+node_modules/

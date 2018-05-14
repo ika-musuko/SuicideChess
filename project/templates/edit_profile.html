@@ -1,3 +1,6 @@
+{# edit_profile.html #}
+{# form allowing the user to edit their profile #}
+
 {% extends "base.html" %}
 {% block head %}
 {% endblock %}
@@ -8,6 +11,6 @@
         email: {{ current_user.get_db_property("email") }}<br/>
         bio: {{ form.bio() }}<br/>
         {{ form.submit() }}<br/>
-        {{ form.csrf_token }}
+        {{ form.csrf_token }} {# if you don't have this csrf token the form will not submit (XSS protection, see CS166) #}
     </form>
 {% endblock %}

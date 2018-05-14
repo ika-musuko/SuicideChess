@@ -30,12 +30,14 @@
             {% endwith %}
         </div>
 
+        {# write debug info here #}
         {% if debug %}
         <div class="debug">
             current user authenticated: {{ current_user.is_authenticated }}
         </div>
         {% endif %}
 
+        {# show the user's information #}
         <div class='userinfo'>
             {% if current_user.is_authenticated %}
             <h3>current user: {{ current_user.display_name }}</h3> {# ADDED BY JOLEENA: gets display name #}
@@ -44,6 +46,7 @@
             {% endif %}
         </div>
 
+        {# show all of the website links #}
         <div class='menubar'>
             <a href="{{ url_for('index') }}">home</a>
             <a href="{{ url_for('all_users') }}">all users</a>
@@ -57,6 +60,7 @@
             {% endif %}
         </div>
 
+        {# show the user's current game list #}
         {% if current_user.is_authenticated %}
         <div class="gamelist">
             <h3>current games !!!</h3>
@@ -74,6 +78,7 @@
         </div>
         {% endif %}
 
+        {# the main page content goes in this block #}
         <div class='content'>
             {% block content %}
             {% endblock %}

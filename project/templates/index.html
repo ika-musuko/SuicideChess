@@ -1,10 +1,13 @@
+{# index.html #}
+{# the home page. this just shows the user's own profile #}
+
 {% extends "base.html" %}
 {% block head %}
 {% endblock %}
 {% set title = "home" %}
 {% block content %}
 {% if current_user.is_authenticated %}
-    {% with user_id=current_user.id, user=current_user.as_dict() %}
+    {% with user_id=current_user.id, user=current_user.as_dict() %} {# the with statement sets variables for an include #}
         {% include "user_profile.html" %}
     {% endwith %}
 {% endif %}

@@ -28,10 +28,6 @@ FIREBASE_APP_NAME = os.getenv("FIREBASE_APP_NAME") or "flaskbase"
 app = Flask(__name__)
 app.config.from_pyfile("../config/config.py")
 
-# flask_login initialization (session management)
-lm = LoginManager()
-lm.init_app(app)
-
 # pyrebase initialization (python-firebase library)
 pyre_db = initialize_pyrebase().database()
 
@@ -69,6 +65,11 @@ app.logger.addHandler(file_handler)  # add it to the project's list of loggers
 
 app.logger.setLevel(logging.INFO)
 app.logger.info('flaskbase startup')
+
+# flask_login initialization (session management)
+lm = LoginManager()
+lm.init_app(app)
+lm.login_view = "go_to_login"
 
 # finally import the project views and models
 from project.views import auth_views, game_views, user_views, error_views

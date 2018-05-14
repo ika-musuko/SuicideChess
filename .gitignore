@@ -17,3 +17,4 @@ logs
 server_ship.sh
 build_server.sh
 firebase_prod.js
+run_production.sh

@@ -15,3 +15,4 @@ project/static/react/*
 logs
 .idea/*
 server_ship.sh
+build_server.sh

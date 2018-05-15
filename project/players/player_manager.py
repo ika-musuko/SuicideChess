@@ -35,6 +35,9 @@ class PlayerManager:
     def add_win(self, player_id: str):
         self.increment_stat(player_id, "wins")
 
+    def add_draw(self, player_id: str):
+        self.increment_stat(player_id, "draws")
+
     def add_loss(self, player_id: str):
         self.increment_stat(player_id, "losses")
 
@@ -65,8 +68,11 @@ class PlayerManager:
             )
             self.add_game_history(player, room_id, game_history)
 
+            if not room["winner"] or room["winner"] == "$DUMMY":
+                self.add_draw(player)
+
             # add a win for the winner
-            if player == room["winner"]:
+            elif player == room["winner"]:
                 self.add_win(player)
 
             # else add a loss for the loser

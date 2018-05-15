@@ -9,18 +9,18 @@ import { selectPiece } from '../Game'
 
 export function getPiece(props,x,y) {
     if(x === props.state.black_knightA.x && y === props.state.black_knightA.y) {
-        return <Knight 
-        key={"black_knightA"} 
+        return <Knight
+        key={"black_knightA"}
         pieceKey={"black_knightA"}
         click={selectPiece.bind(this, "black_knightA")}
         selected={
             props.selectedPiece === "black_knightA" ? true : false
         }/>
     } else if (x === props.state.black_knightB.x && y === props.state.black_knightB.y){
-        return <Knight 
+        return <Knight
         key={"black_knightB"}
-        pieceKey={"black_knightB"} 
-        click={selectPiece.bind(this, "black_knightB")} 
+        pieceKey={"black_knightB"}
+        click={selectPiece.bind(this, "black_knightB")}
         selected={
             props.selectedPiece === "black_knightB" ? true : false
         }/>
@@ -136,23 +136,23 @@ export function getPiece(props,x,y) {
         selected= {
             props.selectedPiece === "black_pawnH" ? true : false
         }/>
-    } 
-    
+    }
+
     //White pieces
-    
+
     else if(x === props.state.white_knightA.x && y === props.state.white_knightA.y) {
-        return <Knight 
-        key={"white_knightA"} 
+        return <Knight
+        key={"white_knightA"}
         pieceKey={"white_knightA"}
         click={selectPiece.bind(this, "white_knightA")}
         selected={
             props.selectedPiece === "white_knightA" ? true : false
         }/>
     } else if (x === props.state.white_knightB.x && y === props.state.white_knightB.y){
-        return <Knight 
+        return <Knight
         key={"white_knightB"}
-        pieceKey={"white_knightB"} 
-        click={selectPiece.bind(this, "white_knightB")} 
+        pieceKey={"white_knightB"}
+        click={selectPiece.bind(this, "white_knightB")}
         selected={
             props.selectedPiece === "white_knightB" ? true : false
         }/>

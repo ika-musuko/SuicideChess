@@ -66,8 +66,10 @@ class gamescene extends Component {
       submitted: false,
 
       isWhite: false,
-      username: this.props.user,
-      otherUser: '',
+      userId: this.props.user,
+      userName: '',
+      otherUserName: '',
+      otherUserId: '',
       roomID: this.props.roomID,
 
       selectedPiece: null
@@ -97,87 +99,117 @@ class gamescene extends Component {
       white_pawnF: { x: -1, y: 6, firstMove: true },
       white_pawnG: { x: -1, y: 6, firstMove: true },
     })*/
+
     let a = this;
     this.state.databaseRef.once('value').then(function(snapshot) {
       var room = snapshot.val();
-      if(room['players'][0] === a.state.username) {
+      var userId = '';
+      var otherUserId = '';
+      if(room['players'][0] === a.state.userId) {
 
         var gameData = room['gameData']
 
         var winner = room['winner']
 
-        if(winner === a.state.username) {
+        if(winner === a.state.userId) {
           a.setState({
             ...gameData,
             whiteTurn: gameData['whiteTurn'],
-            username: a.state.username,
-            otherUser: room['players'][1],
+            userId: a.state.userId,
+            otherUserId: room['players'][1],
             moveList: room['moveList'],
             submitted: true,
             isWhite: true,
             whiteWin: true,
           });
+          otherUserId = room['players'][1]
         } else if (winner === room['players'][1]) {
           a.setState({
             ...gameData,
             whiteTurn: gameData['whiteTurn'],
-            username: a.state.username,
-            otherUser: room['players'][1],
+            userId: a.state.userId,
+            otherUserId: room['players'][1],
             moveList: room['moveList'],
             submitted: true,
             isWhite: true,
             blackWin: true,
           });
+          otherUserId = room['players'][1]
         }
 
         a.setState({
           ...gameData,
           whiteTurn: gameData['whiteTurn'],
-          username: a.state.username,
-          otherUser: room['players'][1],
+          userId: a.state.userId,
+          otherUserId: room['players'][1],
           moveList: room['moveList'],
           submitted: true,
           isWhite: true,
         });
+        otherUserId = room['players'][1]
         a.updateStateAfterDatabaseSync()
-      } else if (room['players'][1] === a.state.username) {
+      } else if (room['players'][1] === a.state.userId) {
 
         var gameData = room['gameData']
         var winner = room['winner']
-        if(winner === a.state.username) {
+        if(winner === a.state.userId) {
           a.setState({
             ...gameData,
             whiteTurn: gameData['whiteTurn'],
-            username: a.state.username,
-            otherUser: room['players'][0],
+            userId: a.state.userId,
+            otherUserId: room['players'][0],
             moveList: room['moveList'],
             submitted: true,
             isWhite: false,
             blackWin: true,
           })
+          otherUserId = room['players'][0]
         } else if (winner === room['players'][0]) {
           a.setState({
             ...gameData,
             whiteTurn: gameData['whiteTurn'],
-            username: a.state.username,
-            otherUser: room['players'][0],
+            userId: a.state.userId,
+            otherUserId: room['players'][0],
             moveList: room['moveList'],
             submitted: true,
             isWhite: false,
             whiteWin: true,
           })
+          otherUserId = room['players'][0]
         }
 
         a.setState({
           ...gameData,
           whiteTurn: gameData['whiteTurn'],
-          username: a.state.username,
-          otherUser: room['players'][0],
+          userId: a.state.userId,
+          otherUserId: room['players'][0],
           moveList: room['moveList'],
           submitted: true,
           isWhite: false
         })
+        otherUserId = room['players'][0]
         a.updateStateAfterDatabaseSync()
+      }
+      if(a.otherUserId !== '') {
+        var thisUserRef = firebase.database().ref('/users/' + a.state.userId)
+        thisUserRef.once('value').then(function(snapshot) {
+          a.setState({
+            userName: snapshot.val().displayName
+          })
+        });
+        var thatUserRef = firebase.database().ref('/users/' + otherUserId)
+        thatUserRef.once('value').then(function(snapshot) {
+          a.setState({
+            otherUserName: snapshot.val().displayName
+          })
+        })
+      } else {
+        var thisUserRef = firebase.database().ref('/users/' + a.state.userId)
+        thisUserRef.once('value').then(function(snapshot) {
+          a.setState({
+            userName: snapshot.val().displayName
+          })
+        });
       }
     })
   }
@@ -253,16 +285,16 @@ class gamescene extends Component {
         if(whiteWin) {
           updates['/SuicideChess/' + this.state.roomID + '/status'] = "finished"
           if(this.state.isWhite) {
-            updates['/SuicideChess/' + this.state.roomID + '/winner'] = this.state.username
+            updates['/SuicideChess/' + this.state.roomID + '/winner'] = this.state.userId
           } else {
-            updates['/SuicideChess/' + this.state.roomID + '/winner'] = this.state.otherUser
+            updates['/SuicideChess/' + this.state.roomID + '/winner'] = this.state.otherUserId
           }
         } else if (blackWin) {
           updates['/SuicideChess/' + this.state.roomID + '/status'] = "finished"
           if(this.state.isWhite) {
-            updates['/SuicideChess/' + this.state.roomID + '/winner'] = this.state.otherUser
+            updates['/SuicideChess/' + this.state.roomID + '/winner'] = this.state.otherUserId
           } else {
-            updates['/SuicideChess/' + this.state.roomID + '/winner'] = this.state.username
+            updates['/SuicideChess/' + this.state.roomID + '/winner'] = this.state.userId
           }
         }
 
@@ -317,7 +349,7 @@ class gamescene extends Component {
   };
 
   handleFormChange (event) {
-    this.setState({username: event.target.value});
+    this.setState({userId: event.target.value});
   };
 
   handleSelectButton (event) {
@@ -332,13 +364,13 @@ class gamescene extends Component {
       var games = snapshot.val();
       if(games === null) {
         var info = {
-          user1: a.state.username,
+          user1: a.state.userId,
           user2: '',
           gameData: gameData,
         };
         var roomID = a.state.databaseRef.push(info).key
         a.setState({
-          username: a.state.username,
+          userId: a.state.userId,
           isWhite: true,
           roomID: roomID,
           submitted: true,
@@ -355,11 +387,11 @@ class gamescene extends Component {
             }
           });
           a.setState({
-            otherUser: snapshot.val()
+            otherUserId: snapshot.val()
           });
         });
       } else {
-        if(games[a.state.roomID]['user1'] === a.state.username) {
+        if(games[a.state.roomID]['user1'] === a.state.userId) {
           var gameListener = firebase.database().ref('/games/' + property + '/gameData/');
           gameListener.on('child_changed', function(snapshot) {
             if(snapshot.key.substring(0,6) === 'white_' || snapshot.key.substring(0,6) === 'black_'){
@@ -373,11 +405,11 @@ class gamescene extends Component {
           a.setState({
             ...gameData,
             isWhite: true,
-            username: a.state.username,
-            otherUser: games[a.state.roomID]['user2'],
+            userId: a.state.userId,
+            otherUserId: games[a.state.roomID]['user2'],
             submitted: true,
           });
-        } else if (games[a.state.roomID]['user2'] === a.state.username) {
+        } else if (games[a.state.roomID]['user2'] === a.state.userId) {
           gameListener = firebase.database().ref('/games/' + property + '/gameData/');
           gameListener.on('child_changed', function(snapshot) {
             if(snapshot.key.substring(0,6) === 'white_' || snapshot.key.substring(0,6) === 'black_'){
@@ -391,8 +423,8 @@ class gamescene extends Component {
           a.setState({
             ...gameData,
             isWhite: false,
-            username: a.state.username,
-            otherUser: games[a.state.roomID]['user1'],
+            userId: a.state.userId,
+            otherUserId: games[a.state.roomID]['user1'],
             submitted: true,
           })
         }
@@ -401,7 +433,7 @@ class gamescene extends Component {
             if(games[property]['user2'] === '') {
               var postData ={
                 user1: games[property]['user1'],
-                user2: a.state.username,
+                user2: a.state.userId,
                 gameData: games[property]['gameData']
               }
               var updates = {};
@@ -416,8 +448,8 @@ class gamescene extends Component {
                 }
               });
               a.setState({
-                username: a.state.username,
-                otherUser: games[property]['user1'],
+                userId: a.state.username,
+                otherUserId: games[property]['user1'],
                 submitted: true,
                 roomID: property,
               });
@@ -490,8 +522,6 @@ class gamescene extends Component {
         }
       }
     }
-    console.log(yourCapturedPieces);
-    var header = this.getHeader()
     return (
       <div className="Gamescene">
         <div className="left-column" style={{display: 'inline', float: 'left', width:'30%'}}>
@@ -501,8 +531,8 @@ class gamescene extends Component {
           </div>
         </div>
         <div className='center-column' style={{display: 'inline', float:'left', width: '40%'}}>
-          <h2>{header}</h2>
-          <p> Username: {this.state.username}  Opponent: {this.state.otherUser}</p>
+          <h2>{this.getHeader()}</h2>
+          <h3>{this.state.userName} vs. {this.state.otherUserName}</h3>
           <Board flip={!this.state.isWhite} state={this.state} selectedPiece={this.state.selectedPiece} validTiles={this.state.validTiles} requiredMoves={this.state.requiredMoves}/>
         </div>
         <div className='left-column' style={{display:'inline', width:'30%', float:'left'}}>

@@ -16,7 +16,7 @@ ul.side-bar {
     width: 12%;
     background-color: black;
     float:left;
-    height: 1080px;
+    height: 750px;
     min-height: 100%;
     overflow: auto;
 }

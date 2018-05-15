@@ -8,6 +8,7 @@ import { movePiece } from '../Game'
 import firebase from '../firebase'
 import { getRequiredMoves } from '../Utilities/GetRequiredMoves'
 import { setRequiredMoves, setPieces } from '../Game'
+import { getPiece } from '../Utilities/GetPieceById'
 
 class gamescene extends Component {
   constructor(props) {
@@ -458,12 +459,58 @@ class gamescene extends Component {
   }
 
   render() {
+    var yourCapturedPieces = [];
+    var theirCapturedPieces = [];
+    if(this.state.isWhite) {
+      for(var property in this.state) {
+        if(this.state.hasOwnProperty(property)) {
+          if(property.substring(0,6) === 'white_') {
+            if(this.state[property].x === -1 && this.state[property].y === -1) {
+              theirCapturedPieces.push(property);
+            }
+          } else if (property.substring(0,6) === 'black_'){
+            if(this.state[property].x === -1 && this.state[property].y === -1) {
+              yourCapturedPieces.push(property);
+            }
+          }
+        }
+      }
+    } else {
+      for(var property in this.state) {
+        if(this.state.hasOwnProperty(property)) {
+          if(property.substring(0,6) === 'white_') {
+            if(this.state[property].x === -1 && this.state[property].y === -1) {
+              yourCapturedPieces.push(property);
+            }
+          } else if(property.substring(0,6) === 'black_'){
+            if(this.state[property].x === -1 && this.state[property].y === -1) {
+              theirCapturedPieces.push(property);
+            }
+          }
+        }
+      }
+    }
+    console.log(yourCapturedPieces);
     var header = this.getHeader()
     return (
       <div className="Gamescene">
-        <h2>{header}</h2>
+        <div className="left-column" style={{display: 'inline', float: 'left', width:'30%'}}>
+          <h3>Your Captured Pieces</h3>
+          <div className='captured-pieces'>
+            {yourCapturedPieces.map(piece => getPiece(piece))}
+          </div>
+        </div>
+        <div className='center-column' style={{display: 'inline', float:'left', width: '40%'}}>
+          <h2>{header}</h2>
           <p> Username: {this.state.username}  Opponent: {this.state.otherUser}</p>
-        <Board flip={!this.state.isWhite} state={this.state} selectedPiece={this.state.selectedPiece} validTiles={this.state.validTiles} requiredMoves={this.state.requiredMoves}/>
+          <Board flip={!this.state.isWhite} state={this.state} selectedPiece={this.state.selectedPiece} validTiles={this.state.validTiles} requiredMoves={this.state.requiredMoves}/>
+        </div>
+        <div className='left-column' style={{display:'inline', width:'30%', float:'left'}}>
+          <h3>Their Captured Pieces</h3>
+          <div className='captured-pieces'>
+            {theirCapturedPieces.map(piece => getPiece(piece))}
+          </div>
+        </div>
       </div>
     );
   };

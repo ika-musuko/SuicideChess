@@ -107,15 +107,17 @@ li a, .dropbtn {
 }
 
 .stats{
+    margin: 20px;
     display: inline;
     width: 300px;
     height: 220px;
-    padding: 50px;
+    padding: 20px;
     background: #95ff8c;
     text-align: left;
 }
 
 .user-info{
+    margin: 20px;
     display: inline;
     width: 300px;
     padding: 20px;

@@ -9,6 +9,7 @@ import firebase from '../firebase'
 import { getRequiredMoves } from '../Utilities/GetRequiredMoves'
 import { setRequiredMoves, setPieces } from '../Game'
 import { getPiece } from '../Utilities/GetPieceById'
+import { checkStalemate } from '../Utilities/CheckStalemate'
 
 class gamescene extends Component {
   constructor(props) {
@@ -56,7 +57,11 @@ class gamescene extends Component {
 
       whiteWin: false,
 
+      stalemate: false,
+
       blackWin: false,
+
+      movesSinceCaptureOrPawnMove: 0,
 
       databaseRef: firebase.database().ref('/SuicideChess/' + this.props.roomID),
 
@@ -76,9 +81,6 @@ class gamescene extends Component {
     }
     observe(this.handlePieceMove.bind(this))
     pieceObserve(this.handlePieceSelect.bind(this))
-
-    this.handleFormChange = this.handleFormChange.bind(this);
-    this.handleSelectButton = this.handleSelectButton.bind(this);
   };
 
   componentDidMount() {
@@ -103,7 +105,6 @@ class gamescene extends Component {
     let a = this;
     this.state.databaseRef.once('value').then(function(snapshot) {
       var room = snapshot.val();
-      var userId = '';
       var otherUserId = '';
       if(room['players'][0] === a.state.userId) {
 
@@ -150,8 +151,8 @@ class gamescene extends Component {
         a.updateStateAfterDatabaseSync()
       } else if (room['players'][1] === a.state.userId) {
 
-        var gameData = room['gameData']
-        var winner = room['winner']
+        gameData = room['gameData']
+        winner = room['winner']
         if(winner === a.state.userId) {
           a.setState({
             ...gameData,
@@ -204,7 +205,7 @@ class gamescene extends Component {
           })
         })
       } else {
-        var thisUserRef = firebase.database().ref('/users/' + a.state.userId)
+        thisUserRef = firebase.database().ref('/users/' + a.state.userId)
         thisUserRef.once('value').then(function(snapshot) {
           a.setState({
             userName: snapshot.val().displayName
@@ -215,7 +216,7 @@ class gamescene extends Component {
   }
 
   updateStateAfterDatabaseSync = () => {
-    var newGameData = new Object();
+    var newGameData = {};
 
     for(var piece in this.state) {
       if(this.state.hasOwnProperty(piece) && (piece.substring(0,6) === "black_" || piece.substring(0,6) === "white_")){
@@ -245,8 +246,8 @@ class gamescene extends Component {
     })
   }
 
-
   componentDidUpdate() {
+
   }
 
   handlePieceMove (pieces, changesMade, move) {
@@ -266,11 +267,13 @@ class gamescene extends Component {
         var gameData = pieces;
         gameData['whiteTurn'] = changesMade ? !this.state.whiteTurn : this.state.whiteTurn;
         var updates = {};
-        updates['/SuicideChess/' + this.state.roomID + '/gameData/'] = gameData;
         updates['/SuicideChess/' + this.state.roomID + '/moveList'] = newMoves;
+
 
         let blackWin = true
         let whiteWin = true
+        var stalemate = checkStalemate(pieces, !this.state.whiteTurn);
+
         for(var piece in pieces) {
           if(pieces.hasOwnProperty(piece)) {
             if(pieces[piece].x !== -1) {
@@ -282,6 +285,28 @@ class gamescene extends Component {
             }
           }
         }
+
+        if(stalemate) {
+          let aliveBlackPieces = 0;
+          let aliveWhitePieces = 0;
+          for(piece in pieces) {
+            if(pieces.hasOwnProperty(piece)) {
+              if(piece.substring(0,6) === 'white_' && pieces[piece].x !== -1) {
+                aliveWhitePieces++;
+              } else if (piece.substring(0,6) === 'black_' && pieces[piece].x !== -1) {
+                aliveBlackPieces++;
+              }
+            }
+          }
+          if(aliveBlackPieces > aliveWhitePieces) {
+            stalemate = false
+            whiteWin = true
+          } else if (aliveBlackPieces < aliveWhitePieces) {
+            stalemate = false
+            blackWin = true
+          }
+        }
+
         if(whiteWin) {
           updates['/SuicideChess/' + this.state.roomID + '/status'] = "finished"
           if(this.state.isWhite) {
@@ -296,7 +321,31 @@ class gamescene extends Component {
           } else {
             updates['/SuicideChess/' + this.state.roomID + '/winner'] = this.state.userId
           }
+        } else if (stalemate) {
+          updates['/SuicideChess/' + this.state.roomID + '/status'] = "finished"
         }
+
+        let incremenetMovesSinceCaptureOrPawnMove = false;
+        if(this.state.isWhite) {
+          if(this.state.whiteTurn) {
+            incremenetMovesSinceCaptureOrPawnMove = true;
+          } else {
+
+          }
+        } else {
+          if(this.state.whiteTurn) {
+
+          } else {
+            incremenetMovesSinceCaptureOrPawnMove = true;
+          }
+        }
+        if(incremenetMovesSinceCaptureOrPawnMove) {
+          gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove + 1
+        } else {
+          gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove
+        }
+
+        updates['/SuicideChess/' + this.state.roomID + '/gameData/'] = gameData;
 
         firebase.database().ref().update(updates);
 
@@ -305,8 +354,10 @@ class gamescene extends Component {
           ...pieces,
           blackWin: blackWin,
           whiteWin: whiteWin,
+          stalemate: stalemate,
           selectedPiece: null,
           moveList: newMoves,
+          movesSinceCaptureOrPawnMove: incremenetMovesSinceCaptureOrPawnMove ? (this.state.movesSinceCaptureOrPawnMove + 1) : (this.state.movesSinceCaptureOrPawnMove + 1),
           requiredMoves: requiredMoves,
           whiteTurn: changesMade ? !this.state.whiteTurn : this.state.whiteTurn,
         });
@@ -320,7 +371,7 @@ class gamescene extends Component {
   };
 
   handlePieceSelect (piece) {
-    if(this.state.submitted && !(this.state.whiteWin || this.state.blackWin)) {
+    if(!(this.state.whiteWin || this.state.blackWin) && !this.state.stalemate) {
       if((this.state.isWhite && this.state.whiteTurn) || (!this.state.isWhite && !this.state.whiteTurn)) {
         let validTiles = getValidMoves(this.state, piece)
         if(Object.keys(this.state.requiredMoves).length > 0) {
@@ -348,120 +399,11 @@ class gamescene extends Component {
     }
   };
 
-  handleFormChange (event) {
-    this.setState({userId: event.target.value});
-  };
-
-  handleSelectButton (event) {
-    /*let a = this;
-    var gameData = {};
-    for(var property in a.state) {
-      if(a.state.hasOwnProperty(property) && (property.substring(0,1) === 'w' || property.substring(0,1) === 'b')){
-        gameData[property] = a.state[property];
-      }
-    }
-    this.state.databaseRef.once('value').then(function(snapshot) {
-      var games = snapshot.val();
-      if(games === null) {
-        var info = {
-          user1: a.state.userId,
-          user2: '',
-          gameData: gameData,
-        };
-        var roomID = a.state.databaseRef.push(info).key
-        a.setState({
-          userId: a.state.userId,
-          isWhite: true,
-          roomID: roomID,
-          submitted: true,
-        });
-        var user2Joins = firebase.database().ref('/games/' + roomID);
-        user2Joins.on('child_changed', function(snapshot) {
-          user2Joins.off('child_changed');
-          var gameListener = firebase.database().ref('/games/' + roomID + '/gameData/');
-          gameListener.on('child_changed', function(snapshot) {
-            if(snapshot.key.substring(0,6) === 'white_' || snapshot.key.substring(0,6) === 'black_'){
-              var data = snapshot.val();
-              data['piece'] = snapshot.key;
-              movePiece(data);
-            }
-          });
-          a.setState({
-            otherUserId: snapshot.val()
-          });
-        });
-      } else {
-        if(games[a.state.roomID]['user1'] === a.state.userId) {
-          var gameListener = firebase.database().ref('/games/' + property + '/gameData/');
-          gameListener.on('child_changed', function(snapshot) {
-            if(snapshot.key.substring(0,6) === 'white_' || snapshot.key.substring(0,6) === 'black_'){
-              var data = snapshot.val();
-              data['piece'] = snapshot.key;
-              movePiece(data);
-            }
-          });
-          gameData = games[a.state.roomID]['gameData']
-          setPieces(gameData)
-          a.setState({
-            ...gameData,
-            isWhite: true,
-            userId: a.state.userId,
-            otherUserId: games[a.state.roomID]['user2'],
-            submitted: true,
-          });
-        } else if (games[a.state.roomID]['user2'] === a.state.userId) {
-          gameListener = firebase.database().ref('/games/' + property + '/gameData/');
-          gameListener.on('child_changed', function(snapshot) {
-            if(snapshot.key.substring(0,6) === 'white_' || snapshot.key.substring(0,6) === 'black_'){
-              var data = snapshot.val();
-              data['piece'] = snapshot.key;
-              movePiece(data);
-            }
-          });
-          gameData = games[a.state.roomID]['gameData']
-          setPieces(gameData);
-          a.setState({
-            ...gameData,
-            isWhite: false,
-            userId: a.state.userId,
-            otherUserId: games[a.state.roomID]['user1'],
-            submitted: true,
-          })
-        }
-        /*for(var property in games) {
-          if(games.hasOwnProperty(property)) {
-            if(games[property]['user2'] === '') {
-              var postData ={
-                user1: games[property]['user1'],
-                user2: a.state.userId,
-                gameData: games[property]['gameData']
-              }
-              var updates = {};
-              updates['/games/' + property] = postData;
-              firebase.database().ref().update(updates);
-              var gameListener = firebase.database().ref('/games/' + property + '/gameData/');
-              gameListener.on('child_changed', function(snapshot) {
-                if(snapshot.key.substring(0,6) === 'white_' || snapshot.key.substring(0,6) === 'black_'){
-                  var data = snapshot.val();
-                  data['piece'] = snapshot.key;
-                  movePiece(data);
-                }
-              });
-              a.setState({
-                userId: a.state.username,
-                otherUserId: games[property]['user1'],
-                submitted: true,
-                roomID: property,
-              });
-            }
-          }
-        }
-      }
-    })*/
-  };
-
   getHeader = () => {
     if(this.state.submitted) {
+      if(this.state.stalemate) {
+        return "Stalemate!"
+      }
       if(this.state.whiteWin) {
         if(this.state.isWhite) {
           return "You won!"
@@ -508,7 +450,7 @@ class gamescene extends Component {
         }
       }
     } else {
-      for(var property in this.state) {
+      for(property in this.state) {
         if(this.state.hasOwnProperty(property)) {
           if(property.substring(0,6) === 'white_') {
             if(this.state[property].x === -1 && this.state[property].y === -1) {

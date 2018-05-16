@@ -18,7 +18,6 @@ body {
 .center-column {
     width:30%;
     height: 70%;
-    display:inline;
     float:left;
     text-align: center;
     display: flex;

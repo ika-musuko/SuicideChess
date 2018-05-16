@@ -22,7 +22,7 @@ Team Members:
 - [ ] Play the Classic variant of Suicide Chess with a random person
     - [X] Backend
     - [X] Game Integration
-    - [ ] HTML/CSS
+    - [X] HTML/CSS
     - [ ] Templating
 - [ ] Play the Classic variant of Suicide Chess with a friend via links
     - [X] Backend
@@ -33,12 +33,12 @@ Team Members:
 ### Desired - Version 2.0
 - [ ] View and edit their own Profile Settings
     - [X] Backend
-    - [ ] HTML/CSS
+    - [X] HTML/CSS
     - [ ] Templating
 - [ ] Receive email notifications for when the opponent moves
 - [ ] View other player’s profiles
     - [X] Backend
-    - [ ] HTML/CSS
+    - [X] HTML/CSS
     - [ ] Templating
 - [ ] Forfeit from a game
     - [ ] Backend
@@ -48,7 +48,7 @@ Team Members:
 ### Optional (Ambitious) - Version 3.0
 - [X] Google Sign-In
 - [ ] User ranking based on their game performance
-    - [X] Backend
+    - [ ] Backend
     - [ ] HTML/CSS
     - [ ] Templating
 - [X] ~~Limit the opponent of a friend game to a specific user~~ *implemented invite links with access codes*
@@ -59,7 +59,7 @@ Team Members:
 - [ ] Anonymous users would be able to play and join blitz games
 - [ ] Write profile bios
     - [X] Backend
-    - [ ] HTML/CSS
+    - [X] HTML/CSS
     - [ ] Templating
 - [ ] Receive browser notifications upon opponent move
 

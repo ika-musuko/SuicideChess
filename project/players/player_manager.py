@@ -65,6 +65,7 @@ class PlayerManager:
             game_history = new_game_history(
                 move_list=room["moveList"]
                 , winner=room["winner"]
+                , last_board=room["gameData"]
             )
             self.add_game_history(player, room_id, game_history)
 

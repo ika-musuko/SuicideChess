@@ -5,83 +5,117 @@ body {
 .header {
     color: white;
     background-color: black;
-    padding: 10px;
+    padding: 1px;
+    text-align: left;
+}
+
+.logo {
     text-align: center;
 }
 
 ul.menu-bar {
     list-style-type: none;
-    margin: 0;
-    padding: 0;
+    margin: 1px;
+    padding: 1px;
     width: 12%;
     background-color: black;
-    float:left;
+    float:top;
     height: 750px;
     min-height: 100%;
     overflow: auto;
+    display: inline;
+    text-align: left;
 }
 
 li a {
-    display: block;
+    display: inline;
     color: #FFFFFF;
     padding: 8px 16px;
     text-decoration: none;
+    float: left;
 }
 
 
 li a, .dropbtn {
-    display: inline-block;
+    display: block;
     color: white;
-    text-align: center;
-    padding: 14px 16px;
+    text-align: left;
+    padding: 4px 16px;
     text-decoration: none;
 }
 li a:hover, .menu-item:hover .dropbtn {
     background-color: brown;
-} 
+}
 
-li.menu-item {
+.menu-item {
     display: inline-block;
 }
 
+.dropdown-item {
+    list-style-type: none;
+}
+
+.dropdown-list {
+    display: block;
+}
+
 .dropdown-content {
-    display: none;
+    display: block;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    z-index: 0;
+    text-align: left;
+    margin-top: 25px;
 }
 
 .dropdown-content a {
     color: black;
-    padding: 12px 16px;
-    text-decoration: none;
     display: block;
+    margin-left: -40px;
+    padding: 12px 15px;
+    text-decoration: none;
     text-align: left;
+    width: 100%;
 }
 
-.dropdown-content a:hover {background-color: #f1f1f1}
+.dropdown-content:hover {background-color: #f1f1f1}
 
 .menu-item:hover .dropdown-content {
     display: block;
 }
 
-li a.active {
+.menu-item a.active {
     background-color: brown;
     color: white;
 }
 
-li a:hover:not(.active) {
+
+.dropdown-content a:hover:not(.active) {
     background-color: #555;
     color: white;
 }
 
-.user-info{ 
+.info-container {
+    display: flex;
+    text-align: center;
+}
+
+.stats{
+    display: inline;
     width: 300px;
-    height: 220px;    
+    height: 220px;
     padding: 50px;
+    background: #95ff8c;
+    text-align: left;
+}
+
+.user-info{
+    display: inline;
+    width: 300px;
+    padding: 20px;
     background: lightblue;
+    text-align: left;
 }
 
 .content {
@@ -102,21 +136,8 @@ li a:hover:not(.active) {
     cursor: pointer;
     margin-left: 200px;
 }
-
-input {
-    margin-top: 5px;
-    width: 400px;
+.tutorial {
+    margin-left: 200px;
+    width: 40%;
+    text-align: left;
 }
-
-textarea {
-    height: 28px;
-    width: 400px;
-}
-
-p {
-    line-height: 2px;
-    font-size: 16px;
-}
-
-h2{color: brown;}
-

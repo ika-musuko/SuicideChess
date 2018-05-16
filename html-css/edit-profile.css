@@ -10,7 +10,7 @@ body {
     
 }
 
-ul.side-bar {
+ul.menu-bar {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -37,11 +37,11 @@ li a, .dropbtn {
     padding: 14px 16px;
     text-decoration: none;
 }
-li a:hover, .dropdown:hover .dropbtn {
+li a:hover, .menu-item:hover .dropbtn {
     background-color: brown;
 } 
 
-li.dropdown {
+li.menu-item {
     display: inline-block;
 }
 
@@ -64,7 +64,7 @@ li.dropdown {
 
 .dropdown-content a:hover {background-color: #f1f1f1}
 
-.dropdown:hover .dropdown-content {
+.menu-item:hover .dropdown-content {
     display: block;
 }
 

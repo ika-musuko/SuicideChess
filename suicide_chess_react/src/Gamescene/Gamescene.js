@@ -328,7 +328,7 @@ class gamescene extends Component {
           } else {
             gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove
           }
-          if(this.state.movesSinceCaptureOrPawnMove + 1 === 10) {
+          if(this.state.movesSinceCaptureOrPawnMove + 1 === 20) {
             stalemate = true;
           }
         } else {

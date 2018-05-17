@@ -25,6 +25,7 @@ def index() -> str:
 
 ### ALL USERS ###
 @app.route('/all_users')
+@login_required
 def all_users() -> str:
     all_user_ids = player_manager.get_all_user_ids()
     return render_template("all_users.html", all_user_ids=all_user_ids)
@@ -32,6 +33,7 @@ def all_users() -> str:
 
 ### VIEW PROFILE ###
 @app.route('/user/<user_id>')
+@login_required
 def user(user_id: str) -> str:
     """
     view for showing another user's profile page

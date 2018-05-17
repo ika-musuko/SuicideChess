@@ -1,0 +1,51 @@
+body {
+    margin: auto;
+    background-color: black;
+    color: white;
+}
+
+.welcome-message {
+}
+
+.signup-message {
+
+}
+    
+#google-signup {
+
+}
+
+.center-column {
+    width:30%;
+    height: 70%;
+    float:left;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.center-row {
+    height: 80%;
+    top:20%;
+    position: absolute;
+}
+
+.text{
+    margin: auto;
+    padding: 10px;
+    width: 50%;
+    }
+
+.img-right{
+    width:35%;
+    display: inline;
+    float:left;
+}
+
+.img-left{
+    width:35%;
+    display:inline;
+    float:left;
+}

@@ -19,27 +19,27 @@ Team Members:
 - [X] Create an account for the site
 - [X] ~~Verify themselves via email~~ *implemented Google Login instead as the sole form of authentication*
 - [X] Login to and logout from the site
-- [ ] Play the Classic variant of Suicide Chess with a random person
+- [X] Play the Classic variant of Suicide Chess with a random person
     - [X] Backend
     - [X] Game Integration
     - [X] HTML/CSS
-    - [ ] Templating
-- [ ] Play the Classic variant of Suicide Chess with a friend via links
+    - [X] Templating
+- [X] Play the Classic variant of Suicide Chess with a friend via links
     - [X] Backend
     - [X] Game Integration
-    - [ ] HTML/CSS
-    - [ ] Templating
+    - [X] HTML/CSS
+    - [X] Templating
 
 ### Desired - Version 2.0
-- [ ] View and edit their own Profile Settings
+- [X] View and edit their own Profile Settings
     - [X] Backend
     - [X] HTML/CSS
-    - [ ] Templating
+    - [X] Templating
 - [ ] Receive email notifications for when the opponent moves
-- [ ] View other player’s profiles
+- [X] View other player’s profiles
     - [X] Backend
     - [X] HTML/CSS
-    - [ ] Templating
+    - [X] Templating
 - [ ] Forfeit from a game
     - [ ] Backend
     - [ ] HTML/CSS
@@ -57,10 +57,10 @@ Team Members:
     - [ ] HTML/CSS
     - [ ] Templating
 - [ ] Anonymous users would be able to play and join blitz games
-- [ ] Write profile bios
+- [X] Write profile bios
     - [X] Backend
     - [X] HTML/CSS
-    - [ ] Templating
+    - [X] Templating
 - [ ] Receive browser notifications upon opponent move
 
 ## Build Instructions

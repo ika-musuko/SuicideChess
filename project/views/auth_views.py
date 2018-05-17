@@ -29,7 +29,7 @@ def go_to_login():
     HACK for linking to google login
     :return:
     '''
-    return render_template_string("<a href=\"{{ url_for('google.login') }}\">follow this link to login to SUICIDE CHESS >>></a>")
+    return redirect(url_for('index'))
 
 @oauth_authorized.connect_via(google_blueprint)
 @logout_required

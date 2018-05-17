@@ -1,11 +1,9 @@
 {# all_users.html #}
 {# this page shows all of the users registed on the site in a list #}
 
-{% if current_user.is_authenticated %}
 {% with user_id=current_user.id, user=current_user.as_dict() %}
     {% include "base.html" %}
-    {% endwith %}
-    {% endif %}
+{% endwith %}
 
 {% set title = "All Users" %}
 {% block content %}
@@ -18,13 +16,18 @@
     <th>Wins</th> 
     <th>Losses</th>
     <th>Draws</th>
+    <th>Current Games</th>
+    <th>Total Games Finished</th>
   </tr>
 	{% for user_id in all_user_ids %}
 	    {% set user_data = player_manager.get_user(user_id) %}
 	    	<tr>
 	    		<td><a class="userLink" href="{{ url_for('user', user_id=user_id) }}">{{ user_data["displayName"] }} &raquo;</a></td>
-	    		<td> {{ user_data['wins'] }}</td><td> {{ user_data['losses'] }} </td>
+	    		<td> {{ user_data['wins'] }}</td>
+                <td> {{ user_data['losses'] }} </td>
 	    		<td>{{ user_data['draws'] }}</td>
+                <td> {{ user_data['currentGames']|length }} </td>
+                <td> {{ user_data['gameHistories']|length }} </td>
 	    	</tr>
 	{% endfor %}
 	</table>

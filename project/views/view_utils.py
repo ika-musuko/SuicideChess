@@ -7,7 +7,7 @@ view_utils.py
 
 from functools import wraps
 
-from flask import flash, url_for
+from flask import flash, url_for, request
 from flask_login import current_user
 from markupsafe import Markup
 from werkzeug.utils import redirect

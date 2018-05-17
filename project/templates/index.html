@@ -1,14 +1,52 @@
 {# index.html #}
 {# the home page. this just shows the user's own profile #}
 
-{% extends "base.html" %}
+{# {% extends "base.html" %}
 {% block head %}
 {% endblock %}
 {% set title = "home" %}
 {% block content %}
 {% if current_user.is_authenticated %}
-    {% with user_id=current_user.id, user=current_user.as_dict() %} {# the with statement sets variables for an include #}
+    {% with user_id=current_user.id, user=current_user.as_dict() %} {# the with statement sets variables for an include
         {% include "user_profile.html" %}
     {% endwith %}
 {% endif %}
-{% endblock %}
+{% endblock %} #}
+
+
+{# Main screen when logged in. #}
+{% if current_user.is_authenticated %}
+{% with user_id=current_user.id, user=current_user.as_dict() %}
+        {% include "user_profile.html" %}
+    {% endwith %}
+
+
+
+
+{# Main screen when logged out. ERROR: not directing to google login #}
+{% else %}
+<html lang="en">
+  <head>
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+     <meta name="theme-color" content="#000000">
+     <link rel="stylesheet" href="static/landing.css">
+    <title>Suicide Chess</title>
+</head>
+
+<body>
+
+    <div class="center-row">
+      <img src="static/pawn.png" alt="Pawn" class = "img-left">
+      <div class = "center-column">  
+          <h1 class = "welcome-message">WELCOME TO SUICIDE CHESS</h1>
+          <h4 class = "signup-message">Sign up to get started!</h4>
+          <a href = "{{ url_for('google.login') }}" img id = "google-signup">
+              <img src="static/sign up with Google .png" alt="sign up with Google" width="50%;"> </a>
+      </div>
+       <img src="static/pawn.png" alt="Pawn" class="img-right">
+    </div>
+  
+</body>
+</html> 
+{% endif %}

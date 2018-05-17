@@ -1,7 +1,7 @@
 {# edit_profile.html #}
 {# form allowing the user to edit their profile #}
 
-{% extends "base.html" %}
+{# {% extends "base.html" %}
 {% block head %}
 {% endblock %}
 {% set title = "edit profile" %}
@@ -11,6 +11,37 @@
         email: {{ current_user.get_db_property("email") }}<br/>
         bio: {{ form.bio() }}<br/>
         {{ form.submit() }}<br/>
-        {{ form.csrf_token }} {# if you don't have this csrf token the form will not submit (XSS protection, see CS166) #}
+        {{ form.csrf_token }} {# if you don't have this csrf token the form will not submit (XSS protection, see CS166) #
     </form>
+{% endblock %} #}
+{% extends "base.html" %}
+{% block head %}
 {% endblock %}
+
+
+<html lang="en">
+  <head> 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <link rel="stylesheet" href="static/base.css">
+    <title>Suicide Chess</title>
+  </head>
+
+  <body>
+      <div class = "profile-content" style="font-family: Arial, Helvetica, sans-serif">
+        <h2>Edit Profile</h2> <br>
+            <div class = username>
+                <p><strong>Curent Username: </strong>{{ form.display_name() }}</p>
+                <input value="Enter your new username here!"/> <br>
+            </div>
+
+            <div class = bio>
+                <p><strong>Bio</strong></p>
+                    <textarea>Enter your bio here!</textarea> <br> <br>  <br>
+            </div>
+
+            <a href="index_and_user.html" class="button">Save Changes</a>
+      </div>
+  </body>
+</html>

@@ -1,7 +1,4 @@
-{# user_profile.html #}
-{# view showing a user's information #}
-
-<h2>{{ user["displayName"] }}'s Profile</h2>
+{# <h2>{{ user["displayName"] }}'s Profile</h2>
 <div>
     <h4>User Information</h4>
     <b>id: </b>{{ user_id }}<br/>
@@ -29,4 +26,66 @@
         {% endfor %}
         </ul>
     {% endif %}
-</div>
+</div> #}
+
+
+
+{% if current_user.is_authenticated %}
+{% with user_id=current_user.id, user=current_user.as_dict() %}
+        {% include "base.html" %}
+    {% endwith %}
+    {% endif %}
+
+
+
+<html lang="en">
+  <head> 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <link rel="stylesheet" href="static/base.css">
+    <title>Suicide Chess</title>
+  </head>
+
+  <body>
+      <div class = "content" style="font-family: Arial, Helvetica, sans-serif">
+        <h2>{{ user["displayName"] }}'s Profile</h2> <br>
+          <div class="info-container">
+              <div class = "user-info">
+               <h2>User Information</h2>
+                  <p><strong>Player ID: </strong>{{ user_id }}</p>
+                  <p><strong>Joined on: </strong>{{ user["joinedOn"] }}</p>
+                  <p><strong>Last here: </strong>{{ user["lastHere"] }}</p> <br>
+
+                  <p><strong>Bio: </strong></p>
+                    <p>{{ user["bio"] }}</p> <br>
+
+                  <a href="{{ url_for('edit_profile') }}" class="button">Edit Profile </a> <br> <br>
+              </div>
+              <div class="stats">
+                  <h2>Player Statistics</h2>
+                      <p><strong>Wins:</strong> {{ user["wins"] }}</p>
+                      <p><strong>Losses:</strong> {{ user["losses"] }}</p>
+                      <p><strong>Draws:</strong> {{ user["draws"] }}</p> <br>
+              </div>
+          </div>
+          <div class="game-histories">
+              <h3>Game Histories </h3>
+              <p>{% set game_histories = user["gameHistories"] %}
+    {% if game_histories %}
+        <ul class="gameHistories">
+        {% for room_id, game_history in game_histories.items() %}
+            <li class="gameHistoryItem"><b>{{ room_id }}</b>
+                <ul class="gameHistory">
+                    <li class="winner">Winner: {{ game_history["winner"] }}</li>
+                    <li class="timeFinished">Time finished: {{ game_history["timeFinished"] }}</li>
+                    <li class="moveList">Move List: {{ game_history["moveList"] }}</li>
+                </ul>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}</p>
+          </div>
+      </div>
+  </body>
+</html>

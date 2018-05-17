@@ -2,23 +2,23 @@
 {# extend this to show the same content out of every page  that extends out of this #}
 {# in this, we show a title, the current user, a menu bar, and their current games list #}
 
-<html>
+{# <html>
     <head>
         <meta http-equiv="cache-control" content="no-cache">
-        {# SET THE TITLE OF THE PAGE (window bar) #}
-        {# check if the title variable exists #}
+        {# SET THE TITLE OF THE PAGE (window bar) 
+        {# check if the title variable exists 
         {% if title %}
         <title>{{ title }} | suicide chess</title>
         {% else %}
-        {# just set it to "suicide chess" #}
-        <title>suicide chess</title>
+        {# just set it to "suicide chess" 
+        <title>Suicide Chess</title>
         {% endif %}
         {% block head %}
         {% endblock %}
     </head>
 
     <body>
-        {# this is a container to show all "flashed" messages. if you go to the python code, if you see flash() and then redirect(), this is where the message inside flash() will appear #}
+        {# this is a container to show all "flashed" messages. if you go to the python code, if you see flash() and then redirect(), this is where the message inside flash() will appear #
         <div class='flash'>
             {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -31,23 +31,23 @@
             {% endwith %}
         </div>
 
-        {# write debug info here #}
+        {# write debug info here #
         {% if debug %}
         <div class="debug">
             current user authenticated: {{ current_user.is_authenticated }}
         </div>
         {% endif %}
 
-        {# show the user's information #}
+        {# show the user's information #
         <div class='userinfo'>
             {% if current_user.is_authenticated %}
-            <h3>current user: {{ current_user.display_name }}</h3> {# ADDED BY JOLEENA: gets display name #}
+            <h3>current user: {{ current_user.display_name }}</h3> {# ADDED BY JOLEENA: gets display name #
             {% else %}
             <h3>not logged in</h3>
             {% endif %}
         </div>
 
-        {# show all of the website links #}
+        {# show all of the website links #
         <div class='menubar'>
             <a href="{{ url_for('index') }}">home</a>
             <a href="{{ url_for('all_users') }}">all users</a>
@@ -61,7 +61,7 @@
             {% endif %}
         </div>
 
-        {# show the user's current game list #}
+        {# show the user's current game list #
         {% if current_user.is_authenticated %}
         <div class="gamelist">
             <h3>current games !!!</h3>
@@ -75,14 +75,48 @@
                 {% endfor %}
             {% else %}
                 <p>no current games : (</p>
-            {% endif %}
+            {% endif %} 
         </div>
         {% endif %}
 
-        {# the main page content goes in this block #}
+        {# the main page content goes in this block #
         <div class='content'>
             {% block content %}
             {% endblock %}
         </div>
     </body>
-</html>
+</html> #}
+
+{% if current_user.is_authenticated %}
+<div class="header">
+          <h1 class="logo">SUICIDE CHESS</h1>
+          <ul class="menu-bar" style="font-family: Arial, Helvetica, sans-serif">
+              <li class="menu-item">
+                  <a href="javascript:void(0)" class="dropbtn">New Game</a>
+                  <div class="dropdown-content">
+                      <div class="dropdown-list">
+                          <a class="dropdown-item" href="{{ url_for('new_game', variant='classic', mode='friend') }}">Friend</a>
+                          <a class="dropdown-item" href="{{ url_for('new_game', variant='classic', mode='random') }}">Random</a>
+                      </div>
+                  </div>
+              </li>
+              <li class="menu-item">
+                  <a href="javascript:void(0)" class="dropbtn">Current Games</a>
+                  {% set current_games = current_user.get_db_property("currentGames") %}
+                  {% if current_games %}
+                    {% for room_id in current_games %}
+                        {% if room_id %}
+                  <div class="dropdown-content">
+                      <div class="dropdown-list">
+                          <a class="dropdown-item" href="{{ url_for('play', room_id=room_id) }}">{{ room_id }}</a>
+                      </div>
+                  </div>
+                        {% endif %}
+                    {% endfor%}
+                  {% endif %}
+              </li>
+              <li class="menu-item"><a href="{{ url_for('index') }}">My Profile</a></li>
+              <li class="menu-item"><a href="{{ url_for('log_out') }}">Log Out</a></li>
+          </ul>
+      </div>
+{% endif %}

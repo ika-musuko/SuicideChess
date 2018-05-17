@@ -20,6 +20,7 @@ rm -rf $BUILD_FOLDER_REL
 
 #Make new react directory
 mkdir -p $BUILD_FOLDER_REL
+ls $SCHESS/project/static
 
 #Move generated react build to new static directory
 mv build/static $BUILD_FOLDER_REL
@@ -38,5 +39,3 @@ done
 
 cd ../..
 
-#Remove files on first level
-find . -maxdepth 1 -type f -delete

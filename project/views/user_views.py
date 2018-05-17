@@ -66,5 +66,6 @@ def edit_profile() -> str:
             current_user.set_db_property("bio", form.bio.data)
 
         flash("Profile successfully changed!")
+        return redirect(url_for("index"))
 
     return render_template("edit_profile.html", form=form)

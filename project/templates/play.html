@@ -26,8 +26,8 @@
 
 {# show an invite link if the user is waiting for a friend #}
 {% if waiting_for_friend %}
-{% set friend_url = url_for('invite', room_id=room_id, access_code=room['accessCode']) %}
-<p>Copy and send this link to a friend: <a href="{{ friend_url }}" id="inviteLink">here</a></p>
+{% set friend_url = url_for('invite', room_id=room_id, access_code=room['accessCode'], _external=True) %}
+<p>Copy and send this link to a friend: <a href="{{ friend_url }}" id="inviteLink">{{ friend_url }}</a></p>
 {% endif %}
 
 {# show the player list #}

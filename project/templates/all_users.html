@@ -1,16 +1,32 @@
 {# all_users.html #}
 {# this page shows all of the users registed on the site in a list #}
 
-{% extends "base.html" %}
-{% block head %}
-{% endblock %}
-{% set title = "all users" %}
+{% if current_user.is_authenticated %}
+{% with user_id=current_user.id, user=current_user.as_dict() %}
+    {% include "base.html" %}
+    {% endwith %}
+    {% endif %}
+
+{% set title = "All Users" %}
 {% block content %}
-<h3>Total users: {{ all_user_ids|length }}</h3>
-<ul class="userList">
-{% for user_id in all_user_ids %}
-    {% set user_data = player_manager.get_user(user_id) %}
-    <li><a class="userLink" href="{{ url_for('user', user_id=user_id) }}">{{ user_data["displayName"] }}</a></li>
-{% endfor %}
-</ul>
+<div class="allUserContent">
+	<h2 style="text-align: center; font-family: sans-serif;">All Users</h2>
+	<table>
+
+			      <tr>
+    <th>Display Name</th>
+    <th>Wins</th> 
+    <th>Losses</th>
+    <th>Draws</th>
+  </tr>
+	{% for user_id in all_user_ids %}
+	    {% set user_data = player_manager.get_user(user_id) %}
+	    	<tr>
+	    		<td><a class="userLink" href="{{ url_for('user', user_id=user_id) }}">{{ user_data["displayName"] }} &raquo;</a></td>
+	    		<td> {{ user_data['wins'] }}</td><td> {{ user_data['losses'] }} </td>
+	    		<td>{{ user_data['draws'] }}</td>
+	    	</tr>
+	{% endfor %}
+	</table>
+</div>
 {% endblock %}

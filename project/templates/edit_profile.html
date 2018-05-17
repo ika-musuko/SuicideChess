@@ -14,12 +14,13 @@
         {{ form.csrf_token }} {# if you don't have this csrf token the form will not submit (XSS protection, see CS166) #
     </form>
 {% endblock %} #}
-{% extends "base.html" %}
+{% if current_user.is_authenticated %}
+{% with user_id=current_user.id, user=current_user.as_dict() %}
+        {% include "base.html" %}
+    {% endwith %}
+    {% endif %}
 {% block head %}
-{% endblock %}
 
-
-<html lang="en">
   <head> 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -28,20 +29,26 @@
     <title>Suicide Chess</title>
   </head>
 
-  <body>
+{% endblock %}
+{% set title = "edit profile" %}
+
+{% block content %}
       <div class = "profile-content" style="font-family: Arial, Helvetica, sans-serif">
         <h2>Edit Profile</h2> <br>
+        <form action="" method="post" class="loginform">
             <div class = username>
-                <p><strong>Curent Username: </strong>{{ form.display_name() }}</p>
-                <input value="Enter your new username here!"/> <br>
+                <p><strong>Curent Username: </strong>{{ current_user.display_name }}</p>
+                <p><strong>Enter new username:</strong> {{form.display_name()}}</p>
             </div>
 
             <div class = bio>
-                <p><strong>Bio</strong></p>
-                    <textarea>Enter your bio here!</textarea> <br> <br>  <br>
+                <p><strong>Edit Bio</strong></p>
+                {{ form.bio() }}
             </div>
-
-            <a href="index_and_user.html" class="button">Save Changes</a>
+            <br>
+            {{ form.submit() }}
+            {{ form.csrf_token }}
       </div>
-  </body>
-</html>
+  </form>
+
+  {% endblock %}

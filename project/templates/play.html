@@ -1,41 +1,37 @@
 {# play.html #}
 {# page for playing the game. contains the react app (as compiled javascript) which is the actual game #}
 
-{% extends "base.html" %}
-{% set title = "play "+room_id %}
+
+{% if current_user.is_authenticated %}
+{% with user_id=current_user.id, user=current_user.as_dict() %}
+        {% include "base.html" %}
+    {% endwith %}
+    {% endif %}
 {% block head %}
-<head>
     {# REACT: css styling for the react app #}
+    <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <link rel="stylesheet" href="../static/base.css">
     <link href="{{ url_for('static', filename='react/static/css/game_compiled.css') }}" rel="stylesheet">
 </head>
 {% endblock %}
 
+{% set title = "play "+room_id %}
+
 {% block content %}
-
-{# show the room id #}
-<h2>GAME!!!! {{ room_id }}</h2>
-
 
 {% set waiting_for_friend = room["mode"] == "friend" and room["status"] == "waiting" %}
 
 {# show an invite link if the user is waiting for a friend #}
 {% if waiting_for_friend %}
-<p>this is a FRIEND room... </p>
 {% set friend_url = url_for('invite', room_id=room_id, access_code=room['accessCode']) %}
-<p>right click <a href="{{ friend_url }}" id="inviteLink">here</a>, click "copy to clipboard" and then send it to a friend so they can play too!</p>
+<p>Copy and send this link to a friend: <a href="{{ friend_url }}" id="inviteLink">here</a></p>
 {% endif %}
 
 {# show the player list #}
-<h3><b>players: </b></h3>
 {% set players = room_manager.get_players_by_id(room_id) %}
-{% if players %}
-    <ul class="playerList">
-        {% for player_id in players %}
-            {% set player_data = player_manager.get_user(player_id) %}
-            <li><a class="playerLink" href="{{ url_for('user', user_id=player_id) }}">{{ player_data["displayName"] }}</a></li>
-        {% endfor %}
-    </ul>
-{% endif %}
 
 
 {% if room["status"] == "inprogress" and debug %}
@@ -45,12 +41,10 @@
 {# debug mode automatic game complete #}
 
 {% elif room["status"] == "finished" %}
-    <b>this game is OVER!!!</b>
-    <p>winner: {{ player_manager.get_display_name(room["winner"]) }}</p>
-    <p>move list: {{ room["moveList"] }}</p>
+
     {# has the current user clicked rematch yet #}
     {% if room["rematchReady"][current_user.id] %} {# YES THEY HAVE #}
-        <h3>waiting for the opponent to rematch...</h3>
+        <h3>Waiting for the opponent to rematch...</h3>
     {% else %}
         <a href="{{ url_for('rematch', room_id=room_id) }}">REMATCH</a>
     {% endif %}
@@ -59,7 +53,7 @@
 
 {# else room is waiting, show an exit link #}
 {% else %}
-    <h3>waiting for opponent......</h3>
+    <h3>Waiting for opponent...</h3>
     <a href="{{ url_for('exit_game', room_id=room_id) }}">EXIT</a>
 {% endif %}
 
@@ -68,4 +62,20 @@
 
 {# REACT: load the react game script #}
 <script type="text/javascript" src="{{ url_for('static', filename='react/static/js/game_compiled.js') }}"></script>
+
+<div class="tutorial">
+            <h5>RULES</h5>
+               <p>Regular chess rules apply + more:</p>
+               <ol>
+                  <li>You must capture when possible</li>
+                  <p>If there are multiple captures you must choose</p> <br>
+                  <li>The king is a regular piece</li>
+                  <p>It can be captured like the other pieces</p>
+                  <p>Other pieces can be promoted to king</p> 
+                  <p>There is no castling, check, or checkmate</p> <br>
+                  <li>You win the game if you lose all your pieces or are stalemated</li> <br>
+                  <li>If there are no possible moves left, the game ends in a draw</li> <br>
+                  <li>If you choose to forfeit the game, your opponent wins</li> <br>
+               </ol>
+          </div>
 {% endblock %}

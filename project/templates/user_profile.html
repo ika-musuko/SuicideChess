@@ -49,7 +49,7 @@
 
   <body>
       <div class = "content" style="font-family: Arial, Helvetica, sans-serif">
-        <h2>{{ user["displayName"] }}'s Profile</h2> <br>
+        <h2>{{ user["displayName"] }}'s Profile</h2>
           <div class="info-container">
               <div class = "user-info">
                <h2>User Information</h2>
@@ -70,7 +70,7 @@
               </div>
           </div>
           <div class="game-histories">
-              <h3>Game Histories </h3>
+              <h3>Game History</h3>
               <p>{% set game_histories = user["gameHistories"] %}
     {% if game_histories %}
         <ul class="gameHistories">

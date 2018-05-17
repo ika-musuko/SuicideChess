@@ -104,15 +104,15 @@
                   <a href="javascript:void(0)" class="dropbtn">Current Games</a>
                   {% set current_games = current_user.get_db_property("currentGames") %}
                   {% if current_games %}
-                    {% for room_id in current_games %}
-                        {% if room_id %}
                   <div class="dropdown-content">
                       <div class="dropdown-list">
+                        {% for room_id in current_games %}
+                            {% if room_id %}
                           <a class="dropdown-item" href="{{ url_for('play', room_id=room_id) }}">{{ room_id }}</a>
+                          {% endif %}
+                        {% endfor%}
                       </div>
                   </div>
-                        {% endif %}
-                    {% endfor%}
                   {% endif %}
               </li>
               <li class="menu-item"><a href="{{ url_for('index') }}">My Profile</a></li>

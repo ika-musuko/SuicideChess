@@ -6,7 +6,6 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>Suicide Chess</h1>
         <Gamescene roomID={this.props.roomID} user={this.props.user}/>
       </div>
     );

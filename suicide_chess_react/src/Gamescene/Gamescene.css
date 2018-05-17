@@ -1,6 +1,8 @@
 .Gamescene {
     display: inline-block;
     width: 1000px;
-    height: 550px; 
+    height: 550px;
     border: 1px solid #ccc;
+    margin-top: 50px;
+    font-family: sans-serif;
 }

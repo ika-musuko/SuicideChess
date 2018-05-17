@@ -35,10 +35,16 @@
 
 
 {% if room["status"] == "inprogress" and debug %}
-    <a href="{{ url_for('simulate_game', room_id=room_id) }}">simulate game</a>
+<br>
+    <a href="{{ url_for('simulate_game', room_id=room_id) }}">Simulate Game</a>
+</br><br>
+    <a href="{{ url_for('exit_game', room_id=room_id) }}">FORFEIT</a>
 
 {# if the game is over show winner, rematch link, and exit link #}
 {# debug mode automatic game complete #}
+{% elif room["status"] == "inprogress" %}
+<br>
+<a href="{{ url_for('exit_game', room_id=room_id) }}">FORFEIT</a>
 
 {% elif room["status"] == "finished" %}
 
@@ -54,7 +60,7 @@
 {# else room is waiting, show an exit link #}
 {% else %}
     <h3>Waiting for opponent...</h3>
-    <a href="{{ url_for('exit_game', room_id=room_id) }}">EXIT</a>
+    <a href="{{ url_for('exit_game', room_id=room_id) }}">CANCEL GAME</a>
 {% endif %}
 
 {# REACT: container for the game #}

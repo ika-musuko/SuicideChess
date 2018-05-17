@@ -234,11 +234,18 @@ class gamescene extends Component {
     }
 
     var gameListener = firebase.database().ref('/SuicideChess/' + this.state.roomID + '/gameData/');
+    var a = this;
     gameListener.on('child_changed', function(snapshot) {
       if(snapshot.key.substring(0,6) === 'white_' || snapshot.key.substring(0,6) === 'black_'){
         var data = snapshot.val();
         data['piece'] = snapshot.key;
         movePiece(data);
+      } else if (snapshot.key === 'movesSinceCaptureOrPawnMove'){
+        var data = snapshot.val();
+        console.log(data);
+        a.setState({
+          movesSinceCaptureOrPawnMove: data
+        })
       }
     });
     this.setState({
@@ -314,7 +321,13 @@ class gamescene extends Component {
           }
         }
         if(incremenetMovesSinceCaptureOrPawnMove) {
-          gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove + 1
+          if(this.state.isWhite && this.state.whiteTurn) {
+            gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove + 1
+          } else if (!this.state.isWhite && !this.state.whiteTurn) {
+            gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove + 1
+          } else {
+            gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove
+          }
           if(this.state.movesSinceCaptureOrPawnMove + 1 === 10) {
             stalemate = true;
           }

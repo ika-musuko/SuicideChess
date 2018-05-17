@@ -250,7 +250,7 @@ class gamescene extends Component {
 
   }
 
-  handlePieceMove (pieces, changesMade, move) {
+  handlePieceMove (pieces, changesMade, move, pieceCaptured) {
     if(this.state.submitted) {
       if(this.state && changesMade) {
         let requiredMoves = [];
@@ -284,6 +284,46 @@ class gamescene extends Component {
               }
             }
           }
+        }
+
+
+        let pawnMoved = false;
+        for(var piece in pieces) {
+          if(pieces.hasOwnProperty(piece)){
+            if(this.state[piece].x !== pieces[piece].x || this.state[piece].y !== pieces[piece].y) {
+              if(piece.substring(6,10) === 'pawn') {
+                pawnMoved = true;
+              }
+            }
+          }
+        }
+
+        let incremenetMovesSinceCaptureOrPawnMove = false;
+        var resetMoveSinceCapturedOrPawnMove = pawnMoved || pieceCaptured ? true : false
+        if(this.state.isWhite) {
+          if(this.state.whiteTurn) {
+            incremenetMovesSinceCaptureOrPawnMove = true;
+          } else {
+
+          }
+        } else {
+          if(this.state.whiteTurn) {
+
+          } else {
+            incremenetMovesSinceCaptureOrPawnMove = true;
+          }
+        }
+        if(incremenetMovesSinceCaptureOrPawnMove) {
+          gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove + 1
+          if(this.state.movesSinceCaptureOrPawnMove + 1 === 10) {
+            stalemate = true;
+          }
+        } else {
+          gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove
+        }
+
+        if(resetMoveSinceCapturedOrPawnMove) {
+          gameData['movesSinceCaptureOrPawnMove'] = 0;
         }
 
         if(stalemate) {
@@ -323,26 +363,6 @@ class gamescene extends Component {
           }
         } else if (stalemate) {
           updates['/SuicideChess/' + this.state.roomID + '/status'] = "finished"
-        }
-
-        let incremenetMovesSinceCaptureOrPawnMove = false;
-        if(this.state.isWhite) {
-          if(this.state.whiteTurn) {
-            incremenetMovesSinceCaptureOrPawnMove = true;
-          } else {
-
-          }
-        } else {
-          if(this.state.whiteTurn) {
-
-          } else {
-            incremenetMovesSinceCaptureOrPawnMove = true;
-          }
-        }
-        if(incremenetMovesSinceCaptureOrPawnMove) {
-          gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove + 1
-        } else {
-          gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove
         }
 
         updates['/SuicideChess/' + this.state.roomID + '/gameData/'] = gameData;

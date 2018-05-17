@@ -56,6 +56,8 @@ let observer = null
 
 let newMove = null
 
+let pieceCaptured = false;
+
 let requiredMoves = []
 
 let firstTimeObserve = true
@@ -67,7 +69,7 @@ let changesMade = false
 
 function emitChange() {
     whiteTurn = !whiteTurn
-    observer(pieces, changesMade, newMove)
+    observer(pieces, changesMade, newMove, pieceCaptured)
 }
 
 export function setRequiredMoves(moves) {
@@ -97,6 +99,7 @@ export function observe(o) {
 }
 
 export function movePiece(move) {
+    pieceCaptured = false
     newMove = move
     changesMade = false
     let canMove = false
@@ -130,6 +133,7 @@ export function movePiece(move) {
                     if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                         pieces[property].y = -1
                         pieces[property].x = -1
+                        pieceCaptured = true;
                     }
                 }
             }
@@ -141,6 +145,7 @@ export function movePiece(move) {
                     if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                         pieces[property].y = -1
                         pieces[property].x = -1
+                        pieceCaptured = true;
                     }
                 }
             }
@@ -152,6 +157,7 @@ export function movePiece(move) {
                     if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                         pieces[property].y = -1
                         pieces[property].x = -1
+                        pieceCaptured = true;
                     }
                 }
             }
@@ -163,6 +169,7 @@ export function movePiece(move) {
                     if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                         pieces[property].y = -1
                         pieces[property].x = -1
+                        pieceCaptured = true;
                     }
                 }
             }
@@ -174,6 +181,7 @@ export function movePiece(move) {
                     if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                         pieces[property].y = -1
                         pieces[property].x = -1
+                        pieceCaptured = true;
                     }
                 }
             }
@@ -185,6 +193,7 @@ export function movePiece(move) {
                     if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                         pieces[property].y = -1
                         pieces[property].x = -1
+                        pieceCaptured = true;
                     }
                 }
             }
@@ -196,6 +205,7 @@ export function movePiece(move) {
                     if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                         pieces[property].y = -1
                         pieces[property].x = -1
+                        pieceCaptured = true;
                     }
                 }
             }
@@ -207,6 +217,7 @@ export function movePiece(move) {
                     if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                         pieces[property].y = -1
                         pieces[property].x = -1
+                        pieceCaptured = true;
                     }
                 }
             }
@@ -219,6 +230,7 @@ export function movePiece(move) {
                         if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                             pieces[property].x = -1
                             pieces[property].y = -1
+                            pieceCaptured = true;
                         }
                     }
                 }
@@ -232,6 +244,7 @@ export function movePiece(move) {
                         if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                             pieces[property].x = -1
                             pieces[property].y = -1
+                            pieceCaptured = true;
                         }
                     }
                 }
@@ -245,6 +258,7 @@ export function movePiece(move) {
                         if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                             pieces[property].x = -1
                             pieces[property].y = -1
+                            pieceCaptured = true;
                         }
                     }
                 }
@@ -258,6 +272,7 @@ export function movePiece(move) {
                         if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                             pieces[property].x = -1
                             pieces[property].y = -1
+                            pieceCaptured = true;
                         }
                     }
                 }
@@ -271,6 +286,7 @@ export function movePiece(move) {
                         if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                             pieces[property].x = -1
                             pieces[property].y = -1
+                            pieceCaptured = true;
                         }
                     }
                 }
@@ -284,6 +300,7 @@ export function movePiece(move) {
                         if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                             pieces[property].x = -1
                             pieces[property].y = -1
+                            pieceCaptured = true;
                         }
                     }
                 }
@@ -297,6 +314,7 @@ export function movePiece(move) {
                         if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                             pieces[property].x = -1
                             pieces[property].y = -1
+                            pieceCaptured = true;
                         }
                     }
                 }
@@ -310,6 +328,7 @@ export function movePiece(move) {
                         if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                             pieces[property].x = -1
                             pieces[property].y = -1
+                            pieceCaptured = true;
                         }
                     }
                 }
@@ -323,6 +342,7 @@ export function movePiece(move) {
                         if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                             pieces[property].x = -1
                             pieces[property].y = -1
+                            pieceCaptured = true;
                         }
                     }
                 }
@@ -336,6 +356,7 @@ export function movePiece(move) {
                         if(pieces[move.piece].x === pieces[property].x && pieces[move.piece].y === pieces[property].y && property.substring(0,5) !== move.piece.substring(0,5)) {
                             pieces[property].x = -1;
                             pieces[property].y = -1;
+                            pieceCaptured = true;
                         }
                     }
                 }

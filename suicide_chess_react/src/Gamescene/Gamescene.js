@@ -143,6 +143,7 @@ class gamescene extends Component {
           whiteTurn: gameData['whiteTurn'],
           userId: a.state.userId,
           otherUserId: room['players'][1],
+          stalemate: gameData['movesSinceCaptureOrPawnMove'] >= 20 ? true : false,
           moveList: room['moveList'],
           submitted: true,
           isWhite: true,
@@ -185,6 +186,7 @@ class gamescene extends Component {
           userId: a.state.userId,
           otherUserId: room['players'][0],
           moveList: room['moveList'],
+          stalemate: gameData['movesSinceCaptureOrPawnMove'] >= 20 ? true : false,
           submitted: true,
           isWhite: false
         })
@@ -242,7 +244,6 @@ class gamescene extends Component {
         movePiece(data);
       } else if (snapshot.key === 'movesSinceCaptureOrPawnMove'){
         var data = snapshot.val();
-        console.log(data);
         a.setState({
           movesSinceCaptureOrPawnMove: data
         })
@@ -260,6 +261,9 @@ class gamescene extends Component {
   handlePieceMove (pieces, changesMade, move, pieceCaptured) {
     if(this.state.submitted) {
       if(this.state && changesMade) {
+        if(this.state.movesSinceCaptureOrPawnMove + 1 >= 20) {
+          stalemate = true;
+        }
         let requiredMoves = [];
         if(this.state.whiteTurn) {
           requiredMoves = getRequiredMoves(pieces, false);
@@ -325,10 +329,8 @@ class gamescene extends Component {
             gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove + 1
           } else if (!this.state.isWhite && !this.state.whiteTurn) {
             gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove + 1
-          } else {
-            gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove
           }
-          if(this.state.movesSinceCaptureOrPawnMove + 1 === 20) {
+          if(this.state.movesSinceCaptureOrPawnMove + 1 >= 20) {
             stalemate = true;
           }
         } else {
@@ -381,6 +383,10 @@ class gamescene extends Component {
         updates['/SuicideChess/' + this.state.roomID + '/gameData/'] = gameData;
 
         firebase.database().ref().update(updates);
+
+        if(whiteWin || blackWin || stalemate) {
+          window.location.reload();
+        }
 
         this.setState({
           validTiles: [],

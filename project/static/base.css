@@ -2,11 +2,21 @@ body {
     margin: 0;
 }
 
+.site-container {
+    display: flex;
+}
+
 .header {
     color: white;
+    width: 100%;
+    position: relative;
     background-color: black;
     padding: 1px;
+}
+
+.content {
     text-align: left;
+    width: 100%;
 }
 
 .logo {
@@ -75,7 +85,8 @@ li a, .dropbtn {
 /*.menu-item a.active {
     background-color: brown;
     color: white;
-}*/
+}
+*/
 
 .menu-item:hover .dropdown-content {
     display: block;
@@ -86,8 +97,8 @@ li a, .dropbtn {
     position: absolute;
     margin-top: 25px;
     background-color: #f9f9f9;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 0;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1111111;
 }
 
 .dropdown-content a {
@@ -123,7 +134,7 @@ li a, .dropbtn {
     text-align: center;
 }
 
-.stats{
+.stats {
     margin: 20px;
     display: inline;
     width: 300px;
@@ -133,7 +144,7 @@ li a, .dropbtn {
     text-align: left;
 }
 
-.user-info{
+.user-info {
     margin: 20px;
     display: inline;
     width: 300px;
@@ -142,9 +153,6 @@ li a, .dropbtn {
     text-align: left;
 }
 
-.content {
-    text-align: left;
-    padding-left: 200px; }
 
 .button {
     background-color: brown;
@@ -181,5 +189,12 @@ td, th {
 
 tr:nth-child(even) {
     background-color: #dddddd;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;;
 }
 

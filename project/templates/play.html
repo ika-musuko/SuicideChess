@@ -2,24 +2,11 @@
 {# page for playing the game. contains the react app (as compiled javascript) which is the actual game #}
 
 
-{% if current_user.is_authenticated %}
-{% with user_id=current_user.id, user=current_user.as_dict() %}
-        {% include "base.html" %}
-{% endwith %}
-{% endif %}
+{% extends "base.html" %}
 {% block head %}
-    {# REACT: css styling for the react app #}
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
-    <link rel="stylesheet" href="../static/base.css">
     <link href="{{ url_for('static', filename='react/static/css/game_compiled.css') }}" rel="stylesheet">
-</head>
 {% endblock %}
-
 {% set title = "play "+room_id %}
-
 {% block content %}
 
 {% set waiting_for_friend = room["mode"] == "friend" and room["status"] == "waiting" %}
@@ -61,7 +48,7 @@
 {% endif %}
 
 {# REACT: container for the game #}
-<div id="gameRoot" user="{{ user_id }}" roomID="{{ room_id }}"></div>
+<div id="gameRoot" class="game-container" user="{{ current_user.id }}" roomID="{{ room_id }}"></div>
 
 {# REACT: load the react game script #}
 <script type="text/javascript" src="{{ url_for('static', filename='react/static/js/game_compiled.js') }}"></script>

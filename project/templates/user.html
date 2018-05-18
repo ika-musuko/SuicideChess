@@ -1,12 +1,11 @@
 {# user.html #}
 {# show a user's profile #}
-
-        {% include "base.html" %}
-
-
+{% extends "base.html" %}
 {% set title = [user['displayName'], "'s profile"]|join %} {# string concatenation #}
 {% block content %}
 {# load the contents from this html #}
-{% include "user_profile.html" %}
+    {% with user_id=user_id, user=user %}
+        {% include "user_profile.html" %}
+    {% endwith %}
 {% endblock %}
 

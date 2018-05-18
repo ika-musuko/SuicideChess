@@ -1,10 +1,7 @@
 {# all_users.html #}
 {# this page shows all of the users registed on the site in a list #}
 
-{% with user_id=current_user.id, user=current_user.as_dict() %}
-    {% include "base.html" %}
-{% endwith %}
-
+{% extends "base.html" %}
 {% set title = "All Users" %}
 {% block content %}
 <div class="allUserContent">

@@ -4,6 +4,7 @@ body {
 
 .site-container {
     display: flex;
+    flex-direction: column;
 }
 
 .header {
@@ -14,13 +15,18 @@ body {
     padding: 1px;
 }
 
+.logo {
+    text-align: center;
+}
+
 .content {
-    text-align: left;
     width: 100%;
 }
 
-.logo {
-    text-align: center;
+.game-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 }
 
 ul.menu-bar {
@@ -191,10 +197,4 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 
-.game-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;;
-}
 

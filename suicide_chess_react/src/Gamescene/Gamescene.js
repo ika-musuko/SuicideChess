@@ -229,8 +229,10 @@ class gamescene extends Component {
     }
     newGameData['whiteTurn'] = this.state.whiteTurn
     setPieces(newGameData, newGameData['whiteTurn']);
-
-    let stalemate = checkStalemate(newGameData, this.state.whiteTurn) || checkStalemate(newGameData, !this.state.whiteTurn)
+    let stalemate = false;
+    if(this.state.whiteWin || this.state.blackWin) {
+      let stalemate = checkStalemate(newGameData, this.state.whiteTurn) || checkStalemate(newGameData, !this.state.whiteTurn)
+    }
 
     let requiredMoves = [];
     if(newGameData['whiteTurn']) {

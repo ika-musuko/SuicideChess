@@ -3,7 +3,7 @@ body {
 }
 
 .site-container {
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
 }
 

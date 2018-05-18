@@ -5,7 +5,7 @@ body {
 .site-container {
     display: inline-flex;
     flex-grow: 1;
-    min-width: 1000px;
+    min-width: 1200px;
     width: 100%;
     flex-direction: column;
 }
@@ -13,6 +13,7 @@ body {
 .header {
     color: white;
     width: 100%;
+    min-width: 1200px;
     position: relative;
     background-color: black;
     padding: 1px;
@@ -20,20 +21,12 @@ body {
 
 .logo {
     text-align: center;
-    font-family: 'Garamond', serif;
-    font-size: 47px;
+    font-family: 'EB Garamond', 'Garamond', serif;
+    font-size: 36px;
 }
 
 .content {
     width: 100%;
-}
-
-.info-container{
-    display: inline-flex;
-    flex-grow: 1;
-    width: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
 }
 
 .game-container {
@@ -92,7 +85,7 @@ li a, .dropbtn {
 
 .menu-item {
     padding: 0;
-    font-size: 20px;
+    font-size: 17px;
     display: inline-block;
 }
 
@@ -149,34 +142,55 @@ li a, .dropbtn {
     white-space: nowrap;
 }
 
-.info-container {
-    display: flex;
+.profile-title {
+    padding: 0 30px;
+}
+
+.info-container{
+    display: inline-flex;
+    flex-grow: 1;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: nowrap;
     text-align: center;
 }
 
 .stats {
     margin: 20px;
-    display: inline;
     padding: 20px;
     background: #95ff8c;
     text-align: left;
     border-radius: 7px;
-    min-width: 330px;
+    width: 300px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
 
 #stats-chart {
-
 }
 
+.game-histories {
+    margin: 20px;
+    padding: 20px;
+    background: #eeeeee;
+    text-align: left;
+    border-radius: 7px;
+    width: 400px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+.game-history-list {
+    overflow-y: auto;
+    max-height: 500px;
+    height: auto;
+}
 
 .user-info {
     margin: 20px;
-    display: inline;
     padding: 20px;
     background: lightblue;
     text-align: left;
     border-radius: 7px;
+    width: 450px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
 
@@ -184,6 +198,12 @@ li a, .dropbtn {
     border-radius: 7px;
     background: #e1e1e1;
     min-height: 60px;
+    padding: 3px 5px;
+}
+
+.bio {
+    padding: 5px;
+    word-wrap: break-word;
 }
 
 .button {
@@ -197,7 +217,7 @@ li a, .dropbtn {
     font-size: 19px;
     border-radius: 20px;
     cursor: pointer;
-    margin-left: 200px;
+    white-space: nowrap;
 }
 
 .button:hover {

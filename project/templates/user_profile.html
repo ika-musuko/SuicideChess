@@ -24,19 +24,20 @@
           </div>
           <div class="game-histories">
               <h3>Game History</h3>
-              <p>{% set game_histories = user["gameHistories"] %}
+              <p>{% set game_histories = user["gameHistories"] %}</p>
     {% if game_histories %}
         <ul class="gameHistories">
         {% for room_id, game_history in game_histories.items() %}
             <li class="gameHistoryItem"><b>{{ room_id }}</b>
+
                 <ul class="gameHistory">
-                    <li class="winner">Winner: {{ game_history["winner"] }}</li>
+                    <li class="winner">Winner: {% if game_history["winner"] == "$DUMMY" %} <i>Draw</i> {% else %}{{ player_manager.get_display_name(game_history["winner"]) }} {% endif %}</li>
                     <li class="timeFinished">Time finished: {{ game_history["timeFinished"] }}</li>
                 </ul>
             </li>
         {% endfor %}
         </ul>
-    {% endif %}</p>
+    {% endif %}
           </div>
       </div>
   </body>

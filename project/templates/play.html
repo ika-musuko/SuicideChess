@@ -54,19 +54,21 @@
 {# REACT: load the react game script #}
 <script type="text/javascript" src="{{ url_for('static', filename='react/static/js/game_compiled.js') }}"></script>
 
-<div class="tutorial">
-            <h4>RULES</h4>
-               <p>Regular chess rules apply + more:</p>
-               <ol>
-                  <li>You must capture when possible</li>
-                  <p>If there are multiple captures you must choose</p> <br/>
-                  <li>The king is a regular piece</li>
-                  <p>It can be captured like the other pieces</p>
-                  <p>Other pieces can be promoted to king</p> 
-                  <p>There is no castling, check, or checkmate</p> <br/>
-                  <li>You win the game if you lose all your pieces or are stalemated</li> <br/>
-                  <li>If there are no possible moves left, the game ends in a draw</li> <br/>
-                  <li>If you choose to forfeit the game, your opponent wins</li> <br/>
-               </ol>
+    <div class="tutorial-container">
+          <div class="tutorial">
+                <h4>RULES</h4>
+                   <p>Regular chess rules apply + more:</p>
+                   <ol>
+                      <li>You must capture when possible</li>
+                      <p>If there are multiple captures you must choose</p> <br/>
+                      <li>The king is a regular piece</li>
+                      <p>It can be captured like the other pieces</p>
+                      <p>Other pieces can be promoted to king</p>
+                      <p>There is no castling, check, or checkmate</p> <br/>
+                      <li>You win the game if you lose all your pieces or are stalemated</li> <br/>
+                      <li>If there are no possible moves left, the game ends in a draw</li> <br/>
+                      <li>If you choose to forfeit the game, your opponent wins</li> <br/>
+                   </ol>
           </div>
+    </div>
 {% endblock %}

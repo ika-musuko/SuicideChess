@@ -242,9 +242,14 @@ li a, .dropbtn {
     background-color: #f1f1f1;
     color: #111111;
 }
+
+.tutorial-container {
+    transform: translate(36%, 0)
+}
+
 .tutorial {
     width: 40%;
-    text-align: center;
+    text-align: left;
 }
 
 table {

@@ -176,10 +176,22 @@ def forfeit(room_id: str):
                 room["winner"] = players[0]
 
                 player_manager.update_statistics(room_id, room)
-                return redirect(url_for('exit_game', room_id=room_id))
+
+                # update statistics for each player (win, loss, etc)
+                if room["status"] != "waiting":
+                    player_manager.update_statistics(room_id, room)
+
+                # remove the current game from the player's currentGames list
+                for player in room["players"]:
+                    player_manager.remove_current_game(player, room_id)
+
+                # clean up the game
+                room_manager.clean_up_room(room_id)
+                flash("thanks for playing!")
+                return redirect(url_for("index"))
 
             flash("You can't forfeit this game.")
-        return redirect(url_for("play", room_id=room_id))
+            return redirect(url_for("play", room_id=room_id))
 
     except room_exceptions.RoomException:
         flash("This room does not exist anymore. Your room ID may have changed.")

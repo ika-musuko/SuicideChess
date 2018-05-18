@@ -1,8 +1,11 @@
 body {
     margin: 0;
+    background-color: black;
 }
 
 .site-container {
+    background-color: white;
+    top: 0;
     display: inline-flex;
     flex-grow: 1;
     min-width: 1000px;
@@ -11,6 +14,7 @@ body {
 }
 
 .header {
+
     color: white;
     min-width: 1010px;
     width: 100%;
@@ -43,8 +47,6 @@ body {
 
 ul.menu-bar {
     list-style-type: none;
-    margin: 1px;
-    padding: 1px;
     width: 12%;
     background-color: black;
     float:top;

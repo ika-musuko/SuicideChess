@@ -11,6 +11,22 @@ body {
     text-align: center;
 }
 
+@media only screen and (max-width: 600px) {
+    .welcome-message {
+        font-family: 'EB Garamond','Garamond', serif;
+        font-size: 35px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    .pawn{
+        align-self: center;
+        width: 200px;
+        height: 200px;
+        display: inline;
+    }
+}
+
 .signup-message {
     font-family: 'EB Garamond','Garamond', serif;
     white-space: nowrap;

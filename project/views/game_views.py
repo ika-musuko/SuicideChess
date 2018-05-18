@@ -11,6 +11,10 @@ from flask_login import login_required, current_user
 from project import app, room_manager, player_manager
 from project.rooms import room_exceptions
 
+from copy import deepcopy
+
+from functools import wraps
+
 
 @app.route("/play/<room_id>")
 @login_required
@@ -149,6 +153,38 @@ def rematch(room_id: str):
         flash("This room does not exist anymore. Your room ID may have changed.")
         return redirect(url_for("index"))
 
+
+
+@app.route("/forfeit/<room_id>")
+def forfeit(room_id: str):
+    try:
+        _, room = room_manager.get_room(room_id)
+        if room_manager.player_in_room(room_id, current_user.id):
+            if not room_manager.player_in_room(room_id, current_user.id):
+                flash("You are not in this room.")
+                return redirect(url_for("index"))
+
+            if room["status"] == "inprogress":
+
+                # get the players
+                players = deepcopy(room["players"])
+
+                # pop off the current player
+                players.remove(current_user.id)
+
+                # add the remaining player as the winner
+                room["winner"] = players[0]
+
+                player_manager.update_statistics(room_id, room)
+                return redirect(url_for('exit_game', room_id=room_id))
+
+            flash("You can't forfeit this game.")
+        return redirect(url_for("play", room_id=room_id))
+
+    except room_exceptions.RoomException:
+        flash("This room does not exist anymore. Your room ID may have changed.")
+
+    return redirect(url_for("index"))
 
 @app.route("/exit_game/<room_id>")
 @login_required

@@ -9,9 +9,9 @@ This website lets you play the game with friends or with anyone around the world
 ## Team
 CMPE 133 Project Spring 2018  
 Team Members:
-- Sherwyn Sen - Website Engine
+- Sherwyn Sen - Website Engine/Design
 - Eric Scaramuzzo  - Suicide Chess Game App
-- Junia Ikeh - Website Design
+- Junia Ikeh - Website Design Lead
 - Joleena Marshall - Templating
 
 ## Goals

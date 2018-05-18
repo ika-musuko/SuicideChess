@@ -33,6 +33,7 @@
 {% elif room["status"] == "finished" %}
 
     {# has the current user clicked rematch yet #}
+    <p>Stats update after rematch or exit</p>
     {% if room["rematchReady"][current_user.id] %} {# YES THEY HAVE #}
         <h3>Waiting for the opponent to rematch...</h3>
     {% else %}

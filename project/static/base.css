@@ -5,15 +5,15 @@ body {
 .site-container {
     display: inline-flex;
     flex-grow: 1;
-    min-width: 1200px;
+    min-width: 1300px;
     width: 100%;
     flex-direction: column;
 }
 
 .header {
     color: white;
-    width: 100%;
-    min-width: 1200px;
+    min-width: 1310px;
+    width: 102%;
     position: relative;
     background-color: black;
     padding: 1px;
@@ -25,9 +25,15 @@ body {
     font-size: 36px;
 }
 
+.logo-link {
+    text-decoration: none;
+    color: white;
+}
+
 .content {
     width: 100%;
     margin: 6px;
+    font-family: sans-serif;
 }
 
 .game-container {

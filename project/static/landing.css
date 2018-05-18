@@ -5,47 +5,47 @@ body {
 }
 
 .welcome-message {
+    white-space: nowrap;
+    text-align: center;
 }
 
 .signup-message {
-
+    white-space: nowrap;
+    text-align: center;
 }
-    
-#google-signup {
 
+#google-signup {
+    align-self: center;
+}
+
+#google-signup-img{
+    width: 50%;
+    transform: translate(50%, 0);
 }
 
 .center-column {
-    width:30%;
-    height: 70%;
-    float:left;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    align-self: center;
 }
 
 
 .center-row {
-    height: 80%;
-    top:20%;
-    position: absolute;
+    display: flex;
+    align-items: center;
+    transform: translate(0, 50%);
+    justify-content: center;
 }
 
 .text{
-    margin: auto;
     padding: 10px;
     width: 50%;
-    }
 
-.img-right{
-    width:35%;
+}
+
+.pawn{
+    align-self: center;
+    width: 320px;
+    height: 320px;
     display: inline;
     float:left;
 }
 
-.img-left{
-    width:35%;
-    display:inline;
-    float:left;
-}

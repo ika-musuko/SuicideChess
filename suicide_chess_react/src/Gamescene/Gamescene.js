@@ -230,6 +230,8 @@ class gamescene extends Component {
     newGameData['whiteTurn'] = this.state.whiteTurn
     setPieces(newGameData, newGameData['whiteTurn']);
 
+    let stalemate = checkStalemate(newGameData, this.state.whiteTurn) || checkStalemate(newGameData, !this.state.whiteTurn)
+
     let requiredMoves = [];
     if(newGameData['whiteTurn']) {
       requiredMoves = getRequiredMoves(newGameData, true);
@@ -264,7 +266,8 @@ class gamescene extends Component {
       })
     }
     this.setState({
-      requiredMoves: requiredMoves
+      requiredMoves: requiredMoves,
+      stalemate: stalemate
     })
   }
 
@@ -330,8 +333,6 @@ class gamescene extends Component {
         } else if(!this.state.isWhite && !this.state.whiteTurn) {
           incremenetMovesSinceCaptureOrPawnMove = true;
         }
-
-        console.log(incremenetMovesSinceCaptureOrPawnMove);
 
         if(incremenetMovesSinceCaptureOrPawnMove) {
           gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove + 1

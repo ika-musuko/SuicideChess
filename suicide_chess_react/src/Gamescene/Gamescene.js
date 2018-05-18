@@ -229,9 +229,28 @@ class gamescene extends Component {
     }
     newGameData['whiteTurn'] = this.state.whiteTurn
     setPieces(newGameData, newGameData['whiteTurn']);
-    let stalemate = false;
-    if(this.state.whiteWin || this.state.blackWin) {
-      let stalemate = checkStalemate(newGameData, this.state.whiteTurn) || checkStalemate(newGameData, !this.state.whiteTurn)
+    let stalemate = checkStalemate(newGameData, this.state.whiteTurn) || checkStalemate(newGameData, !this.state.whiteTurn)
+    let whiteWin = false;
+    let blackWin = false
+    if(stalemate) {
+      let aliveBlackPieces = 0;
+      let aliveWhitePieces = 0;
+      for(var piece in this.state) {
+        if(this.state.hasOwnProperty(piece)) {
+          if(piece.substring(0,6) === 'white_' && this.state[piece].x !== -1) {
+            aliveWhitePieces++;
+          } else if (piece.substring(0,6) === 'black_' && this.state[piece].x !== -1) {
+            aliveBlackPieces++;
+          }
+        }
+      }
+      if(aliveBlackPieces > aliveWhitePieces) {
+        stalemate = false
+        whiteWin = true
+      } else if (aliveBlackPieces < aliveWhitePieces) {
+        stalemate = false
+        blackWin = true
+      }
     }
 
     let requiredMoves = [];
@@ -269,7 +288,9 @@ class gamescene extends Component {
     }
     this.setState({
       requiredMoves: requiredMoves,
-      stalemate: stalemate
+      stalemate: stalemate,
+      whiteWin: whiteWin,
+      blackWin: blackWin,
     })
   }
 

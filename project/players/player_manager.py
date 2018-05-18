@@ -7,7 +7,7 @@ objects and functions for managing player statistics
 import pyrebase_ext
 from project.models.new_game_history import new_game_history
 from project.players import player_exceptions
-
+from copy import deepcopy
 
 class PlayerManager:
     def __init__(self, db: pyrebase_ext.Database
@@ -61,11 +61,17 @@ class PlayerManager:
 
     def update_statistics(self, room_id: str, room: dict):
         for player in room["players"]:
+            players = deepcopy(room["players"])
+            loser = "$DUMMY"
+            if room["winner"] in players:
+                players.remove(room["winner"])
+                loser = players[0]
             # add the current room's move list to the game history
             game_history = new_game_history(
                 move_list=room["moveList"]
                 , winner=room["winner"]
                 , last_board=room["gameData"]
+                , loser=loser
             )
             self.add_game_history(player, room_id, game_history)
 

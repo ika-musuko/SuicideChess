@@ -254,4 +254,10 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 
+.winner {
+    color: #009900;
+}
 
+.loser {
+    color: #990000;
+}

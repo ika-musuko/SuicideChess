@@ -79,7 +79,8 @@
                                   <li class="gameHistoryItem"><b>{{ room_id }}</b>
 
                                       <ul class="gameHistory">
-                                          <li class="winner">Winner: {% if game_history["winner"] == "$DUMMY" %} <i>Draw</i> {% else %}{{ player_manager.get_display_name(game_history["winner"]) }} {% endif %}</li>
+                                          <li class="winner">Winner: {% if game_history["winner"] == "$DUMMY" %} <i style="color: #000099;">Draw</i> {% else %}{{ player_manager.get_display_name(game_history["winner"]) }} {% endif %}</li>
+                                          <li class="loser">Loser: {% if game_history["loser"] == "$DUMMY" %} <i style="color: #000099;">Draw</i> {% else %}{{ player_manager.get_display_name(game_history["loser"]) }} {% endif %}</li>
                                           {% set time_finished = game_history["timeFinished"].split('.') %}
                                           <li class="timeFinished">Time finished: {{ time_finished[0] }}</li>
                                       </ul>

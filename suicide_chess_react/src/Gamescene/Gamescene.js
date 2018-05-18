@@ -275,12 +275,7 @@ class gamescene extends Component {
   handlePieceMove (pieces, changesMade, move, pieceCaptured) {
     if(this.state.submitted) {
       if(this.state && changesMade) {
-        let stalemate = false;
-        if(this.state.whiteTurn && this.state.isWhite) {
-          stalemate = checkStalemate(pieces, this.state.whiteTurn);
-        } else if (!this.state.whiteTurn && !this.state.isWhite) {
-          stalemate = checkStalemate(pieces, !this.state.whiteTurn)
-        }
+        let stalemate = checkStalemate(pieces, this.state.whiteTurn) || checkStalemate(pieces, !this.state.whiteTurn)
         if(this.state.movesSinceCaptureOrPawnMove + 1 >= 20) {
           stalemate = true;
         }

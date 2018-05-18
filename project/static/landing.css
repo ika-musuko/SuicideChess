@@ -12,6 +12,7 @@ body {
 }
 
 .signup-message {
+    font-family: 'EB Garamond','Garamond', serif;
     white-space: nowrap;
     text-align: center;
 }

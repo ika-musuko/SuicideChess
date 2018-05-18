@@ -5,6 +5,8 @@ body {
 }
 
 .welcome-message {
+    font-family: 'Garamond', serif;
+    font-size: 47px;
     white-space: nowrap;
     text-align: center;
 }
@@ -46,6 +48,5 @@ body {
     width: 320px;
     height: 320px;
     display: inline;
-    float:left;
 }
 

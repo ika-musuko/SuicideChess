@@ -5,6 +5,7 @@ body {
 .site-container {
     display: inline-flex;
     flex-grow: 1;
+    min-width: 1000px;
     width: 100%;
     flex-direction: column;
 }
@@ -19,10 +20,20 @@ body {
 
 .logo {
     text-align: center;
+    font-family: 'Garamond', serif;
+    font-size: 47px;
 }
 
 .content {
     width: 100%;
+}
+
+.info-container{
+    display: inline-flex;
+    flex-grow: 1;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .game-container {
@@ -81,6 +92,7 @@ li a, .dropbtn {
 
 .menu-item {
     padding: 0;
+    font-size: 20px;
     display: inline-block;
 }
 
@@ -145,22 +157,34 @@ li a, .dropbtn {
 .stats {
     margin: 20px;
     display: inline;
-    width: 300px;
-    height: 220px;
     padding: 20px;
     background: #95ff8c;
     text-align: left;
+    border-radius: 7px;
+    min-width: 330px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
+
+#stats-chart {
+
+}
+
 
 .user-info {
     margin: 20px;
     display: inline;
-    width: 300px;
     padding: 20px;
     background: lightblue;
     text-align: left;
+    border-radius: 7px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
 
+.bio-area {
+    border-radius: 7px;
+    background: #e1e1e1;
+    min-height: 60px;
+}
 
 .button {
     background-color: brown;
@@ -170,11 +194,15 @@ li a, .dropbtn {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
-    margin: 2px 2px;
+    font-size: 19px;
     border-radius: 20px;
     cursor: pointer;
     margin-left: 200px;
+}
+
+.button:hover {
+    background-color: #f1f1f1;
+    color: #111111;
 }
 .tutorial {
     margin-left: 200px;

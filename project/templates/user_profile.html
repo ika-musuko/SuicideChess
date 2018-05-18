@@ -1,6 +1,6 @@
  <html> 
   <body>
-      <div class = "content" style="font-family: Arial, Helvetica, sans-serif">
+      <div class = "content" style="font-family: Helvetica, sans-serif">
         <h2 class="profile-title">{{ user["displayName"] }}'s Profile</h2>
           <div class="info-container">
               <div class = "user-info">
@@ -10,7 +10,7 @@
                   <p><strong>Last here: </strong>{{ user["lastHere"] }}</p> <br>
 
                   <p><strong>Bio: </strong></p>
-                    <p>{{ user["bio"] }}</p> <br>
+                  <div class="bio-area"><p>{{ user["bio"] }}</p></div> <br>
                     {% if current_user.id == user_id %}
                   <a href="{{ url_for('edit_profile') }}" class="button">Edit Profile </a> <br> <br>
                   {% endif %}
@@ -20,6 +20,7 @@
                       <p><strong>Wins:</strong> {{ user["wins"] }}</p>
                       <p><strong>Losses:</strong> {{ user["losses"] }}</p>
                       <p><strong>Draws:</strong> {{ user["draws"] }}</p> <br>
+                  <div id="stats-chart"></div>
               </div>
           </div>
           <div class="game-histories">
@@ -40,5 +41,25 @@
     {% endif %}
           </div>
       </div>
+  <script>
+
+      new PieChart({
+          container: document.getElementById("stats-chart"),
+          data: [{
+            value: {{ user["wins"] }},
+            col: "#008800",
+            legend: "20 units"
+          }, {
+            value: {{ user["losses"] }},
+            col: "#990000",
+            legend: "25 units"
+          }, {
+            value: {{ user["draws"] }},
+            col: "#aaaaaa",
+            legend: "30 units",
+          }]
+        });
+  </script>
+
   </body>
 </html>

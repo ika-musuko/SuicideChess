@@ -40,10 +40,7 @@ Team Members:
     - [X] Backend
     - [X] HTML/CSS
     - [X] Templating
-- [ ] Forfeit from a game
-    - [ ] Backend
-    - [ ] HTML/CSS
-    - [ ] Templating
+- [X] Forfeit from a game
 
 ### Optional (Ambitious) - Version 3.0
 - [X] Google Sign-In

@@ -202,9 +202,11 @@ class gamescene extends Component {
         });
         var thatUserRef = firebase.database().ref('/users/' + otherUserId)
         thatUserRef.once('value').then(function(snapshot) {
-          a.setState({
-            otherUserName: snapshot.val().displayName
-          })
+          if(snapshot.val() !== null){
+            a.setState({
+              otherUserName: snapshot.val().displayName
+            })
+          }
         })
       } else {
         thisUserRef = firebase.database().ref('/users/' + a.state.userId)
@@ -243,12 +245,24 @@ class gamescene extends Component {
         data['piece'] = snapshot.key;
         movePiece(data);
       } else if (snapshot.key === 'movesSinceCaptureOrPawnMove'){
-        var data = snapshot.val();
+        data = snapshot.val();
+        console.log(data);
         a.setState({
           movesSinceCaptureOrPawnMove: data
         })
       }
     });
+    if(!this.state.otherUserId){
+      var otherUserListener = firebase.database().ref('/SuicideChess/' + this.state.roomID);
+      a = this
+      otherUserListener.on('child_changed', function(snapshot) {
+        console.log(snapshot.key);
+        if(snapshot.key.substring(0,7) === 'players') {
+          window.location.reload();
+          otherUserListener.off();
+        }
+      })
+    }
     this.setState({
       requiredMoves: requiredMoves
     })
@@ -261,6 +275,12 @@ class gamescene extends Component {
   handlePieceMove (pieces, changesMade, move, pieceCaptured) {
     if(this.state.submitted) {
       if(this.state && changesMade) {
+        let stalemate = false;
+        if(this.state.whiteTurn && this.state.isWhite) {
+          stalemate = checkStalemate(pieces, this.state.whiteTurn);
+        } else if (!this.state.whiteTurn && !this.state.isWhite) {
+          stalemate = checkStalemate(pieces, !this.state.whiteTurn)
+        }
         if(this.state.movesSinceCaptureOrPawnMove + 1 >= 20) {
           stalemate = true;
         }
@@ -283,7 +303,6 @@ class gamescene extends Component {
 
         let blackWin = true
         let whiteWin = true
-        var stalemate = checkStalemate(pieces, !this.state.whiteTurn);
 
         for(var piece in pieces) {
           if(pieces.hasOwnProperty(piece)) {
@@ -299,7 +318,7 @@ class gamescene extends Component {
 
 
         let pawnMoved = false;
-        for(var piece in pieces) {
+        for(piece in pieces) {
           if(pieces.hasOwnProperty(piece)){
             if(this.state[piece].x !== pieces[piece].x || this.state[piece].y !== pieces[piece].y) {
               if(piece.substring(6,10) === 'pawn') {
@@ -311,25 +330,16 @@ class gamescene extends Component {
 
         let incremenetMovesSinceCaptureOrPawnMove = false;
         var resetMoveSinceCapturedOrPawnMove = pawnMoved || pieceCaptured ? true : false
-        if(this.state.isWhite) {
-          if(this.state.whiteTurn) {
-            incremenetMovesSinceCaptureOrPawnMove = true;
-          } else {
-
-          }
-        } else {
-          if(this.state.whiteTurn) {
-
-          } else {
-            incremenetMovesSinceCaptureOrPawnMove = true;
-          }
+        if(this.state.isWhite && this.state.whiteTurn) {
+          incremenetMovesSinceCaptureOrPawnMove = true;
+        } else if(!this.state.isWhite && !this.state.whiteTurn) {
+          incremenetMovesSinceCaptureOrPawnMove = true;
         }
+
+        console.log(incremenetMovesSinceCaptureOrPawnMove);
+
         if(incremenetMovesSinceCaptureOrPawnMove) {
-          if(this.state.isWhite && this.state.whiteTurn) {
-            gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove + 1
-          } else if (!this.state.isWhite && !this.state.whiteTurn) {
-            gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove + 1
-          }
+          gameData['movesSinceCaptureOrPawnMove'] = this.state.movesSinceCaptureOrPawnMove + 1
           if(this.state.movesSinceCaptureOrPawnMove + 1 >= 20) {
             stalemate = true;
           }
@@ -382,10 +392,10 @@ class gamescene extends Component {
 
         updates['/SuicideChess/' + this.state.roomID + '/gameData/'] = gameData;
 
-        firebase.database().ref().update(updates);
-
-        if(whiteWin || blackWin || stalemate) {
-          window.location.reload();
+        if(this.state.isWhite && this.state.whiteTurn) {
+          firebase.database().ref().update(updates);
+        } else if (!this.state.isWhite && !this.state.whiteTurn){
+          firebase.database().ref().update(updates);
         }
 
         this.setState({
@@ -396,7 +406,7 @@ class gamescene extends Component {
           stalemate: stalemate,
           selectedPiece: null,
           moveList: newMoves,
-          movesSinceCaptureOrPawnMove: incremenetMovesSinceCaptureOrPawnMove ? (this.state.movesSinceCaptureOrPawnMove + 1) : (this.state.movesSinceCaptureOrPawnMove + 1),
+          movesSinceCaptureOrPawnMove: incremenetMovesSinceCaptureOrPawnMove ? (this.state.movesSinceCaptureOrPawnMove + 1) : (this.state.movesSinceCaptureOrPawnMove),
           requiredMoves: requiredMoves,
           whiteTurn: changesMade ? !this.state.whiteTurn : this.state.whiteTurn,
         });

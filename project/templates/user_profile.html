@@ -73,10 +73,10 @@
               <div class="game-histories">
                   <h2>Game History</h2>
                   {% if game_histories %}
-                      <div class="game-history-list"
+                      <div class="game-history-list">
                           <ul class="gameHistories">
                               {% for room_id, game_history in game_histories.items() %}
-                                  <li class="gameHistoryItem"><b>{{ room_id }}</b>
+                                  <li class="gameHistoryItem"><div style="color:{% if game_history["winner"] == "$DUMMY" %} #000099 {% elif game_history["winner"] == current_user.id %} #009900 {% else %} #990000 {% endif %};"><strong>{{ room_id }}</strong></div>
 
                                       <ul class="gameHistory">
                                           <li class="winner">Winner: {% if game_history["winner"] == "$DUMMY" %} <i style="color: #000099;">Draw</i> {% else %}{{ player_manager.get_display_name(game_history["winner"]) }} {% endif %}</li>

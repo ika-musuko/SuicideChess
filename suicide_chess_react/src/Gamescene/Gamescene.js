@@ -398,6 +398,10 @@ class gamescene extends Component {
           firebase.database().ref().update(updates);
         }
 
+        if(whiteWin || blackWin || stalemate) {
+          window.location.reload();
+        }
+
         this.setState({
           validTiles: [],
           ...pieces,

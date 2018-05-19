@@ -36,7 +36,6 @@
     <p>Stats update after rematch or exit</p>
     {% if room["rematchReady"][current_user.id] %} {# YES THEY HAVE #}
         <h3>Waiting for the opponent to rematch...</h3>
-        <h3>You can make your first move while waiting!</h3>
     {% else %}
         <a href="{{ url_for('rematch', room_id=room_id) }}">REMATCH</a>
     {% endif %}
@@ -46,6 +45,7 @@
 {# else room is waiting, show an exit link #}
 {% else %}
     <h3>Waiting for opponent...</h3>
+    <p>You can make your first move while waiting!</p>
     <a href="{{ url_for('exit_game', room_id=room_id) }}">CANCEL GAME</a>
 {% endif %}
 

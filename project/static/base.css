@@ -3,6 +3,18 @@ body {
     background-color: black;
 }
 
+.site-footer {
+    font-family: sans-serif;
+    width: 50%;
+    transform: translate(50%, 0);
+    color: white;
+    font-size: xx-small;
+}
+
+.site-footer a {
+    color: inherit;
+}
+
 .site-container {
     background-color: white;
     top: 0;
@@ -10,13 +22,13 @@ body {
     flex-grow: 1;
     min-width: 1000px;
     width: 100%;
+    min-height: calc(100vh - 6px);
     flex-direction: column;
 }
 
 .header {
-
     color: white;
-    min-width: 1010px;
+    min-width: 1000px;
     width: 100%;
     position: relative;
     background-color: black;
@@ -244,12 +256,16 @@ li a, .dropbtn {
 }
 
 .tutorial-container {
-    transform: translate(36%, 0)
+    transform: translate(36%, 0);
+    width: 64%;
 }
 
 .tutorial {
-    width: 40%;
     text-align: left;
+}
+
+#gameRoot {
+    transform: translate(-7px, 0);
 }
 
 table {
